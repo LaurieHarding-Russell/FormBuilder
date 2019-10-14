@@ -10,6 +10,7 @@
 class AbstractFormComponent {
 public:
     AbstractFormComponent();
+    AbstractFormComponent(bool isTop);
     AbstractFormComponent(std::string templateCode);
     AbstractFormComponent(std::string templateCode, std::string style);
 
@@ -20,7 +21,11 @@ public:
 protected:
     std::string templateCode;
     std::string style;
+    std::string knownElements;
     rapidxml::xml_document<> parsedTemplate;
+
+    bool top = false;
+
 private:
     void setup(std::string templateCode, std::string style);
 };

@@ -6,70 +6,74 @@
 #include<GL/glu.h>
 
 #include "examples/TestComponent/TestComponent.h"
- 
+
+void initializeX11(Display *display, Window root, XVisualInfo *visualInfo, Window myWindow);
+
 int main() {
-       // FIXME, yucky 
-       Display                 *dpy;
+       // FIXME, yucky
+       Display                 *display;
        Window                  root;
-       GLint                   att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-       XVisualInfo             *vi;
-       Colormap                cmap;
-       XSetWindowAttributes    swa;
-       Window                  win;
-       GLXContext              glc;
-       XWindowAttributes       gwa;
-       XEvent                  xev;
+       XVisualInfo             *visualInfo;
+       Window                  myWindow;
+       GLXContext              glContext;
+       XWindowAttributes       snapshotWindowAttributes;
+       XEvent                  x11Event;
 
-       dpy = XOpenDisplay(NULL);
-
-       if(dpy == NULL) {
-              printf("\n\tcannot connect to X server\n\n");
-              exit(0);
-       }
-              
-       root = DefaultRootWindow(dpy);
-
-       vi = glXChooseVisual(dpy, 0, att);
-
-       if(vi == NULL) {
-              printf("\n\tno appropriate visual found\n\n");
-              exit(0);
-       } 
-       else {
-              printf("\n\tvisual %p selected\n", (void *)vi->visualid); /* %p creates hexadecimal output like in glxinfo */
-       }
-
-
-       cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
-
-       swa.colormap = cmap;
-       swa.event_mask = ExposureMask | KeyPressMask;
-
-       win = XCreateWindow(dpy, root, 0, 0, 600, 600, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-
-       XMapWindow(dpy, win);
-       XStoreName(dpy, win, "Test Form");
-
-       glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
-       glXMakeCurrent(dpy, win, glc);
-
-       glEnable(GL_DEPTH_TEST); 
+       glContext = glXCreateContext(display, visualInfo, NULL, GL_TRUE);
+       glXMakeCurrent(display, myWindow, glContext);
+ 
        TestComponent* test = new TestComponent();
 
        while(1) {
-              XNextEvent(dpy, &xev);
+              XNextEvent(display, &x11Event);
 
-              if(xev.type == Expose) {
-                     XGetWindowAttributes(dpy, win, &gwa);
+              if(x11Event.type == Expose) {
+                     XGetWindowAttributes(display, myWindow, &snapshotWindowAttributes);
                      test->render();
-                     glViewport(0, 0, gwa.width, gwa.height);
-                     glXSwapBuffers(dpy, win);
-              } else if(xev.type == KeyPress) {
-                     glXMakeCurrent(dpy, None, NULL);
-                     glXDestroyContext(dpy, glc);
-                     XDestroyWindow(dpy, win);
-                     XCloseDisplay(dpy);
+                     glViewport(0, 0, snapshotWindowAttributes.width, snapshotWindowAttributes.height);
+                     glXSwapBuffers(display, myWindow);
+              } else if(x11Event.type == KeyPress) {
+                     glXMakeCurrent(display, None, NULL);
+                     glXDestroyContext(display, glContext);
+                     XDestroyWindow(display, myWindow);
+                     XCloseDisplay(display);
                      exit(0);
               }
        }
+}
+
+void initializeX11(Display *display, Window root, XVisualInfo *visualInfo, Window myWindow) {
+       GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+       XSetWindowAttributes defaultWindowAttributes;
+
+       display = XOpenDisplay(NULL);
+
+       if(display == NULL) {
+              printf("\n\tcannot connect to X server\n\n");
+              exit(0);
+       }
+
+       root = DefaultRootWindow(display);
+
+       visualInfo = glXChooseVisual(display, 0, att);
+
+       if(visualInfo == NULL) {
+              printf("\n\tno appropriate visual found\n\n");
+              exit(0);
+       }
+       else {
+              printf("\n\tvisual %p selected\n", (void *)visualInfo->visualid);
+       }
+
+
+       Colormap colourMap = XCreateColormap(display, root, visualInfo->visual, AllocNone);
+
+       defaultWindowAttributes.colormap = colourMap;
+       defaultWindowAttributes.event_mask = ExposureMask | KeyPressMask;
+
+       myWindow = XCreateWindow(display, root, 0, 0, 600, 600, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &defaultWindowAttributes);
+
+       XMapWindow(display, myWindow);
+       XStoreName(display, myWindow, "Test Form");
+
 }

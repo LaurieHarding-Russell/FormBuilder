@@ -6,6 +6,11 @@ AbstractFormComponent::AbstractFormComponent() {
     setup("", "");
 }
 
+AbstractFormComponent::AbstractFormComponent(bool top) {
+    this->top = top;
+    setup("", "");
+}
+
 AbstractFormComponent::AbstractFormComponent(std::string templateCode) {
     setup(templateCode, "");
 }
