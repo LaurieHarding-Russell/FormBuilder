@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<X11/Xlib.h>
+#include "lib/initShader.h"
+
 #include<GL/gl.h>
 #include<GL/glx.h>
 #include<GL/glu.h>
@@ -8,7 +10,7 @@
 
 #include "examples/TestComponent/TestComponent.h"
 
-GLXContext initializeX11(Display *display, Window &root, XVisualInfo *visualInfo, Window &myWindow);
+void initializeX11(Display *display, Window &root, XVisualInfo *visualInfo, Window &myWindow);
 
 int main() {
        // FIXME, yucky
@@ -20,19 +22,18 @@ int main() {
        XWindowAttributes       snapshotWindowAttributes;
        XEvent                  x11Event;
 
-       GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-       XSetWindowAttributes defaultWindowAttributes;
+       // ****************** Should all be initializeX11 *****************************
+       display = XOpenDisplay(NULL); // segement faults if called out of master and then referenced :(
 
-       display = XOpenDisplay(NULL);
-
-       if(display == NULL) {
+       if(display == NULL) { 
               printf("\n\tcannot connect to X server\n\n");
               exit(0);
        }
 
-       root = DefaultRootWindow(display);
+       root = DefaultRootWindow(display); 
 
-       visualInfo = glXChooseVisual(display, 0, att);
+       GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+       visualInfo = glXChooseVisual(display, 0, att); // segement faults if called out of master and then referenced :(
 
        if(visualInfo == NULL) {
               printf("\n\tno appropriate visual found\n\n");
@@ -41,21 +42,16 @@ int main() {
               printf("\n\tvisual %p selected\n", (void *)visualInfo->visualid);
        }
 
-
-       Colormap colourMap = XCreateColormap(display, root, visualInfo->visual, AllocNone);
-
-       defaultWindowAttributes.colormap = colourMap;
-       defaultWindowAttributes.event_mask = ExposureMask | KeyPressMask;
-
-       myWindow = XCreateWindow(display, root, 0, 0, 600, 600, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &defaultWindowAttributes);
-
-       XMapWindow(display, myWindow);
-       XStoreName(display, myWindow, "Test Form");
+       initializeX11(display, root, visualInfo, myWindow);
+       // ***********************************************************************************************
 
        glContext = glXCreateContext(display, visualInfo, NULL, GL_TRUE);     
 
        glXMakeCurrent(display, myWindow, glContext);
        glEnable(GL_DEPTH_TEST);
+       
+       std::cout << glGetString(GL_VERSION) << "\n";
+       // initShader("lib/shaders/standardVertexShader.glsl", "lib/shaders/standardFragmentShader.glsl");
 
        TestComponent* test = new TestComponent();
        while(1) {
@@ -76,41 +72,16 @@ int main() {
        }
 }
 
-// FIXME, segment faults :(
-// GLXContext initializeX11(Display *display, Window &root, XVisualInfo *visualInfo, Window &myWindow) {
-//        GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-//        XSetWindowAttributes defaultWindowAttributes;
+void initializeX11(Display *display, Window &root, XVisualInfo *visualInfo, Window &myWindow) {
 
-//        display = XOpenDisplay(NULL);
+       Colormap colourMap = XCreateColormap(display, root, visualInfo->visual, AllocNone);       
+       XSetWindowAttributes defaultWindowAttributes;
 
-//        if(display == NULL) {
-//               printf("\n\tcannot connect to X server\n\n");
-//               exit(0);
-//        }
+       defaultWindowAttributes.colormap = colourMap;
+       defaultWindowAttributes.event_mask = ExposureMask | KeyPressMask;
 
-//        root = DefaultRootWindow(display);
+       myWindow = XCreateWindow(display, root, 0, 0, 600, 600, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &defaultWindowAttributes);
 
-//        visualInfo = glXChooseVisual(display, 0, att);
-
-//        if(visualInfo == NULL) {
-//               printf("\n\tno appropriate visual found\n\n");
-//               exit(0);
-//        } else {
-//               printf("\n\tvisual %p selected\n", (void *)visualInfo->visualid);
-//        }
-
-
-//        Colormap colourMap = XCreateColormap(display, root, visualInfo->visual, AllocNone);
-
-//        defaultWindowAttributes.colormap = colourMap;
-//        defaultWindowAttributes.event_mask = ExposureMask | KeyPressMask;
-
-//        myWindow = XCreateWindow(display, root, 0, 0, 600, 600, 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &defaultWindowAttributes);
-
-//        XMapWindow(display, myWindow);
-//        XStoreName(display, myWindow, "Test Form");
-
-//        // return glXCreateContext(display, visualInfo, NULL, GL_TRUE);     
-//        return NULL;
-
-// }
+       XMapWindow(display, myWindow);
+       XStoreName(display, myWindow, "Test Form");
+}

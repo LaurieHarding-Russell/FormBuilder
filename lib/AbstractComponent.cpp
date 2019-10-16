@@ -30,5 +30,6 @@ void AbstractFormComponent::render() {
 
 // Private 
 void AbstractFormComponent::setup(std::string templateCode, std::string style) {
+
     // parsedTemplate.parse(templateCode);
 }
