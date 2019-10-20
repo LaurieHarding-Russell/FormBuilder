@@ -6,6 +6,7 @@
 #include<GL/glx.h>
 #include<GL/glu.h>
 #include<string>
+#include "pumpkinSpice/style.h"
 
 class AbstractFormComponent {
 public:
@@ -20,14 +21,14 @@ public:
 
 protected:
     std::string templateCode;
-    std::string style;
+    std::string style = "default.style";
     std::string knownElements;
     rapidxml::xml_document<> parsedTemplate;
 
-    bool top = false;
+    // bool top = false; // FIXME, think about top component.
 
 private:
-    void setup(std::string templateCode, std::string style);
+    void setup(std::string templateCode);
 };
 
 #endif

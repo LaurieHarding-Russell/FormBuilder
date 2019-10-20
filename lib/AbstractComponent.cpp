@@ -3,20 +3,16 @@
 
 // public 
 AbstractFormComponent::AbstractFormComponent() {
-    setup("", "");
-}
-
-AbstractFormComponent::AbstractFormComponent(bool top) {
-    this->top = top;
-    setup("", "");
+    setup("");
 }
 
 AbstractFormComponent::AbstractFormComponent(std::string templateCode) {
-    setup(templateCode, "");
+    setup(templateCode);
 }
 
 AbstractFormComponent::AbstractFormComponent(std::string templateCode, std::string style) {
-    setup(templateCode, style);
+    this->style = style;
+    setup(templateCode);
 }
 
 AbstractFormComponent::~AbstractFormComponent() {
@@ -29,7 +25,11 @@ void AbstractFormComponent::render() {
 }
 
 // Private 
-void AbstractFormComponent::setup(std::string templateCode, std::string style) {
-
+void AbstractFormComponent::setup(std::string templateCode) {
+    if(!(yyin = fopen(this.style, "r"))) {
+        perror(argv[1]);
+        return (1);
+    }
+    std::cout << yyparse() << "\n";
     // parsedTemplate.parse(templateCode);
 }

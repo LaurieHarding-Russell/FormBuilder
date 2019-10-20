@@ -8,6 +8,9 @@ cc_library(
     "@rapidxml//:rapidxml",
     # "@json//:json"
   ],
+  includes	= [
+    ":defaultStyle",
+  ],
   visibility = ["//visibility:public"]
 )
 
@@ -15,29 +18,34 @@ cc_library(
   name = "initShader",
   hdrs = ["initShader.h"],
   linkopts = ["-lGL", "-lGLU"],
-    deps = [
+  deps = [
     "@openGL_x86_64_linux//:GL",
   ],
   visibility = ["//visibility:public"]
 )
 
-
+exports_files(["default.style"])
 
 load("@rules_flex//flex:flex.bzl", "flex_cc_library")
+load("@rules_bison//bison:bison.bzl", "bison_cc_library")
 flex_cc_library(
   name = "pumpkinSpiceFlex",
-  src = "style.l",
-  visibility = ["//visibility:public"]
+  src = "pumpkinSpice/style.l",
+  deps = ["pumpkinSpiceBison"],
 )
 
-
-load("@rules_bison//bison:bison.bzl", "bison_cc_library")
 bison_cc_library(
     name = "pumpkinSpiceBison",
-    src = "style.y",
+    src = "pumpkinSpice/style.y",
 )
 
-# cc_binary(
-#     name = "hello_bin",
-#     deps = [":hello"],
-# )
+
+# Tests
+cc_binary(
+    name = "pumpkinSpiceTest",
+    srcs = ["pumpkinSpice/pumpkinSpiceTest.cpp"],
+    deps = [":pumpkinSpiceFlex"],
+    data	= [
+      ":default.style",
+    ],
+)
