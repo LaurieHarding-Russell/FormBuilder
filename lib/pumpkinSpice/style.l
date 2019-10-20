@@ -11,10 +11,10 @@
 %}
 
 digit       [0-9];
-class       .[a-z][a-z0-9]*
+class       \.[a-z][a-z0-9]*
 tag         [a-z][a-z0-9]*
 operator    [+,-,*,/,^]
-hexcode     #[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
+hexcode     \#[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
 
 
 %%
@@ -39,7 +39,7 @@ hexcode     #[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
    return (OPEN_BRACKET);
 }
 
-"{" {
+"}" {
    return (CLOSING_BRACKET);
 }
 

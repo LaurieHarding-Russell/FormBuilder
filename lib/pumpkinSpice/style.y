@@ -1,4 +1,5 @@
 %language "c++"
+%define parse.error verbose
 
 %{
 #include <stdio.h>
@@ -33,7 +34,9 @@ void yyerror(const char* s);
 %%
 definitions: | definitions statement;
 statement: selectorDeclaration OPEN_BRACKET properties CLOSING_BRACKET;
-properties: BACKGROUND COLON HEXCODE SEMIOLON;
+properties: | colourType COLON colourValue SEMIOLON;
+colourType: BACKGROUND;
+colourValue: HEXCODE;
 selectorDeclaration: TAG | CLASS;
 digitCalculation: digitCalculation OPERATOR DIGIT | DIGIT OPERATOR DIGIT;
 
