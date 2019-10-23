@@ -40,11 +40,14 @@ bison_cc_library(
 )
 
 
-# Tests
-cc_binary(
+
+cc_test(
     name = "pumpkinSpiceTest",
     srcs = ["pumpkinSpice/pumpkinSpiceTest.cpp"],
-    deps = [":pumpkinSpiceFlex"],
+    deps = [
+      ":pumpkinSpiceFlex", 
+      "@gtest//:gtest_main",
+    ],
     data	= [
       ":default.style",
     ],

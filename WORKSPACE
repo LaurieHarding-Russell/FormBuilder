@@ -1,7 +1,12 @@
 workspace(name="formLib")
 
+# FIXME, maybe split these out into multiple files via starlark functions?
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# #########################################
+# X11 + OpenGL
+# #########################################
 
 new_local_repository(
         name = "system_include_x86_64_linux",
@@ -56,6 +61,10 @@ visibility = ["//visibility:public"],
     """
 )
 
+# #########################################
+# Pumpkin Spice!
+# #########################################
+
 http_archive(
     name = "rapidxml",
     strip_prefix = "rapidxml-f0058ab9374643018c1db3de521e44d4d52b8f5d",
@@ -87,6 +96,9 @@ cc_library(
 """
 )
 
+# #########################################
+# Pumpkin Spice!
+# #########################################
 http_archive(
     name = "rules_m4",
     urls = ["https://github.com/jmillikin/rules_m4/releases/download/v0.2/rules_m4-v0.2.tar.xz"],
@@ -110,3 +122,14 @@ http_archive(
 )
 load("@rules_bison//bison:bison.bzl", "bison_register_toolchains")
 bison_register_toolchains()
+
+
+# #########################################
+# Test
+# #########################################
+http_archive(
+    name = "gtest",
+    url = "https://github.com/google/googletest/archive/release-1.10.0.zip",
+    strip_prefix = "googletest-release-1.10.0",
+    sha256 = "94c634d499558a76fa649edb13721dce6e98fb1e7018dfaeba3cd7a083945e91"
+)
