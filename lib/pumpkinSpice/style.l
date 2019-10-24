@@ -12,20 +12,27 @@
 
 digit       [0-9];
 class       \.[a-z][a-z0-9]*
-tag         [a-z][a-z0-9]*
 operator    [+,-,*,/,^]
-hexcode     \#[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
+hexcode     \#([a-f0-9]){6}|\#([a-f0-9]){8}
 
 
 %%
-{hexcode} {
+
+{class} { 
    // yylval.name = strdup(yytext);
-   return (HEXCODE);
+   return (CLASS);
 }
+
 {digit} { 
    // yylval.numdata = atoi(yytext);
    return (DIGIT);
 }
+
+{hexcode} {
+   // yylval.name = strdup(yytext);
+   return (HEXCODE);
+}
+
    
 {operator} {
    return (OPERATOR);
@@ -48,7 +55,7 @@ hexcode     \#[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
 }
 
 ";" { 
-   return (SEMIOLON);
+   return (SEMICOLON);
 }
 
 "display" {
@@ -59,14 +66,4 @@ hexcode     \#[a-f0-9][a-f0-9]{6}|#[a-f0-9][a-f0-9]{8}
    return (BACKGROUND);
 }
 
-
-{class} { 
-   // yylval.name = strdup(yytext);
-   return (CLASS);
-}
-
-{tag} { 
-   // yylval.name = strdup(yytext);
-   return (TAG);
-}
 %%

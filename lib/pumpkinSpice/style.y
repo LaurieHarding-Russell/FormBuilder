@@ -17,12 +17,13 @@ void yyerror(const char* s);
 %token TAG
 %token CLASS
 %token HEXCODE
+
 %token DIGIT
 
 %token OPERATOR
 %token EQUAL
 %token COLON
-%token SEMIOLON
+%token SEMICOLON
 %token OPEN_BRACKET
 %token CLOSING_BRACKET
 
@@ -32,9 +33,10 @@ void yyerror(const char* s);
 %start definitions
 
 %%
-definitions: | definitions statement;
+definitions: %empty | definitions statement;
 statement: selectorDeclaration OPEN_BRACKET properties CLOSING_BRACKET;
-properties: | colourType COLON colourValue SEMIOLON;
+properties: %empty | properties property SEMICOLON;
+property: colourType COLON HEXCODE;
 colourType: BACKGROUND;
 colourValue: HEXCODE;
 selectorDeclaration: TAG | CLASS;
