@@ -8,17 +8,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # X11 + OpenGL
 # #########################################
 
-new_local_repository(
-        name = "system_include_x86_64_linux",
-        path = "/usr/include/linux",
-        build_file_content = """
-cc_library(
-    name = "x11",
-    hdrs = glob(["X11"]),
-    visibility = ["//visibility:public"],
-)
-"""
-)
+load('@formLib//toolchain:linux_graphics_dep.bzl', 'loadGraphicsLinux_X86_64bit')
+loadGraphicsLinux_X86_64bit()
 
 new_local_repository(
         name = "openGL_x86_64_linux",

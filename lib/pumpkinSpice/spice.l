@@ -19,17 +19,17 @@ hexcode     \#([a-f0-9]){6}|\#([a-f0-9]){8}
 %%
 
 {class} { 
-   // yylval.name = strdup(yytext);
+   yylval.stringVal = strdup(yytext);
    return (CLASS);
 }
 
 {digit} { 
-   // yylval.numdata = atoi(yytext);
+   yylval.numVal = atoi(yytext);
    return (DIGIT);
 }
 
 {hexcode} {
-   // yylval.name = strdup(yytext);
+   yylval.stringVal = strdup(yytext);
    return (HEXCODE);
 }
 

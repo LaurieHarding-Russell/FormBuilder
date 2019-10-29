@@ -6,7 +6,7 @@
 #include<GL/glx.h>
 #include<GL/glu.h>
 #include<string>
-#include "pumpkinSpice/style.h"
+#include "pumpkinSpice.h"
 
 class AbstractFormComponent {
 public:
