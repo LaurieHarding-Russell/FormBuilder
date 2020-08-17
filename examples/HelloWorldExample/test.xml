@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pumpkin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../lib/pumpkinSpice.xsd">
+    <div class="helloWorld">Hello World</div>
+</pumpkin>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="pumpkin">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:any></xs:any>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="div">
+        <xs:complexContent>
+            <xs:extension base="pumpkin">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:element>
+
+    <xs:element name="input">
+        <xs:complexContent>
+            <xs:extension base="pumpkin">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:element>
+
+    <xs:element name="button">
+        <xs:complexContent>
+            <xs:extension base="pumpkin">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:element>
+
+    <xs:element name="label">
+        <xs:complexContent>
+            <xs:extension base="pumpkin">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:element>
+</xs:schema>

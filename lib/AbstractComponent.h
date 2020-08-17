@@ -1,12 +1,7 @@
 #ifndef AbstractComponent_h
 #define AbstractComponent_h
 
-#include "rapidxml.hpp"
-#include<GL/gl.h>
-#include<GL/glx.h>
-#include<GL/glu.h>
 #include<string>
-#include "pumpkinSpice.h"
 
 class AbstractFormComponent {
 public:
@@ -20,8 +15,8 @@ public:
     ~AbstractFormComponent();
 
 protected:
-    std::string templateCode;
-    std::string style = "default.style";
+    virtual std::string pumpkinFileName;
+    virtual std::string styleFileName;
     std::string knownElements;
     rapidxml::xml_document<> parsedTemplate;
 

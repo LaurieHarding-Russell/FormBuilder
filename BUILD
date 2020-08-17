@@ -7,7 +7,7 @@ cc_binary(
     deps = [
       "@system_include_x86_64_linux//:x11",
       "@glew//:glew",
-      "//lib:abstractComponent",
+      # "//lib:abstractComponent",
       "//lib:initShader",  
     ],
     includes	= [

@@ -1,13 +1,5 @@
 Styling language.
-It's similar to css, but more powerfull.
-
-Identifiers:
-`tag`
-`.class`
-`#id`
-
-Variables:
-`--<variableName>`= Value
+JSON version of css
 
 supported attributes and values:
 `display: <relative, absolute>`
@@ -28,7 +20,7 @@ NUMBER_OF_SIBLINGS
 POSITION:
 
 Logical operations:
-Must be in a `{{}}`
+Must be in a `{{expression}}`
 `+: add 2 integer values together`
 `-: subtract 2 values together`
 `*: times 2 values together`
