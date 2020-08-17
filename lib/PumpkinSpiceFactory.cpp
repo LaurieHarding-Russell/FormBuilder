@@ -1,18 +1,19 @@
-#include "PumpkinSpiceFactory.cpp"
+#include "PumpkinSpiceFactory.h"
 
-static PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
-
+PumpkinSpiceObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
+    return new PumpkinSpiceObject();
 }
 
-static PumpkinSpiceCompiler::compilePumpkinSpice(string pumkinFile, string style) {
-    rapidxml::file<> xmlFile(pumkinFile);
-    rapidxml::xml_document<> doc;
+PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string style) {
+    // rapidxml::file<> xmlFile(pumkinFile);
+    // rapidxml::xml_document<> doc;
 
-    print(std::cout, doc, 0);
+    // print(std::cout, doc, 0);
+    return new PumpkinSpiceObject();
 }
 
-static float* PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
-    Float verts* = new Float* {
+float* PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
+    float verts [] = {
         // triangle 1
         topLeft.x, bottomRight.y,
         topLeft.x, topLeft.y,

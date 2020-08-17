@@ -3,27 +3,15 @@
 
 #include<string>
 
-class AbstractFormComponent {
+class AbstractComponent {
 public:
-    AbstractFormComponent();
-    AbstractFormComponent(bool isTop);
-    AbstractFormComponent(std::string templateCode);
-    AbstractFormComponent(std::string templateCode, std::string style);
-
-    virtual void render();
-
-    ~AbstractFormComponent();
+    AbstractComponent();
+    ~AbstractComponent();
 
 protected:
-    virtual std::string pumpkinFileName;
-    virtual std::string styleFileName;
-    std::string knownElements;
-    rapidxml::xml_document<> parsedTemplate;
 
-    // bool top = false; // FIXME, think about top component.
 
 private:
-    void setup(std::string templateCode);
 };
 
 #endif

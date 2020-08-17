@@ -6,12 +6,14 @@ cc_library(
   ],
   hdrs = [
     "PumpkinSpiceFactory.h",
-    "AbstractComponent.h"
+    "AbstractComponent.h",
+    "Input.h",
+    "CommonTypes.h"
   ],
   deps = [
     "@rapidxml//:rapidxml",
     "@json//:json",
-    "@stb_truetype//:stb_truetype"
+    ":stb_truetype",
   ],
   visibility = ["//visibility:public"]
 )

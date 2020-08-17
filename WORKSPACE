@@ -1,26 +1,17 @@
 workspace(name="formLib")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
 # FIXME, maybe split these out into multiple files via starlark functions?
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# #########################################
-# X11 + OpenGL
-# #########################################
-
-load('@formLib//toolchain:linux_graphics_dep.bzl', 'loadGraphicsLinux_X86_64bit')
-loadGraphicsLinux_X86_64bit()
-
-new_local_repository(
-        name = "openGL_x86_64_linux",
-        path = "/usr/include/GL",
-        build_file_content = """
-cc_library(
-    name = "GL",
-    hdrs = glob(["**/*.h"]),
-    visibility = ["//visibility:public"],
-)
-"""
+#graphics
+http_archive(
+    name = "glut",
+    urls = ["https://github.com/LaurieHarding-Russell/FreeGLUT/archive/fb1ce95712dc472aff5279e0e8e19d684549204e.zip"],
+    strip_prefix = "FreeGLUT-fb1ce95712dc472aff5279e0e8e19d684549204e",
+    sha256 = "6e9034e1f5dd94524cd96c951e8c928a0ea91649d87f8aeb87e25045fa66ba4b",
 )
 
 http_archive(
@@ -41,17 +32,14 @@ hdrs = [
     "include/GL/eglew.h",
     "include/GL/glxew.h",
     "include/GL/wglew.h",
-
 ],
 defines = [
     "GLEW_STATIC",
 ],
 visibility = ["//visibility:public"],
 )
-
     """
 )
-
 # #########################################
 # Pumpkin Spice!
 # #########################################
@@ -73,15 +61,14 @@ cc_library(
 
 http_archive(
     name = "json",
-    strip_prefix = "json-ee4028b8e4cf6a85002a296a461534e2380f0d57",
-    sha256 = "a6882efbf49ba6d8a5bcea900c39e68b37630ecaf8128e61298a2efd0db99a6f",
+    strip_prefix = "json-456478b3c50d60100dbb1fb9bc931f370a2c1c28",
     urls = [
-        "https://github.com/nlohmann/json/archive/ee4028b8e4cf6a85002a296a461534e2380f0d57.tar.gz",
+        "https://github.com/nlohmann/json/archive/456478b3c50d60100dbb1fb9bc931f370a2c1c28.tar.gz",
     ],
     build_file_content = """
 cc_library(
     name = "json",
-    hdrs = glob(["//single_include/nlohmann/*.hpp"]),
+    hdrs = ["single_include/nlohmann/json.hpp"],
     visibility = ["//visibility:public"],
 )
 """
@@ -90,8 +77,14 @@ cc_library(
 http_file(
     name = "stb_truetype",
     downloaded_file_path = "stb_truetype.h",
-    urls = ["https://github.com/nothings/stb/blob/master/stb_truetype.h"],
-    
+    urls = ["https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h"],
+    sha256 = "5e28e92519846ef1a6118a454cdec146f6375655fb7e53b6102bfb224d16c17a"
+)
+
+http_archive(
+    name = "font",
+    url = "file:///home/laurie/Downloads/Bangers.zip",
+    strip_prefix = "Bangers"
 )
 
 # #########################################
