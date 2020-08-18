@@ -1,12 +1,8 @@
 ## Desing Goals:
 1. Seperation of concerns: Having logic, structure and style mixed up seems to decreases readability of code in forms. Its easiest to keep structure, style, and logic defined in there own domains.
-
 2. Modularity: If I decide to rewrite how structure code is generated it should be relatively easy to do without a rewrite of the styling or logic code.
-
 3. Ease of use: this library should be easy to use. The average developer should be able to use it and create a quick form in a day.
-
 4. Portable. This should work with openGL, vulkan, directX or your own custom hardware/software product. Glut sdl whatever it should work.
-
 5. Reasonably small. The library does forms and thats it.
 
 ## Decisions

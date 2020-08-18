@@ -15,10 +15,11 @@ cc_library(
     "@json//:json",
     ":stb_truetype",
   ],
+  data = [
+    "pumpkin.xsd",
+  ],
   visibility = ["//visibility:public"]
 )
-
-exports_files(["default.style", "pumpkin.xsd"])
 
 
 

@@ -28,10 +28,12 @@ Must be in a `{{expression}}`
 
 example:
 
-.btn {
+{
+    .btn {
 
-}
+    }
 
-.col-4 {
-    xpos: {{ PARENT_WIDTH / NUMBER_OF_SIBLINGS}}
+    .col-4 {
+        xpos: {{ PARENT_WIDTH / NUMBER_OF_SIBLINGS}}
+    }
 }

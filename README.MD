@@ -1,6 +1,16 @@
 ## How to get started:
 1. Install bazel.
-2. Run Bazel run test
+2. Run `bazel run //examples/HelloWorldExample:helloWorld`
+
+## How to inlcude it into your project
+Include the following in your WORKSPACE file and depend on `pumpkinSpice`.
+```
+http_archive(
+    name = "pumpkinSpice",
+    urls = ["https://github.com/LaurieHarding-Russell/FormBuilder/archive/e85f7c69c38db7a903ebcc7f9732f8646f782565.zip"],
+    strip_prefix = "FormBuilder-e85f7c69c38db7a903ebcc7f9732f8646f782565",
+)
+```
 
 ## What is this?
 This is a library for creating form components in C++. It is heavily influenced by html, css, and the Angular Framework.

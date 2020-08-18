@@ -1,7 +1,7 @@
 {
-    helloWorld: {
-        background: [0, 0, 1.0, 1.0],
-        colour: [0, 0, 0, 1.0]
-        font: "Bangers-Regular.ttf"
+    "helloWorld" : {
+        "background" : [0, 0, 1.0, 1.0],
+        "colour" : [0, 0, 0, 1.0],
+        "font" : "Bangers-Regular.ttf"
     }
 }

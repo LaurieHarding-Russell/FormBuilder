@@ -83,8 +83,16 @@ http_file(
 
 http_archive(
     name = "font",
-    url = "file:///home/laurie/Downloads/Bangers.zip",
-    strip_prefix = "Bangers"
+    url = "https://fonts.google.com/download?family=Bangers",
+    type = "zip",
+    sha256 = "76f27ee3b9f2a9f28236ef05d867c141b2574e1b23c2ae568e7c05a06e0634a3",
+    build_file_content = """
+filegroup(
+    name = "Bangers",
+    srcs = ["Bangers-Regular.ttf"],
+    visibility = ["//visibility:public"],
+)
+    """
 )
 
 # #########################################
