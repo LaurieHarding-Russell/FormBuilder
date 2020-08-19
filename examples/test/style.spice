@@ -2,6 +2,6 @@
     "helloWorld" : {
         "background" : [0, 0, 1.0, 1.0],
         "colour" : [0, 0, 0, 1.0],
-        "font" : "Bangers-Regular"
+        "font" : "Bangers-Regular.ttf"
     }
 }

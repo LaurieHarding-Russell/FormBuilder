@@ -1,8 +1,10 @@
 #version 130
 
-in vec4 colour;
-out vec4 fColor;
+in vec2 textureCoordinate;
+out vec4 fColour;
+
+uniform sampler2D image;
 
 void main(){
-	fColor= colour;
+	fColour=texture(image,textureCoordinate);
 }
