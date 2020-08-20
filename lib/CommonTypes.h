@@ -58,6 +58,19 @@ struct Colour {
         blue = b;
         alpha = a;
     }
+
+    unsigned char getRedChar() {
+        return 255 * this->red;
+    }
+    unsigned char getGreenChar() {
+        return 255 * this->green;
+    }
+    unsigned char getBlueChar() {
+        return 255 * this->blue;
+    }
+    unsigned char getAlphaChar() {
+        return 255 * this->alpha;
+    }
 };
 
 enum StyleDisplay {

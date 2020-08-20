@@ -22,6 +22,8 @@
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
 
+const int BYTES_PER_PIXEL = 4; // r,g,b,a
+
 class PumpkinSpiceCompiler {
 
     public:
@@ -31,7 +33,7 @@ class PumpkinSpiceCompiler {
 
     private:
     std::vector<Point> createSquareMesh(Point top, Point bottom);
-    unsigned char* createSquareTexture(int width, int height);
+    unsigned char* createSquareTexture(int width, int height, Colour colour);
     bool* createFontTexture();
     void getStyleState(json style, std::vector<std::string> classes, Style& styleState);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);

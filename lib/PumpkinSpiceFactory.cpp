@@ -68,15 +68,15 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     if (strcmp(node->name(),"") == 0) {
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         getStyleState(style, classes, styleState);
-        // if (styleState.font != "") {
+        if (styleState.font != "") {
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
             unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
             pumpkinSpiceObject->textures.push_back(fontTexture);
-        // } else {
+        } else {
         //     // think about this.
-        //     pumpkinSpiceObject->textures.push_back(createSquareTexture(500, 500));
-        // }
+            pumpkinSpiceObject->textures.push_back(createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f)));
+        }
         // hack
         Point topLeft(-1.0f, 1.0f);
         Point topRight(1.0f, -1.0f);
@@ -108,8 +108,19 @@ std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point b
     return verts;
 }
 
-unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height) {
-    unsigned char* bitmap = new unsigned char[width * height];
+unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, Colour colour) {
+    unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
+
+    for (int y = 0; y != height; y++) {
+        for (int x = 0; x != width; x++) {
+            int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
+            int pixelPosition = y * numberOfCharacterInWidth + numberOfCharacterInWidth;
+            bitmap[pixelPosition + 0] = colour.getRedChar();
+            bitmap[pixelPosition + 1] = colour.getGreenChar();
+            bitmap[pixelPosition + 2] = colour.getBlueChar();
+            bitmap[pixelPosition + 3] = colour.getAlphaChar();
+        }
+    }
     return bitmap;
 }
 
@@ -130,7 +141,7 @@ void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> cl
 }
 
 unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fontSize, std::string text, int width, int height) {
-    unsigned char* bitmap = new unsigned char[width * height * 4];
+    unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
 
     float scale = stbtt_ScaleForPixelHeight(&font, fontSize);
     int ascent = 0;
@@ -153,7 +164,6 @@ unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fon
         stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &x0, &y0, &x1, &y1);
 
         // unsigned char *pixel = get_pixel(x_Crsor + x0, y+baseline+y0);
-        int BYTES_PER_PIXEL = 4; // r,g,b,a
         int y = ascent + y1;
         int byteOffset = xCursor + (y * width);
 
@@ -168,14 +178,5 @@ unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fon
 
         xCursor += (advance * scale);
     }
-    // std::ofstream test("test.BMP");
-    // if (test) {
-    //     for(int count = 0; count < width * height * 4; count++){
-    //         test << bitmap[count];
-    //     }
-    // } else { 
-    //     std::cout<<"!?\n";
-    // }
-    // test.close();
     return bitmap;
 }
