@@ -26,7 +26,6 @@ void keyboard(unsigned char key, int x, int y) {
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
-    std::cout <<"main\n" << pumpkinSpiceObject->textures.size() << " " << pumpkinSpiceObject->meshes.size() << '\n';
     for (int i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         float* mesh = pumpkinSpiceObject->meshes.at(i);
         int size = sizeof(mesh)/sizeof(mesh[0]);
@@ -36,10 +35,10 @@ void display() {
         glGenTextures(1,&textureObj);
         glBindTexture(GL_TEXTURE_2D, textureObj);
         // FIXME, oh so hacky... so very very hacky :)  
-        // std::cout << pumpkinSpiceObject->textures.at(i)[0];
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 500, 500, 0, GL_RGBA, GL_UNSIGNED_BYTE, pumpkinSpiceObject->textures.at(i));
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        std::cout << pumpkinSpiceObject->textures.at(i)[0];
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 500, 500, 0, GL_RGBA, GL_UNSIGNED_BYTE, pumpkinSpiceObject->textures.at(i));
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
         GLuint assetBuffer;
@@ -58,7 +57,6 @@ void display() {
 
 int main(int argc, char** argv) {
     PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler();
-    std::cout << "ASDF/\n\n";
     pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
     pumpkinSpiceObject = pumpkinSpiceCompiler.compilePumpkinSpice("examples/HelloWorldExample/test.xml", "examples/HelloWorldExample/style.spice");
 

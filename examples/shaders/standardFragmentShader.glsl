@@ -6,5 +6,6 @@ out vec4 fColour;
 uniform sampler2D image;
 
 void main(){
-	fColour=texture(image,textureCoordinate);
+	fColour= vec4(1.0,1.0,1.0,1.0);
+//	texture(image,textureCoordinate);
 }

@@ -167,5 +167,14 @@ unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fon
 
         xCursor += (advance * scale);
     }
+    // std::ofstream test("test.BMP");
+    // if (test) {
+    //     for(int count = 0; count < width * height * 4; count++){
+    //         test << bitmap[count];
+    //     }
+    // } else { 
+    //     std::cout<<"!?\n";
+    // }
+    // test.close();
     return bitmap;
 }
