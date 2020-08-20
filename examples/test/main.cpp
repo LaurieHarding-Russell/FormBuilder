@@ -1,6 +1,7 @@
 #include <stdio.h>
 #define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
 #include "stb_truetype.h"
+#include <iostream>
 
 unsigned char ttf_buffer[1<<25];
 
@@ -12,6 +13,7 @@ int main(int argc, char **argv)
 
    fread(ttf_buffer, 1, 1<<25, fopen("external/font/Bangers-Regular.ttf", "rb"));
 
+    std::cout << ttf_buffer[0];
    stbtt_InitFont(&font, ttf_buffer, stbtt_GetFontOffsetForIndex(ttf_buffer,0));
    bitmap = stbtt_GetCodepointBitmap(&font, 0,stbtt_ScaleForPixelHeight(&font, s), c, &w, &h, 0,0);
 

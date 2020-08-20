@@ -1,6 +1,5 @@
 #include "PumpkinSpiceFactory.h"
 
-
 PumpkinSpiceObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
     return new PumpkinSpiceObject();
 }
@@ -34,16 +33,20 @@ PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkin
 }
 
 void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontName) {
-    std::cerr << "qwert/\n\n";
-    unsigned char ttf_buffer[1<<25];
-    stbtt_fontinfo font;
-    unsigned char *bitmap;
+    unsigned char* fontBuffer;
 
-    fread(ttf_buffer, 1, 1<<25, fopen("external/font/Bangers-Regular.ttf", "rb"));
-    std::cout << "test\n\n";
-    stbtt_InitFont(&font, ttf_buffer, stbtt_GetFontOffsetForIndex(ttf_buffer,0));
-    std::cout << "test\n\n";
-    fonts.insert(FontPair("Bangers-Regular", font)); // wtf!? fontName seems to be magically disapearing bofore this...
+    std::ifstream file(fontFileName, std::ios::binary);
+	if (!file.is_open()) {
+        exit(1);
+    }
+    file.seekg(0, std::ios::end);
+    unsigned long int fontBufferSize = (unsigned long int)file.tellg();
+    file.close();
+    fontBuffer = new unsigned char[fontBufferSize];
+    fread(fontBuffer, 1, 1<<25, fopen(fontFileName.c_str(), "rb"));
+    stbtt_fontinfo font;
+    stbtt_InitFont(&font, fontBuffer, 0);
+    fonts.insert(FontPair("Bangers-Regular", font)); // Like what wtf!? fontName seems to be magically disapearing bofore this...
 }
 
 std::string PumpkinSpiceCompiler::loadFile(std::string name) {
@@ -62,20 +65,14 @@ std::string PumpkinSpiceCompiler::loadFile(std::string name) {
 
 // FIXME, so many pararms!!
 void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
-    // std::cout << *node;
-    // std::cout << node->name();
     if (strcmp(node->name(),"") == 0) {
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         getStyleState(style, classes, styleState);
-            const stbtt_fontinfo font = fonts.at("Bangers-Regular");
+        // if (styleState.font != "") {
+            const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
             unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
-            // pumpkinSpiceObject->textures.push_back(fontTexture);
-        // if (styleState.font != "") {
-        //     const stbtt_fontinfo* font = fonts[styleState.font];
-        //     // FIXME, width height
-        //     unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
-        //     pumpkinSpiceObject->textures.push_back(fontTexture);
+            pumpkinSpiceObject->textures.push_back(fontTexture);
         // } else {
         //     // think about this.
         //     pumpkinSpiceObject->textures.push_back(createSquareTexture(500, 500));
@@ -132,43 +129,43 @@ void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> cl
 }
 
 unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fontSize, std::string text, int width, int height) {
-    unsigned char* bitmap = new unsigned char[width * height];
-    // float scale = stbtt_ScaleForPixelHeight(&font, 12.0f);
-    // int ascent = 0;
-    // int decent = 0;
-    // int lineGap = 0;
+    unsigned char* bitmap = new unsigned char[width * height * 4];
 
-    // // stbtt_GetFontVMetrics(font, &ascent, &decent, &lineGap);
-    // int totalHeight = ascent + decent + lineGap; // ascent hight of character above 'baseline' decent hieght of character below. lineGap = space between lines. 
+    float scale = stbtt_ScaleForPixelHeight(&font, fontSize);
+    int ascent = 0;
+    int decent = 0;
+    int lineGap = 0;
 
-    // int baseline = ascent*scale;
+    stbtt_GetFontVMetrics(&font, &ascent, &decent, &lineGap);
+    int totalHeight = ascent + decent + lineGap; // ascent hight of character above 'baseline' decent hieght of character below. lineGap = space between lines. 
 
-    // int xCursor = 0;
-    // for (int i = 0; i != text.size(); i++) {
-    //     int advance; // width of character including font padding. Yup font are pretentious. 
-    //     int leftSideBearing; // left margin essentially.
-    //     int x0, y0; // top left corner? 
-    //     int x1, y1; // bottom right corner?
+    int baseline = ascent*scale;
 
-    //     stbtt_GetCodepointHMetrics(&font, text[i], &advance, &leftSideBearing);
-    //     stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &x0, &y0, &x1, &y1);
+    int xCursor = 0;
+    for (int i = 0; i != text.size(); i++) {
+        int advance; // width of character including font padding. Yup font are pretentious. 
+        int leftSideBearing; // left margin essentially.
+        int x0, y0; // top left corner? 
+        int x1, y1; // bottom right corner?
 
-    //     // unsigned char *pixel = get_pixel(x_Crsor + x0, y+baseline+y0);
-    //     int BYTES_PER_PIXEL = 4; // r,g,b,a
-    //     int y = ascent + y1;
-    //     int byteOffset = xCursor + (y * width);
+        stbtt_GetCodepointHMetrics(&font, text[i], &advance, &leftSideBearing);
+        stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &x0, &y0, &x1, &y1);
 
-    //     // stbtt_GetCodepointBitmap(&font, 0,stbtt_ScaleForPixelHeight(&font, s), c, &w, &h, 0,0);
-    //     stbtt_MakeCodepointBitmap(&font,
-    //                                 bitmap + byteOffset,
-    //                                 BYTES_PER_PIXEL*(x1-x0),
-    //                                 BYTES_PER_PIXEL*(y1-y0),
-    //                                 width*BYTES_PER_PIXEL,
-    //                                 2*scale, 
-    //                                 scale,
-    //                                 text[i]);
+        // unsigned char *pixel = get_pixel(x_Crsor + x0, y+baseline+y0);
+        int BYTES_PER_PIXEL = 4; // r,g,b,a
+        int y = ascent + y1;
+        int byteOffset = xCursor + (y * width);
 
-    //     xCursor += (advance * scale);
-    // }
+        stbtt_MakeCodepointBitmap(&font,
+                                    bitmap + byteOffset,
+                                    BYTES_PER_PIXEL*(x1-x0),
+                                    BYTES_PER_PIXEL*(y1-y0),
+                                    width*BYTES_PER_PIXEL,
+                                    2*scale, 
+                                    scale,
+                                    text[i]);
+
+        xCursor += (advance * scale);
+    }
     return bitmap;
 }
