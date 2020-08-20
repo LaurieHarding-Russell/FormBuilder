@@ -123,7 +123,13 @@ class PumpkinSpiceObject {
         Point(1.0f,0.0f)						// bottom right
     };
 
-    std::vector<Texture> textures; 
+    std::vector<Texture*> textures; 
+
+    ~PumpkinSpiceObject() {
+        for (int i = 0; i !=0; i++) {
+            delete textures.at(i);
+        }
+    }
 };
 
 struct PumpkinSpiceInput {

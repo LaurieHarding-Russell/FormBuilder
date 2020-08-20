@@ -58,7 +58,7 @@ void display() {
         
         int size = mesh.size() * 2;
         int bufferVertSize = size * sizeof(float);
-        int uvMapSize = pumpkinSpiceObject->textureMap.size() * sizeof(float);
+        int uvMapSize = pumpkinSpiceObject->textureMap.size() * 2 * sizeof(float);
 
         GLuint vao;
         glGenVertexArrays(1, &vao);
@@ -79,15 +79,15 @@ void display() {
         glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
         glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
 
-
         // Textures
         GLuint textureObj;
         glGenTextures(1,&textureObj);
         glBindTexture(GL_TEXTURE_2D, textureObj);
         // FIXME, oh so hacky... so very very hacky :)  
-        Texture texture = pumpkinSpiceObject->textures.at(i);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        Texture* texture = pumpkinSpiceObject->textures.at(i);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

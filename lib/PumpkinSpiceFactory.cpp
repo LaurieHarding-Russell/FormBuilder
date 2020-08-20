@@ -72,17 +72,18 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
             unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
-            Texture newTexture;
-            newTexture.data = fontTexture;
-            newTexture.height = 500;
-            newTexture.width = 500;
+            Texture* newTexture;
+            newTexture->data = fontTexture;
+            newTexture->height = 500;
+            newTexture->width = 500;
             pumpkinSpiceObject->textures.push_back(newTexture);
         } else {
         //     // think about this.
-            Texture newTexture;
-            newTexture.data = createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f));
-            newTexture.height = 500;
-            newTexture.width = 500;
+            std::cout << "yup here we are.\n\n";
+            Texture* newTexture = new Texture();
+            newTexture->data = createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f));
+            newTexture->height = 500;
+            newTexture->width = 500;
             pumpkinSpiceObject->textures.push_back(newTexture);
         }
         // hack
@@ -122,7 +123,7 @@ unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, 
     for (int y = 0; y != height; y++) {
         for (int x = 0; x != width; x++) {
             int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
-            int pixelPosition = y * numberOfCharacterInWidth + numberOfCharacterInWidth;
+            int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
             bitmap[pixelPosition + 0] = colour.getRedChar();
             bitmap[pixelPosition + 1] = colour.getGreenChar();
             bitmap[pixelPosition + 2] = colour.getBlueChar();
