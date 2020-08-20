@@ -94,17 +94,18 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     }
 }
 
-float* PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
-    Point* verts = new Point[6];
-    // triangle 1
-    verts[0] = Point(topLeft.x, bottomRight.y);
-    verts[1] = Point(topLeft.x, topLeft.y);
-    verts[2] = Point(bottomRight.x, topLeft.y);
-    /// triangle 2
-    verts[3] = Point(topLeft.x, bottomRight.y);
-    verts[4] = Point(bottomRight.x, topLeft.y);
-    verts[5] = Point(bottomRight.x, bottomRight.y);
-    return Point::pointsToFloats(verts);
+std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
+    std::vector<Point> verts {
+        // triangle 1
+        Point(topLeft.x, bottomRight.y),
+        Point(topLeft.x, topLeft.y),
+        Point(bottomRight.x, topLeft.y),
+        /// triangle 2
+        Point(topLeft.x, bottomRight.y),
+        Point(bottomRight.x, topLeft.y),
+        Point(bottomRight.x, bottomRight.y)
+    };
+    return verts;
 }
 
 unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height) {

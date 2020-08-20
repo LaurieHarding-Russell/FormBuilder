@@ -30,7 +30,7 @@ class PumpkinSpiceCompiler {
     void addFont(std::string fontFileName, std::string fontName);
 
     private:
-    float* createSquareMesh(Point top, Point bottom);
+    std::vector<Point> createSquareMesh(Point top, Point bottom);
     unsigned char* createSquareTexture(int width, int height);
     bool* createFontTexture();
     void getStyleState(json style, std::vector<std::string> classes, Style& styleState);

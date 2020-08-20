@@ -13,7 +13,8 @@ using namespace rapidxml;
 #include "AbstractComponent.h"
 #include "Input.h"
 
-struct Point {
+class Point {
+    public:
     float x;
     float y;
     Point(){
@@ -26,22 +27,20 @@ struct Point {
         this->y = y;
     }
 
-    static float* pointsToFloats(Point* points) {
-        int arraySize = sizeof(points)/sizeof(points[0]);
-        float* verts = new float[arraySize *2];
-        for(int i = 0; i != arraySize; i++) {
-            verts[0 + i*2] = points[i].x;
-            verts[0 + i*2] = points[i].y;
-        }
-        return verts;
+    friend std::ostream& operator<<(std::ostream& os, const Point& point) {
+        os << "POINT{X: " << point.x << ", Y:" << point.y << "}";
+        return os;
     }
 };
 
-
-// think about this
-struct Bitmap {
-    char* data;
-};
+static float* pointsToFloats(std::vector<Point> points) {
+    float* verts = new float[points.size() *2];
+    for(int i = 0; i != points.size(); i++) {
+        verts[0 + i*2] = points[i].x;
+        verts[1 + i*2] = points[i].y;
+    }
+    return verts;
+}
 
 struct Colour {
     float red;
@@ -92,7 +91,7 @@ struct Style {
 
 class PumpkinSpiceObject {
     public:
-    std::vector<float*> meshes;
+    std::vector<std::vector<Point>> meshes;
     // float textureMap[]={
     //     // triangle 1
     //     0.0f,0.0f,						// bottom left
