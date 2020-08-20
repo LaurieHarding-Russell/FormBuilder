@@ -49,6 +49,23 @@ void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontNam
     fonts.insert(FontPair("Bangers-Regular", font)); // Like what wtf!? fontName seems to be magically disapearing bofore this...
 }
 
+PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
+    initializeResolution(500, 500);
+}
+
+PumpkinSpiceCompiler::PumpkinSpiceCompiler(int x, int y) {
+    initializeResolution(x, y);
+}
+
+PumpkinSpiceCompiler::~PumpkinSpiceCompiler() {
+
+}
+
+void PumpkinSpiceCompiler::initializeResolution(int x, int y) {
+    xResolution = x;
+    yResolution = y;
+}
+
 std::string PumpkinSpiceCompiler::loadFile(std::string name) {
     std::string data = "";
     std::ifstream file (name);
@@ -65,54 +82,52 @@ std::string PumpkinSpiceCompiler::loadFile(std::string name) {
 
 // FIXME, so many pararms!!
 void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
+    xml_attribute<char> * attribute = node->first_attribute("class");
+    if (attribute != 0) {
+        std::string elementClasses = attribute->value(); // FIXME, split on space add support for multiple
+        classes.push_back(elementClasses);
+    }
+
+    // styleState.zPositio styleState.zPosit n =- std::numeric_limits<float>::min();
+    styleState.zPosition = styleState.zPosition + 0.1;
+    // std::cout << styleState;
+    getStyleState(style, classes, styleState);
+    Texture* newTexture = new Texture();
+    newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
+    newTexture->height = styleState.xResolution; // FIXME, calculate resolution.
+    newTexture->width = styleState.yResolution;
+    
     if (strcmp(node->name(),"") == 0) {
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
-        getStyleState(style, classes, styleState);
-        if (styleState.font != "") {
+        if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
-            unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
-            Texture* newTexture;
-            newTexture->data = fontTexture;
-            newTexture->height = 500;
-            newTexture->width = 500;
-            pumpkinSpiceObject->textures.push_back(newTexture);
-        } else {
-        //     // think about this.
-            std::cout << "yup here we are.\n\n";
-            Texture* newTexture = new Texture();
-            newTexture->data = createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f));
-            newTexture->height = 500;
-            newTexture->width = 500;
-            pumpkinSpiceObject->textures.push_back(newTexture);
+            drawText(newTexture, font, 12, node->value());
         }
-        // hack
-        Point topLeft(-1.0f, 1.0f);
-        Point topRight(1.0f, -1.0f);
-        pumpkinSpiceObject->meshes.push_back(createSquareMesh(topLeft, topRight));
-        return;
     }
+    // hm
+    Point topLeft(-1.0f, 1.0f);
+    Point topRight(1.0f, -1.0f);
+    pumpkinSpiceObject->meshes.push_back(createSquareMesh(topLeft, topRight, styleState.zPosition));
+    pumpkinSpiceObject->textures.push_back(newTexture);
+
     for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
         if (child != 0) {
-            xml_attribute<char> * attribute = child->first_attribute("class");
-            if (attribute != 0) {
-                std::string elementClasses = attribute->value();
-            }
             iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
         }
     }
 }
 
-std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
+std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight, float zPosition) {
     std::vector<Point> verts {
         // triangle 1
-        Point(topLeft.x, bottomRight.y),
-        Point(topLeft.x, topLeft.y),
-        Point(bottomRight.x, topLeft.y),
+        Point(topLeft.x, bottomRight.y, zPosition),
+        Point(topLeft.x, topLeft.y, zPosition),
+        Point(bottomRight.x, topLeft.y, zPosition),
         /// triangle 2
-        Point(topLeft.x, bottomRight.y),
-        Point(bottomRight.x, topLeft.y),
-        Point(bottomRight.x, bottomRight.y)
+        Point(topLeft.x, bottomRight.y, zPosition),
+        Point(bottomRight.x, topLeft.y, zPosition),
+        Point(bottomRight.x, bottomRight.y, zPosition)
     };
     return verts;
 }
@@ -136,6 +151,10 @@ unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, 
 
 void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> classes, Style& styleState) {
 
+    if (style.contains("background")) {
+        styleState.backgroundColour.setColour(style.at("background"));    }
+
+    styleState.display = style.value("display", styleState.display);
     styleState.font = style.value("font", styleState.font);
 
     if(!classes.empty()) {
@@ -149,9 +168,11 @@ void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> cl
     }
 }
 
-unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fontSize, std::string text, int width, int height) {
-    unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
+void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text) {
+    unsigned char* bitmap = newTexture->data;
 
+    int height = newTexture->height;
+    int width = newTexture->width;
     float scale = stbtt_ScaleForPixelHeight(&font, fontSize);
     int ascent = 0;
     int decent = 0;
@@ -187,5 +208,4 @@ unsigned char* PumpkinSpiceCompiler::drawText(const stbtt_fontinfo font, int fon
 
         xCursor += (advance * scale);
     }
-    return bitmap;
 }

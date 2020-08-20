@@ -17,18 +17,29 @@ class Point {
     public:
     float x;
     float y;
+    float z;
+
     Point(){
         this->x = 0.0f;
         this->y = 0.0f;
+        this->z = 0.0f;
     }
 
     Point(float x, float y) {
         this->x = x;
         this->y = y;
+        this->z = 0.0f;
     }
 
+    Point(float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+    
+
     friend std::ostream& operator<<(std::ostream& os, const Point& point) {
-        os << "POINT{X: " << point.x << ", Y:" << point.y << "}";
+        os << "POINT{X: " << point.x << ", Y:" << point.y << ", Z:" << point.z <<"}";
         return os;
     }
 };
@@ -52,11 +63,25 @@ struct Colour {
         Colour(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
+    Colour(std::vector<float> values) {
+        Colour(values[0],
+                values[1], 
+                values[2], 
+                values[3]);
+    }
+
     Colour(float r, float g, float b, float a) {
         red = r;
         green = g;
         blue = b;
         alpha = a;
+    }
+
+    void setColour(std::vector<float> values) {
+        this->red = values[0];
+        this->green = values[1];
+        this->blue =  values[2];
+        this->alpha = values[3];
     }
 
     unsigned char getRedChar() {
@@ -70,6 +95,11 @@ struct Colour {
     }
     unsigned char getAlphaChar() {
         return 255 * this->alpha;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Colour& colour) {
+        os << "COLOUR{r: " << colour.red << ", g:" << colour.green << ", b:" << colour.blue << "alpha:" << colour.alpha << "}";
+        return os;
     }
 };
 
@@ -89,6 +119,9 @@ struct Style {
     std::string font;
     Colour backgroundColour;
     Colour fontColour;
+    float zPosition;
+    int xResolution;
+    int yResolution;
 
     Style() {
         this->display = BLOCK;
@@ -99,6 +132,24 @@ struct Style {
         this->font = "";
         this->backgroundColour = Colour(1.0f, 1.0f, 1.0f, 1.0f);
         this->fontColour = Colour(0.0f, 0.0f, 0.0f, 1.0f);
+        this->zPosition = 0.0f;
+        this->xResolution = 500;
+        this->yResolution = 500;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Style& style) {
+        os << "Style{ \n" 
+            << "display " << style.display << "\n"
+            << "topOffset " << style.topOffset << "\n"
+            << "leftOffset " << style.leftOffset << "\n"
+            << "bottomOffset " << style.bottomOffset << "\n"
+            << "rightOffset " << style.rightOffset << "\n"
+            << "font " << style.font << "\n"
+            << "backgroundColour " << style.backgroundColour << "\n"
+            << "fontColour " << style.fontColour << "\n"
+            << "zPosition" << style.zPosition << "\n"
+            << "}\n";
+        return os;
     }
 };
 

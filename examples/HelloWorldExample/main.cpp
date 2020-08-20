@@ -3,9 +3,6 @@
 #include "ShaderLoader.h"
 #include <GL/freeglut.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 PumpkinSpiceObject* pumpkinSpiceObject;
 
 float verts[]={
@@ -40,18 +37,19 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void display() {
-    int width;
-    int height;
-    int channels;
-    unsigned char *image = stbi_load("test.jpg",
-                                    &width,
-                                    &height,
-                                    &channels,
-                                    4);
 
+    glClearColor(0.0, 1.0, 0.0, 0.0);    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
+
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+
+    GLuint* buffer = new GLuint[pumpkinSpiceObject->meshes.size()];
     for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+        // std::cout << mesh[0] << "," << mesh[1] << "," << mesh[2] << "," << mesh[3] << "\n";
         float* meshFloat = pointsToFloats(mesh);
         float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
         
@@ -60,21 +58,8 @@ void display() {
         int bufferVertSize = size * sizeof(float);
         int uvMapSize = pumpkinSpiceObject->textureMap.size() * 2 * sizeof(float);
 
-        GLuint vao;
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
-        
-        // GLuint buffer;
-        // glGenBuffers(1, &buffer);
-        // glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        // glBufferData(GL_ARRAY_BUFFER, sizeof(verts)+sizeof(textC), NULL, GL_STATIC_DRAW);
-        // glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(verts),verts);
-        // glBufferSubData(GL_ARRAY_BUFFER,sizeof(verts),sizeof(textC),textC);
-
-
-        GLuint buffer;
-        glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glGenBuffers(1, &buffer[i]);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
         glBufferData(GL_ARRAY_BUFFER, bufferVertSize + uvMapSize, NULL, GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
         glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
@@ -87,16 +72,11 @@ void display() {
         Texture* texture = pumpkinSpiceObject->textures.at(i);
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         // think about buffering
-        // GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-        // glDrawBuffers(1, DrawBuffers);
-        // if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
-        //     exit(1);
-        // }
+        
         
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, textureObj);
@@ -114,11 +94,10 @@ void display() {
         glUniform1i(textureIn,0);
 
 
-        glClearColor(0.0, 1.0, 0.0, 0.0);    
-        glClear(GL_COLOR_BUFFER_BIT); // clear the screen
 
         glDrawArrays(GL_TRIANGLES, 0 , size);
     }
+
 
     glutSwapBuffers();
 
