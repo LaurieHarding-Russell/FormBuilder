@@ -23,6 +23,10 @@ cc_binary(
         "DEBUG",
         "GL_GLEXT_PROTOTYPES"
     ],
+    copts = [
+        "-Wno-unused",
+        "-Wno-unused-function",
+    ],
 )
 
 

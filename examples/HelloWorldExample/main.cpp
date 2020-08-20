@@ -18,7 +18,7 @@ float verts[]={
 	1.0f,1.0f,						// top right
 	1.0f,-1.0f						// bottom right
 };
-float textureMap[]={
+float textC[]={
     // triangle 1
     0.0f,0.0f,						// bottom left
     0.0f,1.0f,						// Top left
@@ -49,24 +49,35 @@ void display() {
                                     &channels,
                                     4);
 
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
-    for (int i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
+    for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
         float* meshFloat = pointsToFloats(mesh);
+        float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
+        
+        
         int size = mesh.size() * 2;
         int bufferVertSize = size * sizeof(float);
+        int uvMapSize = pumpkinSpiceObject->textureMap.size() * sizeof(float);
 
         GLuint vao;
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
         
+        // GLuint buffer;
+        // glGenBuffers(1, &buffer);
+        // glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        // glBufferData(GL_ARRAY_BUFFER, sizeof(verts)+sizeof(textC), NULL, GL_STATIC_DRAW);
+        // glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(verts),verts);
+        // glBufferSubData(GL_ARRAY_BUFFER,sizeof(verts),sizeof(textC),textC);
+
+
         GLuint buffer;
         glGenBuffers(1, &buffer);
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferData(GL_ARRAY_BUFFER, bufferVertSize + sizeof(textureMap), NULL, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, bufferVertSize + uvMapSize, NULL, GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
-        glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, sizeof(textureMap), textureMap);
+        glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
 
 
         // Textures
@@ -75,8 +86,9 @@ void display() {
         glBindTexture(GL_TEXTURE_2D, textureObj);
         // FIXME, oh so hacky... so very very hacky :)  
         Texture texture = pumpkinSpiceObject->textures.at(i);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         // think about buffering

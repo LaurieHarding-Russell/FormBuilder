@@ -29,7 +29,10 @@ cc_library(
     visibility = ["//visibility:public"],
     strip_include_prefix = "/external/stb_truetype/file",
     include_prefix = "",
-    linkstatic=True
+    copts = [
+        "-Wno-unused",
+        "-Wno-unused-function",
+    ],
 )
 
 cc_library(
@@ -38,5 +41,8 @@ cc_library(
     visibility = ["//visibility:public"],
     strip_include_prefix = "/external/stb_image/file",
     include_prefix = "",
-    linkstatic=True
+    copts = [
+        "-Wno-unused",
+        "-Wno-unused-function",
+    ],
 )
