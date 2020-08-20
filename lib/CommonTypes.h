@@ -102,22 +102,28 @@ struct Style {
     }
 };
 
+struct Texture {
+    unsigned char* data;
+    int width;
+    int height;
+};
+
 class PumpkinSpiceObject {
     public:
     std::vector<std::vector<Point>> meshes;
-    // float textureMap[]={
-    //     // triangle 1
-    //     0.0f,0.0f,						// bottom left
-    //     0.0f,1.0f,						// Top left
-    //     1.0f,1.0f,						// top right
-    //     // triangle 2
-    //     0.0f,0.0f,						// bottom left
-    //     1.0f,1.0f,						// top right
-    //     1.0f,0.0f						// bottom right
-    // };
+    // forground background textures?
+    std::vector<Point> textureMap {
+        // triangle 1
+        Point(0.0f,0.0f),						// bottom left
+        Point(0.0f,1.0f),						// Top left
+        Point(1.0f,1.0f),						// top right
+        // triangle 2
+        Point(0.0f,0.0f),						// bottom left
+        Point(1.0f,1.0f),						// top right
+        Point(1.0f,0.0f)						// bottom right
+    };
 
-    int vertexCount;
-    std::vector<unsigned char*> textures; 
+    std::vector<Texture> textures; 
 };
 
 struct PumpkinSpiceInput {

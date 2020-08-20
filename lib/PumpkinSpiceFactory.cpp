@@ -72,10 +72,18 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
             unsigned char* fontTexture = drawText(font, 12, node->value(), 500, 500);
-            pumpkinSpiceObject->textures.push_back(fontTexture);
+            Texture newTexture;
+            newTexture.data = fontTexture;
+            newTexture.height = 500;
+            newTexture.width = 500;
+            pumpkinSpiceObject->textures.push_back(newTexture);
         } else {
         //     // think about this.
-            pumpkinSpiceObject->textures.push_back(createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f)));
+            Texture newTexture;
+            newTexture.data = createSquareTexture(500, 500, Colour(1.0f, 0.0f, 1.0f, 1.0f));
+            newTexture.height = 500;
+            newTexture.width = 500;
+            pumpkinSpiceObject->textures.push_back(newTexture);
         }
         // hack
         Point topLeft(-1.0f, 1.0f);

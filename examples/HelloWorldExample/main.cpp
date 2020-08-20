@@ -3,6 +3,9 @@
 #include "ShaderLoader.h"
 #include <GL/freeglut.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 PumpkinSpiceObject* pumpkinSpiceObject;
 
 float verts[]={
@@ -37,6 +40,16 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void display() {
+    int width;
+    int height;
+    int channels;
+    unsigned char *image = stbi_load("test.jpg",
+                                    &width,
+                                    &height,
+                                    &channels,
+                                    4);
+
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
     for (int i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
@@ -61,10 +74,18 @@ void display() {
         glGenTextures(1,&textureObj);
         glBindTexture(GL_TEXTURE_2D, textureObj);
         // FIXME, oh so hacky... so very very hacky :)  
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 500, 500, 0, GL_RGBA, GL_UNSIGNED_BYTE, pumpkinSpiceObject->textures.at(i));
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        Texture texture = pumpkinSpiceObject->textures.at(i);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        // think about buffering
+        // GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+        // glDrawBuffers(1, DrawBuffers);
+        // if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+        //     exit(1);
+        // }
+        
         glActiveTexture(GL_TEXTURE0);
     	glBindTexture(GL_TEXTURE_2D, textureObj);
 
@@ -97,11 +118,15 @@ int main(int argc, char** argv) {
     pumpkinSpiceObject = pumpkinSpiceCompiler.compilePumpkinSpice("examples/HelloWorldExample/test.xml", "examples/HelloWorldExample/style.spice");
 
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+
+    glutInitContextVersion( 3, 0 );
+	glutInitContextProfile( GLUT_CORE_PROFILE );
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
 
     glutInitWindowSize (400, 400); 
     glutInitWindowPosition (100, 100);
     glutCreateWindow("Hello World");
+    glewExperimental = GL_TRUE;
     glewInit();
     
     basicShader = initShader( "examples/shaders/standardVertexShader.glsl", "examples/shaders/standardFragmentShader.glsl");
@@ -112,6 +137,9 @@ int main(int argc, char** argv) {
 	glVertexAttribPointer(vectorIn, 3, GL_FLOAT, GL_FALSE, 0, 0);
    
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
     glutDisplayFunc(display); 
     glutKeyboardFunc (keyboard);

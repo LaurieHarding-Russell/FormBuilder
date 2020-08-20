@@ -14,6 +14,7 @@ cc_library(
     "@rapidxml//:rapidxml",
     "@json//:json",
     ":stb_truetype",
+    ":stb_image"
   ],
   data = [
     "pumpkin.xsd",
@@ -27,6 +28,15 @@ cc_library(
     hdrs = ["@stb_truetype//file"],
     visibility = ["//visibility:public"],
     strip_include_prefix = "/external/stb_truetype/file",
+    include_prefix = "",
+    linkstatic=True
+)
+
+cc_library(
+    name = "stb_image",
+    hdrs = ["@stb_image//file"],
+    visibility = ["//visibility:public"],
+    strip_include_prefix = "/external/stb_image/file",
     include_prefix = "",
     linkstatic=True
 )

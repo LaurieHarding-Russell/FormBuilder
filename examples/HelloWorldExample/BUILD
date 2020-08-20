@@ -14,6 +14,7 @@ cc_binary(
         "test.xml",
         "@font//:Bangers",
         "//examples/shaders:shaders",
+        "test.jpg",
     ],
     linkopts = [
         "-lGL",
@@ -22,4 +23,14 @@ cc_binary(
         "DEBUG",
         "GL_GLEXT_PROTOTYPES"
     ],
+)
+
+
+cc_library(
+    name = "stb_image",
+    hdrs = ["@stb_image//file"],
+    visibility = ["//visibility:public"],
+    strip_include_prefix = "/external/stb_image/file",
+    include_prefix = "",
+    linkstatic=True
 )
