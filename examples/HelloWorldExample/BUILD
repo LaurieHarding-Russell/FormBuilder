@@ -14,7 +14,6 @@ cc_binary(
         "test.xml",
         "@font//:Bangers",
         "//examples/shaders:shaders",
-        "test.jpg",
     ],
     linkopts = [
         "-lGL",

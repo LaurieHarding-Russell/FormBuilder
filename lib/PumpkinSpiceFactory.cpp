@@ -26,7 +26,6 @@ PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkin
     }
     Style styleState = Style();
 
-    getStyleState(style, itterableClasses, styleState);
     iterateOverNode(pumpkinXML, pumpkinSpiceObject, style, std::vector<std::string>(), styleState);
 
     return pumpkinSpiceObject;
@@ -89,21 +88,23 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     }
 
     // styleState.zPositio styleState.zPosit n =- std::numeric_limits<float>::min();
-    styleState.zPosition = styleState.zPosition + 0.1;
-    // std::cout << styleState;
+    styleState.zPosition = styleState.zPosition - 0.1;
+    
     getStyleState(style, classes, styleState);
     Texture* newTexture = new Texture();
-    newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
     newTexture->height = styleState.xResolution; // FIXME, calculate resolution.
     newTexture->width = styleState.yResolution;
     
     if (strcmp(node->name(),"") == 0) {
+        newTexture->data = createSquareTexture(500, 500, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
             drawText(newTexture, font, 12, node->value());
         }
+    } else {
+        newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
     }
     // hm
     Point topLeft(-1.0f, 1.0f);
@@ -149,10 +150,14 @@ unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, 
 }
 
 
-void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> classes, Style& styleState) {
+void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> originalClasses, Style& styleState) {
 
+    std::vector<std::string> classes;
+    copy(originalClasses.begin(), originalClasses.end(), back_inserter(classes));
+        
     if (style.contains("background")) {
-        styleState.backgroundColour.setColour(style.at("background"));    }
+        styleState.backgroundColour.setColour(style.at("background"));    
+    }
 
     styleState.display = style.value("display", styleState.display);
     styleState.font = style.value("font", styleState.font);
@@ -163,8 +168,9 @@ void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> cl
         if(style.contains(className)) {
             json subStyle = style[className];
             getStyleState(subStyle, classes, styleState);
+        } else {
+            getStyleState(style, classes, styleState);
         }
-        getStyleState(style, classes, styleState);
     }
 }
 

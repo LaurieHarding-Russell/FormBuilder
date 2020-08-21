@@ -38,13 +38,15 @@ void keyboard(unsigned char key, int x, int y) {
 
 void display() {
 
-    glClearColor(0.0, 1.0, 0.0, 0.0);    
+    glClearColor(0.0, 0.0, 0.0, 0.0);    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
 
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    glUseProgram(basicShader);
+    
     int vertIn=glGetAttribLocation(basicShader,"vertexPosition");
     glEnableVertexAttribArray(vertIn);
 
@@ -58,10 +60,14 @@ void display() {
 
     glGenBuffers(pumpkinSpiceObject->meshes.size(), buffer);
     glGenTextures(pumpkinSpiceObject->meshes.size(), textureObj);
+    // Load it.
+    for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
 
+    }
+
+    // Draw it  
     for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
-        std::cout << mesh[0] << "," << mesh[1] << "," << mesh[2] << "," << mesh[3] << "\n";
         float* meshFloat = pointsToFloats(mesh);
         float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
         
@@ -71,23 +77,26 @@ void display() {
 
         glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
         glBufferData(GL_ARRAY_BUFFER, bufferVertSize + uvMapSize, NULL, GL_STATIC_DRAW);
+
         glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
+        glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
+        
         glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
+        glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)sizeof(verts));
 
         // Textures
-        glBindTexture(GL_TEXTURE_2D, textureObj[i]);
-        // FIXME, oh so hacky... so very very hacky :)  
         Texture* texture = pumpkinSpiceObject->textures.at(i);
-        
+
+        std::cout << "{" << (int)texture->data[0] << "," << (int)texture->data[1] << "," << (int)texture->data[2] << "," << (int)texture->data[3] << "}\n";
+
+        glBindTexture(GL_TEXTURE_2D, textureObj[i]);
+        glActiveTexture(GL_TEXTURE0);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glUniform1i(textureIn,0);
 
         // think about buffering
-
-        glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
-        glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)sizeof(verts));
-        glUniform1i(textureIn,0);
 
         glDrawArrays(GL_TRIANGLES, 0 , size);
     }
@@ -115,11 +124,6 @@ int main(int argc, char** argv) {
     glewInit();
     
     basicShader = initShader( "examples/shaders/standardVertexShader.glsl", "examples/shaders/standardFragmentShader.glsl");
-    glUseProgram(basicShader);
-
-    GLuint vectorIn = glGetAttribLocation(basicShader, "vectorIn");
-	glEnableVertexAttribArray(vectorIn);
-	glVertexAttribPointer(vectorIn, 3, GL_FLOAT, GL_FALSE, 0, 0);
    
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
