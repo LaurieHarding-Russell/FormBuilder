@@ -5,27 +5,6 @@
 
 PumpkinSpiceObject* pumpkinSpiceObject;
 
-float verts[]={
-	// triangle 1
-	-1.0f,-1.0f,						// bottom left
-	-1.0f,1.0f,						// Top left
-	1.0f,1.0f,						// top right
-	// triangle 2
-	-1.0f,-1.0f,						// bottom left
-	1.0f,1.0f,						// top right
-	1.0f,-1.0f						// bottom right
-};
-float textC[]={
-    // triangle 1
-    0.0f,0.0f,						// bottom left
-    0.0f,1.0f,						// Top left
-    1.0f,1.0f,						// top right
-    // triangle 2
-    0.0f,0.0f,						// bottom left
-    1.0f,1.0f,						// top right
-    1.0f,0.0f						// bottom right
-};
-
 GLuint basicShader;
 
 void keyboard(unsigned char key, int x, int y) {
@@ -41,19 +20,21 @@ void display() {
     glClearColor(0.0, 0.0, 0.0, 0.0);    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
 
+
+
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-
+    
     glUseProgram(basicShader);
     
-    int vertIn=glGetAttribLocation(basicShader,"vertexPosition");
+    int vertIn = glGetAttribLocation(basicShader,"vertexPosition");
     glEnableVertexAttribArray(vertIn);
 
-    int textCIn=glGetAttribLocation(basicShader,"vTextureCoordinate");
+    int textCIn = glGetAttribLocation(basicShader,"vTextureCoordinate");
     glEnableVertexAttribArray(textCIn);
 
-    int textureIn= glGetUniformLocation(basicShader,"image");
+    int textureIn = glGetUniformLocation(basicShader,"image");
 
     GLuint* buffer = new GLuint[pumpkinSpiceObject->meshes.size()];
     GLuint* textureObj = new GLuint[pumpkinSpiceObject->meshes.size()];
@@ -62,16 +43,12 @@ void display() {
     glGenTextures(pumpkinSpiceObject->meshes.size(), textureObj);
     // Load it.
     for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
-
-    }
-
-    // Draw it  
-    for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+        int size = mesh.size() * 3;
+
         float* meshFloat = pointsToFloats(mesh);
         float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
         
-        int size = mesh.size() * 3;
         int bufferVertSize = size * sizeof(float);
         int uvMapSize = pumpkinSpiceObject->textureMap.size() * 3 * sizeof(float);
 
@@ -82,20 +59,23 @@ void display() {
         glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
         
         glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
-        glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)sizeof(verts));
+        glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)bufferVertSize);
 
-        // Textures
         Texture* texture = pumpkinSpiceObject->textures.at(i);
 
-        std::cout << "{" << (int)texture->data[0] << "," << (int)texture->data[1] << "," << (int)texture->data[2] << "," << (int)texture->data[3] << "}\n";
-
         glBindTexture(GL_TEXTURE_2D, textureObj[i]);
-        glActiveTexture(GL_TEXTURE0);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glUniform1i(textureIn,0);
+    }
 
+    for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
+        glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+        std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+        int size = mesh.size() * 3;
+
+        // Textures
+        glBindTexture(GL_TEXTURE_2D, textureObj[i]);
         // think about buffering
 
         glDrawArrays(GL_TRIANGLES, 0 , size);
@@ -125,7 +105,7 @@ int main(int argc, char** argv) {
     
     basicShader = initShader( "examples/shaders/standardVertexShader.glsl", "examples/shaders/standardFragmentShader.glsl");
    
-	glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

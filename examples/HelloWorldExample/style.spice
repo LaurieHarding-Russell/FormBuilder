@@ -1,7 +1,7 @@
 {
-    "background" : [1, 0, 0.0, 0.25],
+    "background" : [1, 0, 0.0, 1.0],
     "helloWorld" : {
-        "background" : [0, 0, 1.0, 1.0],
+        "background" : [0, 0.0, 1.0, 0.3],
         "colour" : [0, 0, 0, 1.0],
         "font" : "Bangers-Regular"
     }
