@@ -101,7 +101,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
         if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
             // FIXME, width height
-            drawText(newTexture, font, 12, node->value());
+            drawText(newTexture, font, 100, node->value());
         }
     } else {
         newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
@@ -187,6 +187,7 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
     stbtt_GetFontVMetrics(&font, &ascent, &decent, &lineGap);
     int totalHeight = ascent + decent + lineGap; // ascent hight of character above 'baseline' decent hieght of character below. lineGap = space between lines. 
 
+    int fullLength; 
     int baseline = ascent*scale;
 
     int xCursor = 0;
@@ -199,9 +200,8 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
         stbtt_GetCodepointHMetrics(&font, text[i], &advance, &leftSideBearing);
         stbtt_GetCodepointBitmapBox(&font, text[i], scale, scale, &x0, &y0, &x1, &y1);
 
-        // unsigned char *pixel = get_pixel(x_Crsor + x0, y+baseline+y0);
         int y = ascent + y1;
-        int byteOffset = xCursor + (y * width);
+        int byteOffset = xCursor + x0 + (y * width);
 
         stbtt_MakeCodepointBitmap(&font,
                                     bitmap + byteOffset,
@@ -212,6 +212,6 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
                                     scale,
                                     text[i]);
 
-        xCursor += (advance * scale);
+        xCursor += (advance * scale) + x1;
     }
 }
