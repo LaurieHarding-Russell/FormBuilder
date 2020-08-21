@@ -45,10 +45,11 @@ class Point {
 };
 
 static float* pointsToFloats(std::vector<Point> points) {
-    float* verts = new float[points.size() *2];
+    float* verts = new float[points.size() * 3];
     for(uint i = 0; i != points.size(); i++) {
-        verts[0 + i*2] = points[i].x;
-        verts[1 + i*2] = points[i].y;
+        verts[0 + i*3] = points[i].x;
+        verts[1 + i*3] = points[i].y;
+        verts[2 + i*3] = points[i].z;
     }
     return verts;
 }

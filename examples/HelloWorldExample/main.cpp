@@ -45,29 +45,37 @@ void display() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    int vertIn=glGetAttribLocation(basicShader,"vertexPosition");
+    glEnableVertexAttribArray(vertIn);
+
+    int textCIn=glGetAttribLocation(basicShader,"vTextureCoordinate");
+    glEnableVertexAttribArray(textCIn);
+
+    int textureIn= glGetUniformLocation(basicShader,"image");
 
     GLuint* buffer = new GLuint[pumpkinSpiceObject->meshes.size()];
+    GLuint* textureObj = new GLuint[pumpkinSpiceObject->meshes.size()];
+
+    glGenBuffers(pumpkinSpiceObject->meshes.size(), buffer);
+    glGenTextures(pumpkinSpiceObject->meshes.size(), textureObj);
+
     for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
-        // std::cout << mesh[0] << "," << mesh[1] << "," << mesh[2] << "," << mesh[3] << "\n";
+        std::cout << mesh[0] << "," << mesh[1] << "," << mesh[2] << "," << mesh[3] << "\n";
         float* meshFloat = pointsToFloats(mesh);
         float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
         
-        
-        int size = mesh.size() * 2;
+        int size = mesh.size() * 3;
         int bufferVertSize = size * sizeof(float);
-        int uvMapSize = pumpkinSpiceObject->textureMap.size() * 2 * sizeof(float);
+        int uvMapSize = pumpkinSpiceObject->textureMap.size() * 3 * sizeof(float);
 
-        glGenBuffers(1, &buffer[i]);
         glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
         glBufferData(GL_ARRAY_BUFFER, bufferVertSize + uvMapSize, NULL, GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
         glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
 
         // Textures
-        GLuint textureObj;
-        glGenTextures(1,&textureObj);
-        glBindTexture(GL_TEXTURE_2D, textureObj);
+        glBindTexture(GL_TEXTURE_2D, textureObj[i]);
         // FIXME, oh so hacky... so very very hacky :)  
         Texture* texture = pumpkinSpiceObject->textures.at(i);
         
@@ -76,24 +84,10 @@ void display() {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         // think about buffering
-        
-        
-        glActiveTexture(GL_TEXTURE0);
-    	glBindTexture(GL_TEXTURE_2D, textureObj);
 
-
-        int vertIn=glGetAttribLocation(basicShader,"vertexPosition");
-        glEnableVertexAttribArray(vertIn);
-        glVertexAttribPointer(vertIn,2,GL_FLOAT,GL_FALSE,0,0);
-        
-        int textCIn=glGetAttribLocation(basicShader,"vTextureCoordinate");
-        glEnableVertexAttribArray(textCIn);
-        glVertexAttribPointer(textCIn,2,GL_FLOAT,GL_FALSE,0,(GLvoid*)sizeof(verts));
-        
-        int textureIn= glGetUniformLocation(basicShader,"image");
+        glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
+        glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)sizeof(verts));
         glUniform1i(textureIn,0);
-
-
 
         glDrawArrays(GL_TRIANGLES, 0 , size);
     }
