@@ -2,16 +2,27 @@
 #define AbstractComponent_h
 
 #include<string>
+#include "Input.h"
+#include "CommonTypes.h"
 
 class AbstractComponent {
 public:
-    AbstractComponent();
+    AbstractComponent(Point topLeft, Point bottomRight);
     ~AbstractComponent();
 
-protected:
+    void getClickEvent();
+    void getState();
 
+    std::string registerInputFunction() {
+
+    }
+
+protected:
+    
 
 private:
+    void updateMouseLocation();
+    void updateKeyboardEvents();
 };
 
 #endif

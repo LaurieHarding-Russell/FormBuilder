@@ -120,6 +120,7 @@ struct Style {
     float bottomOffset;
     float rightOffset;
     std::string font;
+    int fontSize;
     Colour backgroundColour;
     Colour fontColour;
     float zPosition;
@@ -133,6 +134,7 @@ struct Style {
         this->bottomOffset = 0;
         this->rightOffset = 0;
         this->font = "";
+        this->fontSize = 25;
         this->backgroundColour = Colour(1.0f, 1.0f, 1.0f, 1.0f);
         this->fontColour = Colour(0.0f, 0.0f, 0.0f, 1.0f);
         this->zPosition = 0.0f;
@@ -170,16 +172,22 @@ struct Texture {
                 int numberOfCharacterInWidth = texture->width * BYTES_PER_PIXEL;
                 int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
                 
-                int oppositelPosition = (texture->height - y -1) * texture->width * BYTES_PER_PIXEL  + x * BYTES_PER_PIXEL;
+                int oppositelPosition = (texture->height - y) * numberOfCharacterInWidth  + x * BYTES_PER_PIXEL;
 
                 newData[pixelPosition + 0] = texture->data[oppositelPosition + 0];
                 newData[pixelPosition + 1] = texture->data[oppositelPosition + 1];
                 newData[pixelPosition + 2] = texture->data[oppositelPosition + 2];
                 newData[pixelPosition + 3] = texture->data[oppositelPosition + 3];
+
             }
         }
         texture->data = newData;
     }
+};
+
+class PumpkinSpiceComponentObject {
+    AbstractComponent abstractComponent;
+    PumpkinSpiceObject pumpkinSpiceObject;
 };
 
 class PumpkinSpiceObject {
@@ -206,10 +214,17 @@ class PumpkinSpiceObject {
     }
 };
 
+struct PumpkinSpiceComponentInput {
+    std::string pumkinFile;
+    std::string styleFileName;
+    AbstractComponent component;
+};
+
 struct PumpkinSpiceInput {
     MouseInput mouseInput;
     KeyboardInput keyboardInput;
-    std::vector<AbstractComponent> components;
+    std::vector<PumpkinSpiceComponentInput> components;
+    PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
 };
 
 

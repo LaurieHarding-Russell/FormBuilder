@@ -98,9 +98,9 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
         newTexture->data = createSquareTexture(500, 500, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         if (styleState.font != "") {        //     // think about this.
-            const stbtt_fontinfo font = fonts["Bangers-Regular"]; //styleState.font];
+            const stbtt_fontinfo font = fonts[styleState.font]; //styleState.font];
             // FIXME, width height
-            drawText(newTexture, font, 100, node->value());
+            drawText(newTexture, font, styleState.fontSize, node->value());
         }
     } else {
         newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
@@ -160,6 +160,7 @@ void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> or
 
     styleState.display = style.value("display", styleState.display);
     styleState.font = style.value("font", styleState.font);
+    styleState.fontSize = style.value("fontSize", styleState.fontSize);
 
     if(!classes.empty()) {
         std::string className = classes[0];

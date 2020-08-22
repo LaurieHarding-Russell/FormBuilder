@@ -3,6 +3,7 @@
     "helloWorld" : {
         "background" : [0, 0.0, 1.0, 0.3],
         "colour" : [0, 0, 0, 1.0],
-        "font" : "Bangers-Regular"
+        "font" : "Bangers-Regular",
+        "fontSize" : 100
     }
 }
