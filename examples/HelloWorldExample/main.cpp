@@ -87,9 +87,16 @@ void display() {
 }
 
 int main(int argc, char** argv) {
-    PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler();
+    PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(); 
+
+    PumpkinSpiceInput basicComponentInput;
+    basicComponentInput.basePumkinFileName = "examples/HelloWorldExample/test.xml";
+    basicComponentInput.baseSpiceFileName = "examples/HelloWorldExample/style.spice";
+
     pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
-    pumpkinSpiceObject = pumpkinSpiceCompiler.compilePumpkinSpice("examples/HelloWorldExample/test.xml", "examples/HelloWorldExample/style.spice");
+    pumpkinSpiceObject = pumpkinSpiceCompiler.compileComponents(basicComponentInput)->pumpkinSpiceObjects[0];
+
+    // pumpkinSpiceObject = pumpkinSpiceCompiler.compilePumpkinSpice("examples/HelloWorldExample/test.xml", "examples/HelloWorldExample/style.spice");
 
     glutInit(&argc, argv);
 

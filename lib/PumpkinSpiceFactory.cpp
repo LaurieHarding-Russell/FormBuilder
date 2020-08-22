@@ -7,7 +7,15 @@ PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
 }
 
 PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
+    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
+    PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
+    // PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.components[i].pumkinFileName, pumpkinSpiceInput.components[i].spiceFileName);            
     
+    // for (int i = 0; i != pumpkinSpiceInput.components.size(); i++) {
+    // }
+
+    pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
+    return pumpkinSpiceComponentObject;
 }
 
 void PumpkinSpiceCompiler::updatePumpkinSpice() {

@@ -37,13 +37,13 @@ class PumpkinSpiceCompiler {
     PumpkinSpiceCompiler(int x, int y);
     ~PumpkinSpiceCompiler();
     PumpkinSpiceComponentObject* compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
-    PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
     void updatePumpkinSpice();
     void addFont(std::string fontFileName, std::string fontName);
     void setInput(UserInput* input);
 
 
     private:
+    PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
     void initializeResolution(int x, int y);
     std::vector<Point> createSquareMesh(Point top, Point bottom, float z);
     unsigned char* createSquareTexture(int width, int height, Colour colour);

@@ -3,10 +3,13 @@
 
 #include "AbstractComponent.h"
 #include "PumpkinSpiceObject.h"
+#include <vector>
 
+// FIXME, rename
 class PumpkinSpiceComponentObject {
-    AbstractComponent abstractComponent;
-    PumpkinSpiceObject pumpkinSpiceObject;
+    public: 
+    std::vector<AbstractComponent*> abstractComponents;
+    std::vector<PumpkinSpiceObject*> pumpkinSpiceObjects;
 };
 
 #endif

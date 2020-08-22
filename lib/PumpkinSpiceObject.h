@@ -29,15 +29,17 @@ class PumpkinSpiceObject {
 };
 
 struct PumpkinSpiceComponentInput {
-    std::string pumkinFile;
-    std::string styleFileName;
-    std::function<AbstractComponent(AbstractComponentInput)> component;
+    std::string pumkinFileName;
+    std::string spiceFileName;
+    std::function<AbstractComponent*(AbstractComponentInput)> componentFactory;
 };
 
 struct PumpkinSpiceInput {
     UserInput userInput;
     std::vector<PumpkinSpiceComponentInput> components;
     PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
+    std::string basePumkinFileName;
+    std::string baseSpiceFileName;
 };
 
 #endif
