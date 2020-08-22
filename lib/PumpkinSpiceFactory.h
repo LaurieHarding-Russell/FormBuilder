@@ -18,6 +18,8 @@
 
 
 #include "CommonTypes.h"
+#include "PumpkinSpiceComponentObject.h"
+#include "PumpkinSpiceObject.h"
 #include <limits>
 
 typedef std::map<std::string, stbtt_fontinfo> FontMap;

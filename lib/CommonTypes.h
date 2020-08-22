@@ -10,7 +10,6 @@
 using json = nlohmann::json;
 using namespace rapidxml;
 
-#include "AbstractComponent.h"
 #include "Input.h"
 
 const int BYTES_PER_PIXEL = 4; // r,g,b,a
@@ -185,47 +184,6 @@ struct Texture {
     }
 };
 
-class PumpkinSpiceComponentObject {
-    AbstractComponent abstractComponent;
-    PumpkinSpiceObject pumpkinSpiceObject;
-};
-
-class PumpkinSpiceObject {
-    public:
-    std::vector<std::vector<Point>> meshes;
-    // forground background textures?
-    std::vector<Point> textureMap {
-        // triangle 1
-        Point(0.0f,0.0f),						// bottom left
-        Point(0.0f,1.0f),						// Top left
-        Point(1.0f,1.0f),						// top right
-        // triangle 2
-        Point(0.0f,0.0f),						// bottom left
-        Point(1.0f,1.0f),						// top right
-        Point(1.0f,0.0f)						// bottom right
-    };
-
-    std::vector<Texture*> textures; 
-
-    ~PumpkinSpiceObject() {
-        for (int i = 0; i !=0; i++) {
-            delete textures.at(i);
-        }
-    }
-};
-
-struct PumpkinSpiceComponentInput {
-    std::string pumkinFile;
-    std::string styleFileName;
-    AbstractComponent component;
-};
-
-struct PumpkinSpiceInput {
-    MouseInput mouseInput;
-    KeyboardInput keyboardInput;
-    std::vector<PumpkinSpiceComponentInput> components;
-    PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
-};
 
 
 #endif

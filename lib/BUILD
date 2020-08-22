@@ -5,6 +5,8 @@ cc_library(
     "AbstractComponent.cpp",
   ],
   hdrs = [
+    "PumpkinSpiceComponentObject.h",
+    "PumpkinSpiceObject.h",
     "PumpkinSpiceFactory.h",
     "AbstractComponent.h",
     "Input.h",
