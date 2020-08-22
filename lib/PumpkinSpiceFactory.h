@@ -21,6 +21,8 @@
 #include "PumpkinSpiceComponentObject.h"
 #include "PumpkinSpiceObject.h"
 #include <limits>
+#include "AbstractComponent.h"
+#include "InputComponent.h"
 
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
@@ -48,6 +50,8 @@ class PumpkinSpiceCompiler {
 
     int xResolution;
     int yResolution;
+
+    std::map<std:string, AbstractComponent> components;
 };
 
 #endif

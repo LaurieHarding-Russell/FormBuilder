@@ -1,7 +1,15 @@
 #include "PumpkinSpiceFactory.h"
 
-PumpkinSpiceObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
-    return new PumpkinSpiceObject();
+PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
+    components.insert("input", InputComponent.class)
+}
+
+PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
+    
+}
+
+void PumpkinSpiceCompiler::updatePumpkinSpice() {
+
 }
 
 PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
