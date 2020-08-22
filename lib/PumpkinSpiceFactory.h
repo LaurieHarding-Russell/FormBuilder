@@ -23,7 +23,6 @@
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
 
-const int BYTES_PER_PIXEL = 4; // r,g,b,a
 
 class PumpkinSpiceCompiler {
 

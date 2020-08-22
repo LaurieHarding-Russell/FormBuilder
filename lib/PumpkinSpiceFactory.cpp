@@ -45,7 +45,7 @@ void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontNam
     fread(fontBuffer, 1, 1<<25, fopen(fontFileName.c_str(), "rb"));
     stbtt_fontinfo font;
     stbtt_InitFont(&font, fontBuffer, 0);
-    fonts.insert(FontPair("Bangers-Regular", font)); // Like what wtf!? fontName seems to be magically disapearing bofore this...
+    fonts.insert(FontPair(fontName, font));
 }
 
 PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
@@ -87,8 +87,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
         classes.push_back(elementClasses);
     }
 
-    // styleState.zPositio styleState.zPosit n =- std::numeric_limits<float>::min();
-    styleState.zPosition = styleState.zPosition - 0.1;
+    styleState.zPosition = std::numeric_limits<float>::min();
     
     getStyleState(style, classes, styleState);
     Texture* newTexture = new Texture();
@@ -214,4 +213,6 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
 
         xCursor += (advance * scale) + x1;
     }
+
+    Texture::flipYAxis(newTexture);
 }

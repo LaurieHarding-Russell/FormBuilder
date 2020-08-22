@@ -13,6 +13,8 @@ using namespace rapidxml;
 #include "AbstractComponent.h"
 #include "Input.h"
 
+const int BYTES_PER_PIXEL = 4; // r,g,b,a
+
 class Point {
     public:
     float x;
@@ -158,6 +160,26 @@ struct Texture {
     unsigned char* data;
     int width;
     int height;
+
+    static void flipYAxis(Texture* texture) {
+        unsigned char* newData = new unsigned char[texture->width * texture->height];
+        int last = texture->height * texture->width * BYTES_PER_PIXEL;
+
+        for (int y = 0; y != texture->height; y++) {
+            for (int x = 0; x != texture->width; x++) {
+                int numberOfCharacterInWidth = texture->width * BYTES_PER_PIXEL;
+                int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
+                
+                int oppositelPosition = (texture->height - y -1) * texture->width * BYTES_PER_PIXEL  + x * BYTES_PER_PIXEL;
+
+                newData[pixelPosition + 0] = texture->data[oppositelPosition + 0];
+                newData[pixelPosition + 1] = texture->data[oppositelPosition + 1];
+                newData[pixelPosition + 2] = texture->data[oppositelPosition + 2];
+                newData[pixelPosition + 3] = texture->data[oppositelPosition + 3];
+            }
+        }
+        texture->data = newData;
+    }
 };
 
 class PumpkinSpiceObject {
