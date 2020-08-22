@@ -23,9 +23,11 @@
 #include <limits>
 #include "AbstractComponent.h"
 #include "InputComponent.h"
+#include "ButtonComponent.h"
 
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
+typedef std::pair<std::string, std::function<AbstractComponent*(AbstractComponentInput)>> ComponentPair;
 
 
 class PumpkinSpiceCompiler {
@@ -34,9 +36,12 @@ class PumpkinSpiceCompiler {
     PumpkinSpiceCompiler();
     PumpkinSpiceCompiler(int x, int y);
     ~PumpkinSpiceCompiler();
-    PumpkinSpiceObject* compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
+    PumpkinSpiceComponentObject* compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
+    void updatePumpkinSpice();
     void addFont(std::string fontFileName, std::string fontName);
+    void setInput(UserInput* input);
+
 
     private:
     void initializeResolution(int x, int y);
@@ -51,7 +56,8 @@ class PumpkinSpiceCompiler {
     int xResolution;
     int yResolution;
 
-    std::map<std:string, AbstractComponent> components;
+    std::map<std::string, std::function<AbstractComponent*(AbstractComponentInput)>> componentFactorys;
+    UserInput* input;
 };
 
 #endif

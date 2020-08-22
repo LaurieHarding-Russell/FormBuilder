@@ -4,18 +4,32 @@
 #include<string>
 #include "Input.h"
 #include "CommonTypes.h"
+#include <functional>
+
+enum ComponentState {
+    ACTIVE,
+    INACTIVE,
+    HOVER
+};
+
+class AbstractComponent; // forward declaration so the input can be in the same file.
+
+struct AbstractComponentInput {
+    Point topLeft;
+    Point bottomRight;
+    UserInput* input;
+    std::vector<AbstractComponent> subComponent;
+};
 
 class AbstractComponent {
 public:
-    AbstractComponent(Point topLeft, Point bottomRight);
+    AbstractComponent(AbstractComponentInput input);
     ~AbstractComponent();
 
-    void getClickEvent();
-    void getState();
+    virtual void update();
+    ComponentState getState();
 
-    std::string registerInputFunction() {
-
-    }
+    void registerInputFunction(UserInput* input);
 
 protected:
     
@@ -23,6 +37,8 @@ protected:
 private:
     void updateMouseLocation();
     void updateKeyboardEvents();
+    UserInput* input;
+    ComponentState state;
 };
 
 #endif

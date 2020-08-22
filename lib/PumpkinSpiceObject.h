@@ -1,6 +1,7 @@
 #ifndef PUMPKIN_SPICE_OBJECT_H
 #define PUMPKIN_SPICE_OBJECT_H
 
+#include<functional>
 #include "AbstractComponent.h"
 
 class PumpkinSpiceObject {
@@ -30,12 +31,11 @@ class PumpkinSpiceObject {
 struct PumpkinSpiceComponentInput {
     std::string pumkinFile;
     std::string styleFileName;
-    AbstractComponent component;
+    std::function<AbstractComponent(AbstractComponentInput)> component;
 };
 
 struct PumpkinSpiceInput {
-    MouseInput mouseInput;
-    KeyboardInput keyboardInput;
+    UserInput userInput;
     std::vector<PumpkinSpiceComponentInput> components;
     PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
 };

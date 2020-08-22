@@ -3,6 +3,7 @@ cc_binary(
     srcs = [
         "main.cpp",
         "ShaderLoader.h",
+        "basicComponent/BasicComponent.h"
     ],
     deps = [
         "//lib:PumpkinSpice",
@@ -10,8 +11,10 @@ cc_binary(
         "@glut//freeglut/freeglut:glut",
     ],
     data = [
-        "style.spice",
-        "test.xml",
+        "base.spice",
+        "base.pumpkin",
+        "basicComponent/basic.spice",
+        "basicComponent/basic.pumpkin",
         "@font//:Bangers",
         "//examples/shaders:shaders",
     ],

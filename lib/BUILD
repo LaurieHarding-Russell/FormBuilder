@@ -10,6 +10,8 @@ cc_library(
     "PumpkinSpiceFactory.h",
     "AbstractComponent.h",
     "Input.h",
+    "ButtonComponent.h",
+    "InputComponent.h",
     "CommonTypes.h"
   ],
   deps = [

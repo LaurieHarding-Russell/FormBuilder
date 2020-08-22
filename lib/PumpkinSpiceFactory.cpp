@@ -1,7 +1,9 @@
 #include "PumpkinSpiceFactory.h"
 
 PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
-    components.insert("input", InputComponent.class)
+    initializeResolution(500, 500);
+    componentFactorys.insert(ComponentPair("input", InputComponent::InputComponentFactory));
+    componentFactorys.insert(ComponentPair("button", ButtonComponent::ButtonComponentFactory));
 }
 
 PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
@@ -56,8 +58,8 @@ void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontNam
     fonts.insert(FontPair(fontName, font));
 }
 
-PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
-    initializeResolution(500, 500);
+void PumpkinSpiceCompiler::setInput(UserInput* input) {
+    this->input = input;
 }
 
 PumpkinSpiceCompiler::PumpkinSpiceCompiler(int x, int y) {

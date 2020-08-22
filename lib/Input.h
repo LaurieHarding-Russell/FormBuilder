@@ -3,14 +3,13 @@
 
 #include <functional>
 
-class MouseInput {
+class UserInput {
     public:
     std::function<double()> getMouseX;
     std::function<double()> getMouseY;
-};
+    std::function<bool()> getMouseButtonDown;
+    std::function<bool()> getMouseButtonUp;
 
-class KeyboardInput {
-    public:
     std::function<int()> keyPressDown;
     std::function<int()> keyPressUp;
 };
