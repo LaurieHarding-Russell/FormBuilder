@@ -2,17 +2,41 @@
 
 PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
     initializeResolution(500, 500);
-    componentFactorys.insert(ComponentPair("input", InputComponent::InputComponentFactory));
-    componentFactorys.insert(ComponentPair("button", ButtonComponent::ButtonComponentFactory));
+    PumpkinSpiceCompiledComponent* inputCompiledObject = new PumpkinSpiceCompiledComponent();
+    inputCompiledObject->componentFactory = InputComponent::InputComponentFactory;
+    inputCompiledObject->componentSpice = json{};
+
+    PumpkinSpiceCompiledComponent* buttonCompiledObject = new PumpkinSpiceCompiledComponent();
+    buttonCompiledObject->componentSpice = json{};
+    buttonCompiledObject->componentFactory = ButtonComponent::ButtonComponentFactory;
+
+    components.insert(ComponentPair("input", inputCompiledObject));
+    components.insert(ComponentPair("button", buttonCompiledObject));
 }
 
 PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
     PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
+
+    for (int i = 0; i != pumpkinSpiceInput.components.size(); i++) {
+        // FIXME, nameing, wording fix everywhere :) sorry future self.
+        rapidxml::file<char> xmlFile = file<char>(pumpkinSpiceInput.components.at(i).pumkinFileName.c_str());
+        rapidxml::xml_document<> pumpkin;
+        pumpkin.parse<0>(xmlFile.data());
+
+        std::string spiceString = loadFile(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
+
+        json spice = json::parse(spiceString);
+
+        PumpkinSpiceCompiledComponent* compiledObject = new PumpkinSpiceCompiledComponent();
+        compiledObject->componentFactory = pumpkinSpiceInput.components.at(i).componentFactory;
+        compiledObject->componentPumpkin = pumpkin.first_node();
+        compiledObject->componentSpice = spice;
+        components.insert(ComponentPair(pumpkinSpiceInput.components.at(i).name, compiledObject));
+    }
+    
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
     // PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.components[i].pumkinFileName, pumpkinSpiceInput.components[i].spiceFileName);            
-    
-    // for (int i = 0; i != pumpkinSpiceInput.components.size(); i++) {
-    // }
+
 
     pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
     return pumpkinSpiceComponentObject;
@@ -111,7 +135,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     Texture* newTexture = new Texture();
     newTexture->height = styleState.xResolution; // FIXME, calculate resolution.
     newTexture->width = styleState.yResolution;
-    
+
     if (strcmp(node->name(),"") == 0) {
         newTexture->data = createSquareTexture(500, 500, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
@@ -131,7 +155,15 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
 
     for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
         if (child != 0) {
-            iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
+            std::string tag = child->name();
+            if (components.find(tag) != components.end()) {
+                // FIXME, shadow peircing.
+                Style subStyleState = Style();
+                iterateOverNode(components.at(tag)->componentPumpkin, pumpkinSpiceObject, components.at(tag)->componentSpice, std::vector<std::string>(), subStyleState);
+                style[tag] = components.at(tag)->componentSpice;
+            } else{
+                iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
+            }
         }
     }
 }

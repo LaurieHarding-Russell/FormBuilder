@@ -1,8 +1,0 @@
-<div>
-    <div>Name</div>
-    <input value="name"><input>
-
-    <div>Birthday</div>
-    <input value="birthday"><input>
-    <button> Submit <button>
-</div>

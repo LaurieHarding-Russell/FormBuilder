@@ -13,8 +13,9 @@ cc_binary(
     data = [
         "base.spice",
         "base.pumpkin",
-        "basicComponent/basic.spice",
-        "basicComponent/basic.pumpkin",
+        # FIXME, having this in a folder isn't working. 
+        "basic.spice",
+        "basic.pumpkin",
         "@font//:Bangers",
         "//examples/shaders:shaders",
     ],

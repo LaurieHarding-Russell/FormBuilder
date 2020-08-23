@@ -102,8 +102,9 @@ int main(int argc, char** argv) {
 
    PumpkinSpiceComponentInput basicComponentInput;
    basicComponentInput.componentFactory = BasicComponent::BasicComponentFactory; 
-   basicComponentInput.pumkinFileName = "examples/basicComponent/base.pumpkin";
-   basicComponentInput.pumkinFileName = "examples/basicComponent/base.spice";
+   basicComponentInput.pumkinFileName = "examples/basicComponent/basic.pumpkin";
+   basicComponentInput.spiceFileName = "examples/basicComponent/basic.spice";
+   basicComponentInput.name = "baseComponent"; 
    pumpkinSpiceInput.components.push_back(basicComponentInput);
    pumpkinSpiceInput.basePumkinFileName = "examples/basicComponent/base.pumpkin";
    pumpkinSpiceInput.baseSpiceFileName = "examples/basicComponent/base.spice";

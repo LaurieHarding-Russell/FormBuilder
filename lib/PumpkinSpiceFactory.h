@@ -25,10 +25,15 @@
 #include "InputComponent.h"
 #include "ButtonComponent.h"
 
+struct PumpkinSpiceCompiledComponent {
+    xml_node<>* componentPumpkin;
+    json componentSpice;
+    std::function<AbstractComponent*(AbstractComponentInput)> componentFactory;
+};
+
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
-typedef std::pair<std::string, std::function<AbstractComponent*(AbstractComponentInput)>> ComponentPair;
-
+typedef std::pair<std::string, PumpkinSpiceCompiledComponent*> ComponentPair;
 
 class PumpkinSpiceCompiler {
 
@@ -56,7 +61,7 @@ class PumpkinSpiceCompiler {
     int xResolution;
     int yResolution;
 
-    std::map<std::string, std::function<AbstractComponent*(AbstractComponentInput)>> componentFactorys;
+    std::map<std::string, PumpkinSpiceCompiledComponent*> components;
     UserInput* input;
 };
 
