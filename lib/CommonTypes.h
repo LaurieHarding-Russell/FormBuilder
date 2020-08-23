@@ -118,7 +118,7 @@ struct Texture {
                 int numberOfCharacterInWidth = texture->width * BYTES_PER_PIXEL;
                 int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
                 
-                int oppositelPosition = (texture->height - y) * numberOfCharacterInWidth  + x * BYTES_PER_PIXEL;
+                int oppositelPosition = (texture->height - y-1) * numberOfCharacterInWidth  + x * BYTES_PER_PIXEL;
 
                 newData[pixelPosition + 0] = texture->data[oppositelPosition + 0];
                 newData[pixelPosition + 1] = texture->data[oppositelPosition + 1];
