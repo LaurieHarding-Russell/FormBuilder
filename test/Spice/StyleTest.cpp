@@ -16,8 +16,6 @@ TEST(Spice, get_Base) {
 
     json leftOver = getStyleState(spice, classes, styleState);
 
-    // std::cout << "json: " << json << '\n';
-
     EXPECT_EQ(styleState.backgroundColour.red, 0.1f);
 }
 
@@ -42,9 +40,24 @@ TEST(Spice, secondLevel) {
     Style styleState = Style();
 
     json leftOver = getStyleState(spice, classes, styleState);
+    
 
     EXPECT_EQ(styleState.backgroundColour.red, 0.3f);
 }
+
+TEST(Spice, measurment) {
+    std::string spiceString = loadFile("test/Spice/measurmentStyle.spice");
+    json spice = json::parse(spiceString);
+    std::vector<std::string> classes;
+    classes.push_back("class1");
+
+    Style styleState = Style();
+
+    json leftOver = getStyleState(spice, classes, styleState);
+
+    EXPECT_EQ(styleState.height , 1);
+}
+
 
 
 std::string loadFile(std::string name) {

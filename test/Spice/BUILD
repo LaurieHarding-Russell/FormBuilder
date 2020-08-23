@@ -8,6 +8,7 @@ cc_test(
         "//lib:PumpkinSpice",
     ],
     data = [
-        "style.spice"
+        "style.spice",
+        "measurmentStyle.spice"
     ]
 )
