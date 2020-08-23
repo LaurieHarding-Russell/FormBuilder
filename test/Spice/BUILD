@@ -9,5 +9,5 @@ cc_test(
     ],
     data = [
         "style.spice"
-    ],
+    ]
 )

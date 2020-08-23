@@ -2,11 +2,13 @@
 #include "lib/SpiceFactory.h"
 #include <fstream>
 
+#include <iostream>
+
 std::string loadFile(std::string name);
 
 
-TEST(Spice, test1) {
-    std::string spiceString = loadFile("style.spice");
+TEST(Spice, get_Base) {
+    std::string spiceString = loadFile("test/Spice/style.spice");
     json spice = json::parse(spiceString);
     std::vector<std::string> classes;
     Style styleState = Style();
@@ -14,7 +16,34 @@ TEST(Spice, test1) {
 
     json leftOver = getStyleState(spice, classes, styleState);
 
-    // EXPECT_EQ(styleState.backgroundColour.red, 0.3);
+    // std::cout << "json: " << json << '\n';
+
+    EXPECT_EQ(styleState.backgroundColour.red, 0.1f);
+}
+
+TEST(Spice, firstLevel) {
+    std::string spiceString = loadFile("test/Spice/style.spice");
+    json spice = json::parse(spiceString);
+    std::vector<std::string> classes;
+    classes.push_back("class1");
+    Style styleState = Style();
+
+    json leftOver = getStyleState(spice, classes, styleState);
+
+    EXPECT_EQ(styleState.backgroundColour.red, 0.2f);
+}
+
+TEST(Spice, secondLevel) {
+    std::string spiceString = loadFile("test/Spice/style.spice");
+    json spice = json::parse(spiceString);
+    std::vector<std::string> classes;
+    classes.push_back("class1");
+    classes.push_back("class2");
+    Style styleState = Style();
+
+    json leftOver = getStyleState(spice, classes, styleState);
+
+    EXPECT_EQ(styleState.backgroundColour.red, 0.3f);
 }
 
 
