@@ -1,6 +1,10 @@
-<div>Name</div>
-<!-- <input value="name"><input> -->
+<?xml version="1.0" encoding="UTF-8"?>
 
-<div>Birthday</div>
-<!-- <input value="birthday"><input> -->
-<!-- <button> Submit <button> -->
+<div>
+    <div>Name</div>
+    <input value="name"></input>
+
+    <div>Birthday</div>
+    <input value="birthday"></input>
+    <button> Submit </button>
+</div>

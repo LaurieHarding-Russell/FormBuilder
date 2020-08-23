@@ -32,7 +32,7 @@ struct PumpkinSpiceComponentInput {
     std::string name;
     std::string pumkinFileName;
     std::string spiceFileName;
-    std::function<AbstractComponent*(AbstractComponentInput)> componentFactory;
+    std::function<AbstractComponent*(AbstractComponentInput*)> componentFactory;
 };
 
 struct PumpkinSpiceInput {

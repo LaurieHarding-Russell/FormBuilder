@@ -23,7 +23,7 @@ struct AbstractComponentInput {
 
 class AbstractComponent {
 public:
-    AbstractComponent(AbstractComponentInput input);
+    AbstractComponent(AbstractComponentInput* input);
     ~AbstractComponent();
 
     virtual void update();

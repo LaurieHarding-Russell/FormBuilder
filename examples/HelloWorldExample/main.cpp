@@ -96,7 +96,6 @@ int main(int argc, char** argv) {
     pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
     pumpkinSpiceObject = pumpkinSpiceCompiler.compileComponents(basicComponentInput)->pumpkinSpiceObjects[0];
 
-    // pumpkinSpiceObject = pumpkinSpiceCompiler.compilePumpkinSpice("examples/HelloWorldExample/test.xml", "examples/HelloWorldExample/style.spice");
 
     glutInit(&argc, argv);
 

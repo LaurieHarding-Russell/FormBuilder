@@ -6,11 +6,11 @@
 class BasicComponent: AbstractComponent {
 
     public:
-    BasicComponent(AbstractComponent abstractComponentInput): AbstractComponent(abstractComponentInput) {
+    BasicComponent(AbstractComponentInput* abstractComponentInput): AbstractComponent(abstractComponentInput) {
 
     } 
 
-    static AbstractComponent* BasicComponentFactory(AbstractComponentInput abstractComponentInput) {
+    static AbstractComponent* BasicComponentFactory(AbstractComponentInput* abstractComponentInput) {
         return new BasicComponent(abstractComponentInput);
     };
 };

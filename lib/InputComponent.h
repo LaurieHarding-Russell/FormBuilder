@@ -5,12 +5,12 @@
 
 class InputComponent: AbstractComponent {
     public:
-    InputComponent(AbstractComponentInput abstractComponentInput) : AbstractComponent(abstractComponentInput) {
+    InputComponent(AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
 
     }
 
 
-    static AbstractComponent* InputComponentFactory(AbstractComponentInput abstractComponentInput) {
+    static AbstractComponent* InputComponentFactory(AbstractComponentInput* abstractComponentInput) {
         return new InputComponent(abstractComponentInput);
     };
 };

@@ -105,58 +105,6 @@ struct Colour {
     }
 };
 
-enum StyleDisplay {
-    INLINE,
-    BLOCK,
-    GRID,
-    FLEX
-};
-
-struct Style {
-    StyleDisplay display;
-    float topOffset;
-    float leftOffset;
-    float bottomOffset;
-    float rightOffset;
-    std::string font;
-    int fontSize;
-    Colour backgroundColour;
-    Colour fontColour;
-    float zPosition;
-    int xResolution;
-    int yResolution;
-
-    Style() {
-        this->display = BLOCK;
-        this->topOffset = 0;
-        this->leftOffset = 0;
-        this->bottomOffset = 0;
-        this->rightOffset = 0;
-        this->font = "";
-        this->fontSize = 25;
-        this->backgroundColour = Colour(1.0f, 1.0f, 1.0f, 1.0f);
-        this->fontColour = Colour(0.0f, 0.0f, 0.0f, 1.0f);
-        this->zPosition = 0.0f;
-        this->xResolution = 500;
-        this->yResolution = 500;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Style& style) {
-        os << "Style{ \n" 
-            << "display " << style.display << "\n"
-            << "topOffset " << style.topOffset << "\n"
-            << "leftOffset " << style.leftOffset << "\n"
-            << "bottomOffset " << style.bottomOffset << "\n"
-            << "rightOffset " << style.rightOffset << "\n"
-            << "font " << style.font << "\n"
-            << "backgroundColour " << style.backgroundColour << "\n"
-            << "fontColour " << style.fontColour << "\n"
-            << "zPosition" << style.zPosition << "\n"
-            << "}\n";
-        return os;
-    }
-};
-
 struct Texture {
     unsigned char* data;
     int width;

@@ -24,11 +24,12 @@
 #include "AbstractComponent.h"
 #include "InputComponent.h"
 #include "ButtonComponent.h"
+#include "SpiceFactory.h"
 
 struct PumpkinSpiceCompiledComponent {
     xml_node<>* componentPumpkin;
     json componentSpice;
-    std::function<AbstractComponent*(AbstractComponentInput)> componentFactory;
+    std::function<AbstractComponent*(AbstractComponentInput*)> componentFactory;
 };
 
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
@@ -50,18 +51,21 @@ class PumpkinSpiceCompiler {
     private:
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
     void initializeResolution(int x, int y);
-    std::vector<Point> createSquareMesh(Point top, Point bottom, float z);
+    std::vector<Point> createSquareMesh(Point top, Point bottom);
     unsigned char* createSquareTexture(int width, int height, Colour colour);
-    void getStyleState(json style, std::vector<std::string> classes, Style& styleState);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     std::string loadFile(std::string name);
     void drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text);
-    FontMap fonts;
+    void calculatePosition();
 
+    FontMap fonts;
     int xResolution;
     int yResolution;
 
     std::map<std::string, PumpkinSpiceCompiledComponent*> components;
+
+    // FIXME, names how to make it obvious that components is the info to make components and generatedComponents are the generated from the components
+    std::vector<AbstractComponent*> generatedComponents;
     UserInput* input;
 };
 

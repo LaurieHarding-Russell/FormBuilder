@@ -95,7 +95,7 @@ void display() {
 }
 
 int main(int argc, char** argv) {
-   PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler();
+   PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(400, 400);
    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
 
    PumpkinSpiceInput pumpkinSpiceInput;

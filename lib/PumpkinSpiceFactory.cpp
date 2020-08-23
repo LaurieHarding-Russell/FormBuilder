@@ -1,14 +1,21 @@
 #include "PumpkinSpiceFactory.h"
 
 PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
-    initializeResolution(500, 500);
+    PumpkinSpiceCompiler(500,500);
+}
+
+PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
+    initializeResolution(xResolution, yResolution);
+
     PumpkinSpiceCompiledComponent* inputCompiledObject = new PumpkinSpiceCompiledComponent();
     inputCompiledObject->componentFactory = InputComponent::InputComponentFactory;
     inputCompiledObject->componentSpice = json{};
+    inputCompiledObject->componentPumpkin = 0;
 
     PumpkinSpiceCompiledComponent* buttonCompiledObject = new PumpkinSpiceCompiledComponent();
     buttonCompiledObject->componentSpice = json{};
     buttonCompiledObject->componentFactory = ButtonComponent::ButtonComponentFactory;
+    inputCompiledObject->componentPumpkin = 0;
 
     components.insert(ComponentPair("input", inputCompiledObject));
     components.insert(ComponentPair("button", buttonCompiledObject));
@@ -21,8 +28,8 @@ PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpic
         // FIXME, nameing, wording fix everywhere :) sorry future self.
         rapidxml::file<char> xmlFile = file<char>(pumpkinSpiceInput.components.at(i).pumkinFileName.c_str());
         rapidxml::xml_document<> pumpkin;
+        
         pumpkin.parse<0>(xmlFile.data());
-
         std::string spiceString = loadFile(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
 
         json spice = json::parse(spiceString);
@@ -33,11 +40,10 @@ PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpic
         compiledObject->componentSpice = spice;
         components.insert(ComponentPair(pumpkinSpiceInput.components.at(i).name, compiledObject));
     }
-    
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
-    // PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.components[i].pumkinFileName, pumpkinSpiceInput.components[i].spiceFileName);            
 
-
+    // FIXME, should we even send this back? Or should interaction be threw the factory? might need to rename the factory.
+    pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
     pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
     return pumpkinSpiceComponentObject;
 }
@@ -94,10 +100,6 @@ void PumpkinSpiceCompiler::setInput(UserInput* input) {
     this->input = input;
 }
 
-PumpkinSpiceCompiler::PumpkinSpiceCompiler(int x, int y) {
-    initializeResolution(x, y);
-}
-
 PumpkinSpiceCompiler::~PumpkinSpiceCompiler() {
 
 }
@@ -123,21 +125,24 @@ std::string PumpkinSpiceCompiler::loadFile(std::string name) {
 
 // FIXME, so many pararms!!
 void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
+    // FIXME
+    if (node == 0) {
+        return;
+    }
     xml_attribute<char> * attribute = node->first_attribute("class");
     if (attribute != 0) {
         std::string elementClasses = attribute->value(); // FIXME, split on space add support for multiple
         classes.push_back(elementClasses);
     }
 
-    styleState.zPosition = std::numeric_limits<float>::min();
-    
-    getStyleState(style, classes, styleState);
+    styleState.formCursor.z = std::numeric_limits<float>::min();
+    style = getStyleState(style, classes, styleState);
     Texture* newTexture = new Texture();
-    newTexture->height = styleState.xResolution; // FIXME, calculate resolution.
+    newTexture->height = styleState.xResolution;
     newTexture->width = styleState.yResolution;
 
     if (strcmp(node->name(),"") == 0) {
-        newTexture->data = createSquareTexture(500, 500, Colour(0,0,0,0));
+        newTexture->data = createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts[styleState.font]; //styleState.font];
@@ -145,21 +150,37 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
             drawText(newTexture, font, styleState.fontSize, node->value());
         }
     } else {
-        newTexture->data = createSquareTexture(500, 500, styleState.backgroundColour);
+        newTexture->data = createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
-    // hm
-    Point topLeft(-1.0f, 1.0f);
-    Point topRight(1.0f, -1.0f);
-    pumpkinSpiceObject->meshes.push_back(createSquareMesh(topLeft, topRight, styleState.zPosition));
+
+    // fixme, check if fits?
+    // overflow style?
+    // TODO: padding/margin
+    // function of style?
+    Point myTopLeft(styleState.formCursor.x, styleState.formCursor.y, styleState.formCursor.z);
+    Point myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
+
+    pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
     pumpkinSpiceObject->textures.push_back(newTexture);
 
     for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
         if (child != 0) {
             std::string tag = child->name();
             if (components.find(tag) != components.end()) {
+                PumpkinSpiceCompiledComponent* component = components.at(tag);
                 // FIXME, shadow peircing.
                 Style subStyleState = Style();
-                iterateOverNode(components.at(tag)->componentPumpkin, pumpkinSpiceObject, components.at(tag)->componentSpice, std::vector<std::string>(), subStyleState);
+                subStyleState.width = styleState.width;
+                subStyleState.height = styleState.height;
+                subStyleState.formCursor = styleState.formCursor;
+                iterateOverNode(component->componentPumpkin, pumpkinSpiceObject, component->componentSpice, std::vector<std::string>(), subStyleState);
+
+                AbstractComponentInput* abstractComponentInput = new AbstractComponentInput();
+                abstractComponentInput->topLeft = myTopLeft;
+                abstractComponentInput->bottomRight = myBottomRight;
+                generatedComponents.push_back(component->componentFactory(abstractComponentInput));
+                delete abstractComponentInput;
+                
                 style[tag] = components.at(tag)->componentSpice;
             } else{
                 iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
@@ -168,16 +189,16 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     }
 }
 
-std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight, float zPosition) {
+std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
     std::vector<Point> verts {
         // triangle 1
-        Point(topLeft.x, bottomRight.y, zPosition),
-        Point(topLeft.x, topLeft.y, zPosition),
-        Point(bottomRight.x, topLeft.y, zPosition),
+        Point(topLeft.x, bottomRight.y, topLeft.z),
+        Point(topLeft.x, topLeft.y, topLeft.z),
+        Point(bottomRight.x, topLeft.y, topLeft.z),
         /// triangle 2
-        Point(topLeft.x, bottomRight.y, zPosition),
-        Point(bottomRight.x, topLeft.y, zPosition),
-        Point(bottomRight.x, bottomRight.y, zPosition)
+        Point(topLeft.x, bottomRight.y, topLeft.z),
+        Point(bottomRight.x, topLeft.y, topLeft.z),
+        Point(bottomRight.x, bottomRight.y, topLeft.z)
     };
     return verts;
 }
@@ -198,30 +219,17 @@ unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, 
     return bitmap;
 }
 
+// FIXME, need to really think about this. Probably want to check out how browser did it.
+Point calculatePosition(Style styleState) {
+    switch(styleState.display) {
 
-void PumpkinSpiceCompiler::getStyleState(json style, std::vector<std::string> originalClasses, Style& styleState) {
-
-    std::vector<std::string> classes;
-    copy(originalClasses.begin(), originalClasses.end(), back_inserter(classes));
-        
-    if (style.contains("background")) {
-        styleState.backgroundColour.setColour(style.at("background"));    
     }
-
-    styleState.display = style.value("display", styleState.display);
-    styleState.font = style.value("font", styleState.font);
-    styleState.fontSize = style.value("fontSize", styleState.fontSize);
-
-    if(!classes.empty()) {
-        std::string className = classes[0];
-        classes.erase(classes.begin());
-        if(style.contains(className)) {
-            json subStyle = style[className];
-            getStyleState(subStyle, classes, styleState);
-        } else {
-            getStyleState(style, classes, styleState);
-        }
-    }
+    
+    // switch(styleState.display) {
+    //     case StyleDisplay.INLINE:
+    //     break;
+    //     case StyleDisplay.:
+    // }
 }
 
 void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text) {
@@ -265,5 +273,6 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
         xCursor += (advance * scale) + x1;
     }
 
+    // FIXME, weird hacky stuff is happening because of this.
     Texture::flipYAxis(newTexture);
 }

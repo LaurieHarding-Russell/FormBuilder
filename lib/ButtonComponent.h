@@ -5,11 +5,11 @@
 
 class ButtonComponent: AbstractComponent {
     public:
-    ButtonComponent(AbstractComponentInput abstractComponentInput) : AbstractComponent(abstractComponentInput) {
+    ButtonComponent(AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
 
     }
 
-    static AbstractComponent* ButtonComponentFactory(AbstractComponentInput abstractComponentInput) {
+    static AbstractComponent* ButtonComponentFactory(AbstractComponentInput* abstractComponentInput) {
         return new ButtonComponent(abstractComponentInput);
     };
 };
