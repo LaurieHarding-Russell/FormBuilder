@@ -129,6 +129,26 @@ struct Texture {
         }
         texture->data = newData;
     }
+
+    static Texture* createSquareTexture(int width, int height, Colour colour) {
+        Texture* texture = new Texture();
+        unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
+
+        for (int y = 0; y != height; y++) {
+            for (int x = 0; x != width; x++) {
+                int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
+                int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
+                bitmap[pixelPosition + 0] = colour.getRedChar();
+                bitmap[pixelPosition + 1] = colour.getGreenChar();
+                bitmap[pixelPosition + 2] = colour.getBlueChar();
+                bitmap[pixelPosition + 3] = colour.getAlphaChar();
+            }
+        }
+        texture->data = bitmap;
+        texture->width = width;
+        texture->height = height;
+        return texture;
+    }
 };
 
 

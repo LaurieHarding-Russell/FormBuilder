@@ -137,12 +137,10 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
 
     styleState.formCursor.z = std::numeric_limits<float>::min();
     style = getStyleState(style, classes, styleState);
-    Texture* newTexture = new Texture();
-    newTexture->height = styleState.xResolution;
-    newTexture->width = styleState.yResolution;
+    Texture* newTexture;
 
     if (strcmp(node->name(),"") == 0) {
-        newTexture->data = createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
+        newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts[styleState.font]; //styleState.font];
@@ -150,7 +148,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
             drawText(newTexture, font, styleState.fontSize, node->value());
         }
     } else {
-        newTexture->data = createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
+        newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
 
     // fixme, check if fits?
@@ -201,22 +199,6 @@ std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point b
         Point(bottomRight.x, bottomRight.y, topLeft.z)
     };
     return verts;
-}
-
-unsigned char* PumpkinSpiceCompiler::createSquareTexture(int width, int height, Colour colour) {
-    unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
-
-    for (int y = 0; y != height; y++) {
-        for (int x = 0; x != width; x++) {
-            int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
-            int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
-            bitmap[pixelPosition + 0] = colour.getRedChar();
-            bitmap[pixelPosition + 1] = colour.getGreenChar();
-            bitmap[pixelPosition + 2] = colour.getBlueChar();
-            bitmap[pixelPosition + 3] = colour.getAlphaChar();
-        }
-    }
-    return bitmap;
 }
 
 // FIXME, need to really think about this. Probably want to check out how browser did it.
