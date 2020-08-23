@@ -112,7 +112,6 @@ struct Texture {
 
     static void flipYAxis(Texture* texture) {
         unsigned char* newData = new unsigned char[texture->width * texture->height];
-        int last = texture->height * texture->width * BYTES_PER_PIXEL;
 
         for (int y = 0; y != texture->height; y++) {
             for (int x = 0; x != texture->width; x++) {
