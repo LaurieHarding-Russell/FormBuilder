@@ -36,7 +36,7 @@ static json getStyleState(json style, std::vector<std::string> originalClasses, 
     if (style.contains("width")) {
         std::string widthStyle = style["width"];
         float newWidth = calculateMeasurment(styleState.width, widthStyle);
-        styleState.xResolution = (newWidth / styleState.width) * styleState.xResolution;
+        // styleState.xResolution = (newWidth / styleState.width) * styleState.xResolution;
         styleState.width = newWidth;
     }
     if (style.contains("height")) {

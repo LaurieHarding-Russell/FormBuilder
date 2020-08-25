@@ -135,7 +135,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
         classes.push_back(elementClasses);
     }
 
-    styleState.formCursor.z = std::numeric_limits<float>::min();
+    styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
     style = getStyleState(style, classes, styleState);
     Texture* newTexture;
 
@@ -158,7 +158,11 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     Point myTopLeft(styleState.formCursor.x, styleState.formCursor.y, styleState.formCursor.z);
     Point myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
 
+    const Point TOP_LEFT(-1.0f, 1.0f, 0.0f);
+    const Point BOTTOM_RIGHT(1.0f, -1.0f, 0.0f);
+
     pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
+    // pumpkinSpiceObject->meshes.push_back(createSquareMesh(TOP_LEFT, BOTTOM_RIGHT));
     pumpkinSpiceObject->textures.push_back(newTexture);
 
     for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
@@ -172,7 +176,6 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
                 subStyleState.height = styleState.height;
                 subStyleState.formCursor = styleState.formCursor;
                 iterateOverNode(component->componentPumpkin, pumpkinSpiceObject, component->componentSpice, std::vector<std::string>(), subStyleState);
-
                 AbstractComponentInput* abstractComponentInput = new AbstractComponentInput();
                 abstractComponentInput->topLeft = myTopLeft;
                 abstractComponentInput->bottomRight = myBottomRight;
@@ -254,7 +257,6 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
 
         xCursor += (advance * scale) + x1;
     }
-
     // FIXME, weird hacky stuff is happening because of this.
     Texture::flipYAxis(newTexture);
 }

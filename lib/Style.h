@@ -31,8 +31,8 @@ struct Style {
     Colour backgroundColour;
     Colour fontColour;
     float zPosition;
-    int width;
-    int height;
+    float width;
+    float height;
     int xResolution;
     int yResolution;
     Point formCursor;

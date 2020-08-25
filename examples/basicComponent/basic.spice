@@ -1,5 +1,6 @@
 {
     "font" : "Bangers-Regular",
     "fontSize" : 100,
-    "background": [1.0, 0, 0, 1.0]
+    "background": [1.0, 0, 0, 0.5],
+    "width": "50%"
 }

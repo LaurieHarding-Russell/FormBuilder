@@ -52,7 +52,6 @@ class PumpkinSpiceCompiler {
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
     void initializeResolution(int x, int y);
     std::vector<Point> createSquareMesh(Point top, Point bottom);
-    unsigned char* createSquareTexture(int width, int height, Colour colour);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     std::string loadFile(std::string name);
     void drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text);

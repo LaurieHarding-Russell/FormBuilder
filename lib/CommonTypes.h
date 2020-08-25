@@ -12,6 +12,8 @@ using namespace rapidxml;
 
 #include "Input.h"
 
+#include<iostream>
+
 const int BYTES_PER_PIXEL = 4; // r,g,b,a
 
 class Point {
@@ -111,8 +113,8 @@ struct Texture {
     int height;
 
     static void flipYAxis(Texture* texture) {
-        unsigned char* newData = new unsigned char[texture->width * texture->height];
 
+        unsigned char* newData = new unsigned char[texture->width * texture->height * BYTES_PER_PIXEL];
         for (int y = 0; y != texture->height; y++) {
             for (int x = 0; x != texture->width; x++) {
                 int numberOfCharacterInWidth = texture->width * BYTES_PER_PIXEL;
@@ -133,7 +135,6 @@ struct Texture {
     static Texture* createSquareTexture(int width, int height, Colour colour) {
         Texture* texture = new Texture();
         unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
-
         for (int y = 0; y != height; y++) {
             for (int x = 0; x != width; x++) {
                 int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
