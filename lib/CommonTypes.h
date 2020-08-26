@@ -150,6 +150,11 @@ struct Texture {
         texture->height = height;
         return texture;
     }
+
+    friend std::ostream& operator<<(std::ostream& os, const Texture& texture) {
+        os << "Texture COLOUR{r: " << (int)texture.data[0] << ", g:" << (int)texture.data[1] << ", b:" << (int)texture.data[2] << "alpha:" << (int)texture.data[3] << "}";
+        return os;
+    }
 };
 
 

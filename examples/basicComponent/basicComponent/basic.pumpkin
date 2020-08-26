@@ -2,9 +2,9 @@
 
 <div>
     <div>Name</div>
-    <input value="name"></input>
+    <!-- <input value="name"></input>
 
     <div>Birthday</div>
     <input value="birthday"></input>
-    <button> Submit </button>
+    <button> Submit </button> -->
 </div>

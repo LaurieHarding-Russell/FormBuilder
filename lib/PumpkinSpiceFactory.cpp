@@ -137,10 +137,9 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
 
     styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
     style = getStyleState(style, classes, styleState);
-    Texture* newTexture;
+    Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
 
     if (strcmp(node->name(),"") == 0) {
-        newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
         // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
         if (styleState.font != "") {        //     // think about this.
             const stbtt_fontinfo font = fonts[styleState.font]; //styleState.font];
@@ -148,6 +147,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
             drawText(newTexture, font, styleState.fontSize, node->value());
         }
     } else {
+        std::cout << "styleState.backgroundColour:" << styleState.backgroundColour << '\n';
         newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
 
@@ -155,14 +155,20 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     // overflow style?
     // TODO: padding/margin
     // function of style?
+    if (styleState.formCursor.x + styleState.width > BOTTOM_RIGHT.x) {
+        styleState.formCursor.x = TOP_LEFT.x;
+        styleState.formCursor.y = styleState.formCursor.y - styleState.height;
+    }
+
     Point myTopLeft(styleState.formCursor.x, styleState.formCursor.y, styleState.formCursor.z);
     Point myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
 
-    const Point TOP_LEFT(-1.0f, 1.0f, 0.0f);
-    const Point BOTTOM_RIGHT(1.0f, -1.0f, 0.0f);
+    styleState.formCursor.x = styleState.formCursor.x + styleState.width;
+
+    // std::cout << myTopLeft << '\n';
+    // std::cout << myBottomRight << "\n\n";
 
     pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
-    // pumpkinSpiceObject->meshes.push_back(createSquareMesh(TOP_LEFT, BOTTOM_RIGHT));
     pumpkinSpiceObject->textures.push_back(newTexture);
 
     for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
