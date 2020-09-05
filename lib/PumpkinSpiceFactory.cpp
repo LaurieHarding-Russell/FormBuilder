@@ -24,7 +24,7 @@ PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
 PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
     PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
 
-    for (int i = 0; i != pumpkinSpiceInput.components.size(); i++) {
+    for (uint i = 0; i != pumpkinSpiceInput.components.size(); i++) {
         // FIXME, nameing, wording fix everywhere :) sorry future self.
         rapidxml::file<char> xmlFile = file<char>(pumpkinSpiceInput.components.at(i).pumkinFileName.c_str());
         rapidxml::xml_document<> pumpkin;

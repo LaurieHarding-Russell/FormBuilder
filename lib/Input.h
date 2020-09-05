@@ -10,8 +10,8 @@ class UserInput {
     std::function<bool()> getMouseButtonDown;
     std::function<bool()> getMouseButtonUp;
 
-    std::function<int()> keyPressDown;
-    std::function<int()> keyPressUp;
+    std::function<int()> getKeyDown;
+    std::function<int()> getKeyUp;
 };
 
 #endif

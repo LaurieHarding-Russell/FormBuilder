@@ -5,20 +5,37 @@
 #include "Input.h"
 #include "CommonTypes.h"
 #include <functional>
+#include <queue>
 
-enum ComponentState {
-    ACTIVE,
-    INACTIVE,
-    HOVER
+enum MouseEvent {
+    MOUSE_UP,
+    MOUSE_DOWN,
+    MOUSE_NONE
+};
+
+enum KeyboardEventType {
+    KEYBOARD_UP,
+    KEYBOARD_DOWN,
+    KEYBOARD_NONE
+};
+
+struct KeyboardEvent {
+    KeyboardEventType type;
+    char value;
+};
+
+struct ComponentState {
+    bool hover;
+    bool selected;
 };
 
 class AbstractComponent; // forward declaration so the input can be in the same file.
 
 struct AbstractComponentInput {
-    Point topLeft;
-    Point bottomRight;
     UserInput* input;
     std::vector<AbstractComponent> subComponent;
+    Point topLeft;
+    Point bottomRight;
 };
 
 class AbstractComponent {
@@ -31,14 +48,19 @@ public:
 
     void registerInputFunction(UserInput* input);
 
-protected:
-    
+    KeyboardEvent getKeyboardEvent();
+    MouseEvent getMouseEvent();
 
-private:
-    void updateMouseLocation();
-    void updateKeyboardEvents();
-    UserInput* input;
     ComponentState state;
+
+    Point getTopLeft();
+    Point getBottomRight();
+protected:
+    UserInput* input;
+    
+private:
+    Point topLeft;
+    Point bottomRight;
 };
 
 #endif
