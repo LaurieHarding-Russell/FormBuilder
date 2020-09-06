@@ -46,22 +46,6 @@ MouseEvent AbstractComponent::getMouseEvent() {
     return MouseEvent::MOUSE_NONE;
 }
 
-KeyboardEvent AbstractComponent::getKeyboardEvent() {
-    KeyboardEvent event;
-    if (input->getKeyDown() != 0) {
-        event.type = KeyboardEventType::KEYBOARD_DOWN;
-        event.value = (char) input->getKeyDown();
-        return event;
-    }
-    if (input->getKeyUp() != 0) {
-        event.type = KeyboardEventType::KEYBOARD_UP;
-        event.value = (char) input->getKeyUp();
-        return event;
-    }
-    event.type = KeyboardEventType::KEYBOARD_NONE;
-    return event;
-}
-
 
 Point AbstractComponent::getTopLeft() {
     return topLeft;

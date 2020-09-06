@@ -98,6 +98,7 @@ int main(int argc, char** argv) {
    PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(400, 400);
    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
    PumpkinSpiceInput pumpkinSpiceInput;
+   UserInput UserInput;
 
    PumpkinSpiceComponentInput basicComponentInput;
    basicComponentInput.componentFactory = BasicComponent::BasicComponentFactory; 
@@ -107,6 +108,7 @@ int main(int argc, char** argv) {
    pumpkinSpiceInput.components.push_back(basicComponentInput);
    pumpkinSpiceInput.basePumkinFileName = "examples/basicComponent/base.pumpkin";
    pumpkinSpiceInput.baseSpiceFileName = "examples/basicComponent/base.spice";
+   pumpkinSpiceInput.userInput = UserInput;
 
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
 
