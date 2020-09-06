@@ -212,9 +212,9 @@ std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point b
 
 // FIXME, need to really think about this. Probably want to check out how browser did it.
 Point calculatePosition(Style styleState) {
-    switch(styleState.display) {
+    // switch(styleState.display) {
 
-    }
+    // }
     
     // switch(styleState.display) {
     //     case StyleDisplay.INLINE:

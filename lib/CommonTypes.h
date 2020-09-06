@@ -10,8 +10,6 @@
 using json = nlohmann::json;
 using namespace rapidxml;
 
-#include "Input.h"
-
 #include<iostream>
 
 const int BYTES_PER_PIXEL = 4; // r,g,b,a

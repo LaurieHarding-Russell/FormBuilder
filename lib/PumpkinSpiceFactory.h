@@ -16,7 +16,7 @@
 #include "rapidxml_utils.hpp"
 #include "rapidxml_print.hpp"
 
-
+#include "Input.h"
 #include "CommonTypes.h"
 #include "PumpkinSpiceComponentObject.h"
 #include "PumpkinSpiceObject.h"

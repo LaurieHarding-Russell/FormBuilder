@@ -21,17 +21,15 @@ class InputComponent: AbstractComponent {
 
     }
 
-    void update() {
-        AbstractComponent::update();
+    void keyDown(char keyValue) {
+        AbstractComponent::keyDown(keyValue);
 
         if (state.selected) {
-            KeyboardEvent keyboardEvent = getKeyboardEvent();
-            if (keyboardEvent.type == KeyboardEventType::KEYBOARD_DOWN) {
-                if (keyboardEvent.value == 127 || keyboardEvent.value == 8) {
-                    value = value.substr(0, value.size() - 1);
-                } else {
-                    value.push_back(keyboardEvent.value);
-                }
+            if ((int)(keyValue) == 127 || (int)(keyValue) == 8) {
+                // TODO, cursor support
+                value = value.substr(0, value.size() - 1);
+            } else {
+                value.push_back(keyValue);
             }
         }
     }
