@@ -20,30 +20,35 @@ ComponentState AbstractComponent::getState() {
     return state;
 }
 
-void AbstractComponent::update() {
-    if (input) {
-        if(input->getMouseX() > topLeft.x && input->getMouseY() < bottomRight.x) {
-            state.hover = true;
-        } else {
-            state.hover = false;
-        }
-        if (state.hover && input->getMouseButtonDown) {
-            state.selected = true;
-        }else {
-            state.selected = true;
-        }
+void AbstractComponent::mousePositionChange(Point point) {
+    if(point.x > topLeft.x && point.x < bottomRight.x 
+        && point.y  > topLeft.y && point.y < bottomRight.y) 
+    {
+        state.hover = true;
+    } else {
+        state.hover = false;
+    }
+    if (state.hover && input->getMouseButtonDown) {
+        state.selected = true;
+    }else {
+        state.selected = true;
     }
 }
 
-// FIXME, think about this. To much abstraction? Is it worth it?
-MouseEvent AbstractComponent::getMouseEvent() {
-    if (input->getMouseButtonDown()) {
-        return MouseEvent::MOUSE_DOWN;
-    }
-    if (input->getMouseButtonUp()) {
-        return MouseEvent::MOUSE_UP;
-    }
-    return MouseEvent::MOUSE_NONE;
+void mouseClickDown() {
+
+}
+
+void mouseClickUp() {
+
+}
+
+void keyUp() {
+
+}
+
+void keyDown() {
+
 }
 
 

@@ -46,10 +46,12 @@ public:
     virtual void update();
     ComponentState getState();
 
-    void registerInputFunction(UserInput* input);
-
-    KeyboardEvent getKeyboardEvent();
-    MouseEvent getMouseEvent();
+    void mousePositionChange(Point point);
+    void mouseClickDown();
+    void mouseClickUp();
+    void keyUp();
+    void keyDown();
+    
 
     ComponentState state;
 
