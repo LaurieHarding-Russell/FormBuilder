@@ -1,10 +1,9 @@
 #ifndef AbstractComponent_h
 #define AbstractComponent_h
 
-#include<string>
-#include "Input.h"
 #include "CommonTypes.h"
-#include <functional>
+
+#include<string>
 #include <queue>
 
 enum MouseEvent {
@@ -32,7 +31,6 @@ struct ComponentState {
 class AbstractComponent; // forward declaration so the input can be in the same file.
 
 struct AbstractComponentInput {
-    UserInput* input;
     std::vector<AbstractComponent> subComponent;
     Point topLeft;
     Point bottomRight;
@@ -49,8 +47,8 @@ public:
     void mousePositionChange(Point point);
     void mouseClickDown();
     void mouseClickUp();
-    void keyUp();
-    void keyDown();
+    void keyUp(char value);
+    void keyDown(char value);
     
 
     ComponentState state;
@@ -58,7 +56,6 @@ public:
     Point getTopLeft();
     Point getBottomRight();
 protected:
-    UserInput* input;
     
 private:
     Point topLeft;

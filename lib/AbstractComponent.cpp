@@ -12,10 +12,6 @@ AbstractComponent::~AbstractComponent() {
 
 }
 
-void AbstractComponent::registerInputFunction(UserInput* input) {
-    this->input = input;
-}
-
 ComponentState AbstractComponent::getState() {
     return state;
 }
@@ -28,26 +24,25 @@ void AbstractComponent::mousePositionChange(Point point) {
     } else {
         state.hover = false;
     }
-    if (state.hover && input->getMouseButtonDown) {
+}
+
+void AbstractComponent::mouseClickDown() {
+    if (state.hover) {
         state.selected = true;
     }else {
-        state.selected = true;
+        state.selected = false;
     }
 }
 
-void mouseClickDown() {
+void AbstractComponent::mouseClickUp() {
 
 }
 
-void mouseClickUp() {
+void AbstractComponent::keyUp(char value) {
 
 }
 
-void keyUp() {
-
-}
-
-void keyDown() {
+void AbstractComponent::keyDown(char value) {
 
 }
 
