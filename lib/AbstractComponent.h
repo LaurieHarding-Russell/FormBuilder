@@ -28,11 +28,11 @@ public:
 
     ComponentState getState();
 
-    void mousePositionChange(Point point);
-    void mouseClickDown();
-    void mouseClickUp();
-    void keyUp(char value);
-    void keyDown(char value);
+    virtual void mousePositionChange(Point point);
+    virtual void mouseClickDown();
+    virtual void mouseClickUp();
+    virtual void keyUp(char value);
+    virtual void keyDown(char value);
 
     Point getTopLeft();
     Point getBottomRight();

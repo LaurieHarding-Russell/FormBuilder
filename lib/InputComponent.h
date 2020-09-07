@@ -23,7 +23,6 @@ class InputComponent: AbstractComponent {
 
     void keyDown(char keyValue) {
         AbstractComponent::keyDown(keyValue);
-
         if (state.selected) {
             if ((int)(keyValue) == 127 || (int)(keyValue) == 8) {
                 // TODO, cursor support

@@ -33,13 +33,13 @@ class UserInput {
 
     void callbackKeyDown(char value) {
         for(AbstractComponent* component: components) {
-            component->keyUp(value);
+            component->keyDown(value);
         }
     }
 
     void callbackKeyUp(char value) {
         for(AbstractComponent* component: components) {
-            component->keyDown(value);
+            component->keyUp(value);
         }
     }
 

@@ -2,6 +2,9 @@
 1. Install bazel.
 2. Run `bazel run //examples/HelloWorldExample:helloWorld`
 
+## How to run tests
+`bazel test ...`
+
 ## How to inlcude it into your project
 Include the following in your WORKSPACE file and depend on `pumpkinSpice`.
 ```
