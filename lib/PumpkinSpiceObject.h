@@ -36,7 +36,6 @@ struct PumpkinSpiceComponentInput {
 };
 
 struct PumpkinSpiceInput {
-    UserInput userInput;
     std::vector<PumpkinSpiceComponentInput> components;
     PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
     std::string basePumkinFileName;

@@ -6,10 +6,12 @@
 AbstractComponent::AbstractComponent(AbstractComponentInput* abstractComponentInput) {
     topLeft = abstractComponentInput->topLeft;
     bottomRight = abstractComponentInput->bottomRight;
+    state.selected = false;
+    state.hover = false;
 }
 
 AbstractComponent::~AbstractComponent() {
-
+    
 }
 
 ComponentState AbstractComponent::getState() {
@@ -18,7 +20,7 @@ ComponentState AbstractComponent::getState() {
 
 void AbstractComponent::mousePositionChange(Point point) {
     if(point.x > topLeft.x && point.x < bottomRight.x 
-        && point.y  > topLeft.y && point.y < bottomRight.y) 
+        && point.y > bottomRight.y && point.y  < topLeft.y) 
     {
         state.hover = true;
     } else {

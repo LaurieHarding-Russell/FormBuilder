@@ -19,6 +19,8 @@ PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
 
     components.insert(ComponentPair("input", inputCompiledObject));
     components.insert(ComponentPair("button", buttonCompiledObject));
+
+    input = new UserInput();
 }
 
 PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
@@ -41,15 +43,16 @@ PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpic
         components.insert(ComponentPair(pumpkinSpiceInput.components.at(i).name, compiledObject));
     }
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
+    
 
     // FIXME, should we even send this back? Or should interaction be threw the factory? might need to rename the factory.
+    // Input callbacks are all threw the input object. I feel as if this PumpkinSpice dimension, container, probably should control everything. Keep the API managable
     pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
     pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
+
+    input->setComponents(generatedComponents);
+
     return pumpkinSpiceComponentObject;
-}
-
-void PumpkinSpiceCompiler::updatePumpkinSpice() {
-
 }
 
 PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
@@ -96,12 +99,11 @@ void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontNam
     fonts.insert(FontPair(fontName, font));
 }
 
-void PumpkinSpiceCompiler::setInput(UserInput* input) {
-    this->input = input;
-}
-
 PumpkinSpiceCompiler::~PumpkinSpiceCompiler() {
-
+    for(AbstractComponent* component: generatedComponents) {
+        delete component;
+    }
+    delete input;
 }
 
 void PumpkinSpiceCompiler::initializeResolution(int x, int y) {
@@ -123,6 +125,10 @@ std::string PumpkinSpiceCompiler::loadFile(std::string name) {
     return data;
 }
 
+UserInput* PumpkinSpiceCompiler::getInput() {
+    return input;
+}
+
 // FIXME, so many pararms!!
 void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
     // FIXME
@@ -137,17 +143,16 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
 
     styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
     style = getStyleState(style, classes, styleState);
+    // THINK, maybe it should always just be alpha unless class applying background has the colour.
     Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
 
     if (strcmp(node->name(),"") == 0) {
-        // FIXME, tired need to think about this. probably should pop off the used json. Or maybe an entirely different approach.
-        if (styleState.font != "") {        //     // think about this.
-            const stbtt_fontinfo font = fonts[styleState.font]; //styleState.font];
+        if (styleState.font != "") {        // think about this. default font?
+            const stbtt_fontinfo font = fonts[styleState.font];
             // FIXME, width height
             drawText(newTexture, font, styleState.fontSize, node->value());
         }
     } else {
-        std::cout << "styleState.backgroundColour:" << styleState.backgroundColour << '\n';
         newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
 
@@ -211,7 +216,8 @@ std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point b
 }
 
 // FIXME, need to really think about this. Probably want to check out how browser did it.
-Point calculatePosition(Style styleState) {
+// Point calculatePosition(Style styleState) {
+    // Point point;
     // switch(styleState.display) {
 
     // }
@@ -221,7 +227,8 @@ Point calculatePosition(Style styleState) {
     //     break;
     //     case StyleDisplay.:
     // }
-}
+    // return point;
+// }
 
 void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text) {
     unsigned char* bitmap = newTexture->data;
@@ -240,7 +247,7 @@ void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo fo
     int baseline = ascent*scale;
 
     int xCursor = 0;
-    for (int i = 0; i != text.size(); i++) {
+    for (uint i = 0; i != text.size(); i++) {
         int advance; // width of character including font padding. Yup font are pretentious. 
         int leftSideBearing; // left margin essentially.
         int x0, y0; // top left corner? 

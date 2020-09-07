@@ -5,11 +5,11 @@
 #include "PumpkinSpiceObject.h"
 #include <vector>
 
-// FIXME, rename
 class PumpkinSpiceComponentObject {
     public: 
     std::vector<AbstractComponent*> abstractComponents;
     std::vector<PumpkinSpiceObject*> pumpkinSpiceObjects;
+
 };
 
 #endif

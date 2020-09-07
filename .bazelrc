@@ -1,0 +1,2 @@
+build --cxxopt -Wno-unused-function
+build --cxxopt -Wno-unused-variable

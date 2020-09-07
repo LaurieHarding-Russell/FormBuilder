@@ -36,6 +36,7 @@ typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
 typedef std::pair<std::string, PumpkinSpiceCompiledComponent*> ComponentPair;
 
+// FIXME, rename
 class PumpkinSpiceCompiler {
 
     public:
@@ -43,10 +44,10 @@ class PumpkinSpiceCompiler {
     PumpkinSpiceCompiler(int x, int y);
     ~PumpkinSpiceCompiler();
     PumpkinSpiceComponentObject* compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
-    void updatePumpkinSpice();
     void addFont(std::string fontFileName, std::string fontName);
-    void setInput(UserInput* input);
+    UserInput* getInput();
 
+    std::vector<AbstractComponent*> generatedComponents;
 
     private:
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
@@ -63,8 +64,6 @@ class PumpkinSpiceCompiler {
 
     std::map<std::string, PumpkinSpiceCompiledComponent*> components;
 
-    // FIXME, names how to make it obvious that components is the info to make components and generatedComponents are the generated from the components
-    std::vector<AbstractComponent*> generatedComponents;
     UserInput* input;
 };
 

@@ -6,22 +6,7 @@
 #include<string>
 #include <queue>
 
-enum MouseEvent {
-    MOUSE_UP,
-    MOUSE_DOWN,
-    MOUSE_NONE
-};
-
-enum KeyboardEventType {
-    KEYBOARD_UP,
-    KEYBOARD_DOWN,
-    KEYBOARD_NONE
-};
-
-struct KeyboardEvent {
-    KeyboardEventType type;
-    char value;
-};
+#include <iostream>
 
 struct ComponentState {
     bool hover;
@@ -41,7 +26,6 @@ public:
     AbstractComponent(AbstractComponentInput* input);
     ~AbstractComponent();
 
-    virtual void update();
     ComponentState getState();
 
     void mousePositionChange(Point point);
@@ -49,14 +33,12 @@ public:
     void mouseClickUp();
     void keyUp(char value);
     void keyDown(char value);
-    
-
-    ComponentState state;
 
     Point getTopLeft();
     Point getBottomRight();
 protected:
-    
+    ComponentState state;
+
 private:
     Point topLeft;
     Point bottomRight;
