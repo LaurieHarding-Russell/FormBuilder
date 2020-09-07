@@ -9,13 +9,14 @@ TEST(PumpkinSpice, InputComponentCanSelect) {
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";
   pumpkinSpiceInput.baseSpiceFileName = "test/pumpkinSpiceTest/empty.spice";
 
-  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
   Point point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
-  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions();
+  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions(0);
   
   EXPECT_TRUE(pumpkinSpiceComponentObject->abstractComponents[0]->getState().selected);  
 }
@@ -27,13 +28,14 @@ TEST(PumpkinSpice, InputComponentCanUpdateValue) {
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";
   pumpkinSpiceInput.baseSpiceFileName = "test/pumpkinSpiceTest/empty.spice";
 
-  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
   Point point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
-  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions();  
+  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions(0);  
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('h');
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('e');
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('l');
@@ -56,13 +58,14 @@ TEST(PumpkinSpice, InputComponentCanBackspace) {
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";
   pumpkinSpiceInput.baseSpiceFileName = "test/pumpkinSpiceTest/empty.spice";
 
-  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+  PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
   Point point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
-  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions();  
+  pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions(0);  
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('1');
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('2');
   pumpkinSpiceCompiler.getInput()->callbackKeyDown('3');

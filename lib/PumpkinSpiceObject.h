@@ -20,12 +20,6 @@ class PumpkinSpiceObject {
     };
 
     std::vector<Texture*> textures; 
-
-    ~PumpkinSpiceObject() {
-        for (int i = 0; i !=0; i++) {
-            delete textures.at(i);
-        }
-    }
 };
 
 struct PumpkinSpiceComponentInput {

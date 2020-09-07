@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 
 PumpkinSpiceObject* pumpkinSpiceObject;
+PumpkinSpiceCompiler* pumpkinSpiceCompiler;
 
 GLuint basicShader;
 
@@ -87,15 +88,15 @@ void display() {
 }
 
 int main(int argc, char** argv) {
-    PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(); 
+    pumpkinSpiceCompiler = new PumpkinSpiceCompiler(); 
 
     PumpkinSpiceInput basicComponentInput;
     basicComponentInput.basePumkinFileName = "examples/HelloWorldExample/test.xml";
     basicComponentInput.baseSpiceFileName = "examples/HelloWorldExample/style.spice";
 
-    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
-    pumpkinSpiceObject = pumpkinSpiceCompiler.compileComponents(basicComponentInput)->pumpkinSpiceObjects[0];
-
+    pumpkinSpiceCompiler->addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
+    pumpkinSpiceCompiler->compileComponents(basicComponentInput);
+    pumpkinSpiceObject = pumpkinSpiceCompiler->getPumpkinSpiceComponentObject()->pumpkinSpiceObjects[0];
 
     glutInit(&argc, argv);
 

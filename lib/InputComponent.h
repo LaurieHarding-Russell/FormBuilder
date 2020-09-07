@@ -17,8 +17,8 @@ class InputComponent: AbstractComponent {
         return value;
     }
 
-    void setValue() {
-
+    void setValue(std::string value) {
+        this->value = value;
     }
 
     void keyDown(char keyValue) {

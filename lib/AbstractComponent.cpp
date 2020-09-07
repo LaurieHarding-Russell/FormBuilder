@@ -19,6 +19,7 @@ ComponentState AbstractComponent::getState() {
 }
 
 void AbstractComponent::mousePositionChange(Point point) {
+    std::cout << "test";
     if(point.x > topLeft.x && point.x < bottomRight.x 
         && point.y > bottomRight.y && point.y  < topLeft.y) 
     {
@@ -28,7 +29,7 @@ void AbstractComponent::mousePositionChange(Point point) {
     }
 }
 
-void AbstractComponent::mouseClickDown() {
+void AbstractComponent::mouseClickDown(int button) {
     if (state.hover) {
         state.selected = true;
     }else {
@@ -36,7 +37,7 @@ void AbstractComponent::mouseClickDown() {
     }
 }
 
-void AbstractComponent::mouseClickUp() {
+void AbstractComponent::mouseClickUp(int button) {
 
 }
 
@@ -45,7 +46,7 @@ void AbstractComponent::keyUp(char value) {
 }
 
 void AbstractComponent::keyDown(char value) {
-    
+
 }
 
 

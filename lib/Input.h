@@ -19,15 +19,15 @@ class UserInput {
         }
     }
 
-    void callbackMouseButtonDownFunctions() {
+    void callbackMouseButtonDownFunctions(int button) {
         for(AbstractComponent* component: components) {
-            component->mouseClickDown();
+            component->mouseClickDown(button);
         }
     }
 
-    void callbackMouseButtonUpFunctions() {
+    void callbackMouseButtonUpFunctions(int button) {
         for(AbstractComponent* component: components) {
-            component->mouseClickUp();
+            component->mouseClickUp(button);
         }
     }
 

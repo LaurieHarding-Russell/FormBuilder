@@ -11,7 +11,9 @@ int vertIn;
 GLuint vao;
 int textCIn;
 int textureIn;
+PumpkinSpiceCompiler pumpkinSpiceCompiler;
 
+int WIDTH = 400, HEIGHT = 400;
 
 void keyboard(unsigned char key, int x, int y) {
    switch (key) {
@@ -19,6 +21,15 @@ void keyboard(unsigned char key, int x, int y) {
          exit(0);
          break;
    }
+
+   pumpkinSpiceCompiler.getInput()->callbackKeyDown(key);
+}
+
+void mouse(int button, int state, int x, int y) {
+   float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
+   float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
+   Point position = Point(xPos, yPos, 0);
+   pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
 
 void display() {
@@ -40,7 +51,6 @@ void display() {
     glEnableVertexAttribArray(textCIn);
 
     textureIn = glGetUniformLocation(basicShader,"image");
-
 
    for (uint objectIterator = 0; objectIterator != pumpkinSpiceComponentObject->pumpkinSpiceObjects.size(); objectIterator++) {
       PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceComponentObject->pumpkinSpiceObjects[objectIterator];
@@ -95,22 +105,20 @@ void display() {
 }
 
 int main(int argc, char** argv) {
-   PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(400, 400);
+   pumpkinSpiceCompiler = PumpkinSpiceCompiler(WIDTH, HEIGHT);
    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
-   PumpkinSpiceInput pumpkinSpiceInput;
-   UserInput UserInput;
-
    PumpkinSpiceComponentInput basicComponentInput;
    basicComponentInput.componentFactory = BasicComponent::BasicComponentFactory; 
    basicComponentInput.pumkinFileName = "examples/basicComponent/basicComponent/basic.pumpkin";
    basicComponentInput.spiceFileName = "examples/basicComponent/basicComponent/basic.spice";
    basicComponentInput.name = "baseComponent"; 
+   PumpkinSpiceInput pumpkinSpiceInput;
    pumpkinSpiceInput.components.push_back(basicComponentInput);
    pumpkinSpiceInput.basePumkinFileName = "examples/basicComponent/base.pumpkin";
    pumpkinSpiceInput.baseSpiceFileName = "examples/basicComponent/base.spice";
-   pumpkinSpiceInput.userInput = UserInput;
 
-   pumpkinSpiceComponentObject = pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+   pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
+   pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
    glutInit(&argc, argv);
 
@@ -130,10 +138,9 @@ int main(int argc, char** argv) {
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
    glutDisplayFunc(display); 
    glutKeyboardFunc (keyboard);
-
+   glutMouseFunc(mouse);
    glutMainLoop();
 
    return 0;

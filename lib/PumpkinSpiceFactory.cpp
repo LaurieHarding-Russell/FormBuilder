@@ -21,10 +21,10 @@ PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
     components.insert(ComponentPair("button", buttonCompiledObject));
 
     input = new UserInput();
+    pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
 }
 
-PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
-    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
+void PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
 
     for (uint i = 0; i != pumpkinSpiceInput.components.size(); i++) {
         // FIXME, nameing, wording fix everywhere :) sorry future self.
@@ -43,16 +43,13 @@ PumpkinSpiceComponentObject* PumpkinSpiceCompiler::compileComponents(PumpkinSpic
         components.insert(ComponentPair(pumpkinSpiceInput.components.at(i).name, compiledObject));
     }
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
-    
 
     // FIXME, should we even send this back? Or should interaction be threw the factory? might need to rename the factory.
     // Input callbacks are all threw the input object. I feel as if this PumpkinSpice dimension, container, probably should control everything. Keep the API managable
-    pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
     pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
-
     input->setComponents(generatedComponents);
-
-    return pumpkinSpiceComponentObject;
+    // THINK, pumpkinSpiceComponentObject->abstractComponents = generatedComponents plus input->setComponents breaks pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() if it happens before... don't understand.
+    pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
 }
 
 PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
@@ -78,9 +75,9 @@ PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkin
     Style styleState = Style();
 
     iterateOverNode(pumpkinXML, pumpkinSpiceObject, style, std::vector<std::string>(), styleState);
-
     return pumpkinSpiceObject;
 }
+
 
 void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontName) {
     unsigned char* fontBuffer;
@@ -129,6 +126,11 @@ UserInput* PumpkinSpiceCompiler::getInput() {
     return input;
 }
 
+PumpkinSpiceComponentObject* PumpkinSpiceCompiler::getPumpkinSpiceComponentObject() {
+    std::cout << "args: " << pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() << '\n';
+    return pumpkinSpiceComponentObject;
+}
+
 // FIXME, so many pararms!!
 void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
     // FIXME
@@ -172,7 +174,6 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
 
     // std::cout << myTopLeft << '\n';
     // std::cout << myBottomRight << "\n\n";
-
     pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
     pumpkinSpiceObject->textures.push_back(newTexture);
 

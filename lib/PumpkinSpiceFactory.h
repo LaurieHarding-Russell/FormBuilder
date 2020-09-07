@@ -43,11 +43,13 @@ class PumpkinSpiceCompiler {
     PumpkinSpiceCompiler();
     PumpkinSpiceCompiler(int x, int y);
     ~PumpkinSpiceCompiler();
-    PumpkinSpiceComponentObject* compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
+    void compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
     void addFont(std::string fontFileName, std::string fontName);
     UserInput* getInput();
 
     std::vector<AbstractComponent*> generatedComponents;
+
+    PumpkinSpiceComponentObject* getPumpkinSpiceComponentObject();
 
     private:
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
@@ -55,12 +57,14 @@ class PumpkinSpiceCompiler {
     std::vector<Point> createSquareMesh(Point top, Point bottom);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     std::string loadFile(std::string name);
-    void drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text);
+    void drawText(Texture* newretue, const stbtt_fontinfo font, int fontSize, std::string text);
     void calculatePosition();
 
     FontMap fonts;
     int xResolution;
     int yResolution;
+
+    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject;
 
     std::map<std::string, PumpkinSpiceCompiledComponent*> components;
 
