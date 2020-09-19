@@ -70,17 +70,17 @@ void display() {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
-    for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
-        glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
-        std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
-        int size = mesh.size() * 3;
+    // for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
+    //     glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
+    //     std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+    //     int size = mesh.size() * 3;
 
-        // Textures
-        glBindTexture(GL_TEXTURE_2D, textureObj[i]);
-        // think about buffering
+    //     // Textures
+    //     glBindTexture(GL_TEXTURE_2D, textureObj[i]);
+    //     // think about buffering
 
-        glDrawArrays(GL_TRIANGLES, 0 , size);
-    }
+    //     glDrawArrays(GL_TRIANGLES, 0 , size);
+    // }
 
 
     glutSwapBuffers();
@@ -96,6 +96,7 @@ int main(int argc, char** argv) {
 
     pumpkinSpiceCompiler->addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
     pumpkinSpiceCompiler->compileComponents(basicComponentInput);
+    std::cout << pumpkinSpiceCompiler->getPumpkinSpiceComponentObject()->pumpkinSpiceObjects.size() << '\n';
     pumpkinSpiceObject = pumpkinSpiceCompiler->getPumpkinSpiceComponentObject()->pumpkinSpiceObjects[0];
 
     glutInit(&argc, argv);

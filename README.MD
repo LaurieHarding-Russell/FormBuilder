@@ -13,6 +13,8 @@ http_archive(
     urls = ["https://github.com/LaurieHarding-Russell/FormBuilder/archive/e85f7c69c38db7a903ebcc7f9732f8646f782565.zip"],
     strip_prefix = "FormBuilder-e85f7c69c38db7a903ebcc7f9732f8646f782565",
 )
+load('@formLib//toolchain:pumpkinSpiceDependencies.bzl', 'load_pumpkin_spice_deps')
+load_pumpkin_spice_deps()
 ```
 
 ## What is this?
