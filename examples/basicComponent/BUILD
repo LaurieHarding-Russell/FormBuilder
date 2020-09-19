@@ -7,7 +7,7 @@ cc_binary(
     deps = [
         "//lib:PumpkinSpice",
         "@glew//:glew",
-        "@glut//freeglut/freeglut:glut",
+        "@glfw//:glfw",
         "//examples/basicComponent/basicComponent:basicComponent"
     ],
     data = [
@@ -16,9 +16,20 @@ cc_binary(
         "@font//:Bangers",
         "//examples/shaders:shaders",
     ],
-    linkopts = [
-        "-lGL",
-    ],
+    linkopts = select({
+        "@bazel_tools//src/conditions:linux_x86_64": [
+            "-lX11",
+            "-ldl",
+            "-lpthread",
+            "-lGL"
+        ],
+        "@bazel_tools//src/conditions:darwin_x86_64": [
+            "-lX11",
+            "-ldl",
+            "-lpthread",
+            "-lGL"
+        ]
+    }),
     defines = [ 
         "DEBUG",
         "GL_GLEXT_PROTOTYPES"

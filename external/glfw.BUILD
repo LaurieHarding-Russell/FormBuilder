@@ -111,7 +111,7 @@ cc_library(
     defines = select({
 		"@bazel_tools//src/conditions:windows": WIN32_DEFINES,
 		"@bazel_tools//src/conditions:linux_x86_64": LINUX_DEFINES,
-        "@bazel_tools//src/conditions:linux_x86_64": MAC_DEFINES,
+        "@bazel_tools//src/conditions:darwin_x86_64": MAC_DEFINES,
 	}),
 )
 
@@ -124,7 +124,7 @@ cc_library(
     linkopts = select({
 		"@bazel_tools//src/conditions:windows": WIN32_LINKOPTS,
 		"@bazel_tools//src/conditions:linux_x86_64": LINUX_LINKOPTS,
-        "@bazel_tools//src/conditions:linux_x86_64": MAC_LINKOPTS,
+        "@bazel_tools//src/conditions:darwin_x86_64": MAC_LINKOPTS,
 	}),
     deps = [":glfw_src"],
     strip_include_prefix = "include",

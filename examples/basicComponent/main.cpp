@@ -3,7 +3,7 @@
 #include "basicComponent/BasicComponent.h"
 
 #include "ShaderLoader.h"
-#include <GL/freeglut.h>
+#include <GLFW/glfw3.h>
 
 PumpkinSpiceComponentObject* pumpkinSpiceComponentObject;
 GLuint basicShader;
@@ -15,42 +15,45 @@ PumpkinSpiceCompiler pumpkinSpiceCompiler;
 
 int WIDTH = 400, HEIGHT = 400;
 
-void keyboard(unsigned char key, int x, int y) {
-   switch (key) {
-      case 27:
-         exit(0);
-         break;
+void error_callback(int error, const char* description);
+void cursorPositioncallback(GLFWwindow* window, double x, double y);
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+   if (action == GLFW_PRESS) {
+      switch (key) {
+         case 27:
+            exit(0);
+            break;
+      }
    }
 
    pumpkinSpiceCompiler.getInput()->callbackKeyDown(key);
 }
 
 void mouse(int button, int state, int x, int y) {
-   float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
-   float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
-   Point position = Point(xPos, yPos, 0);
-   pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
 
-void display() {
+void display(GLFWwindow* window) {
+   float ratio;
+   int width, height;
+   glfwGetFramebufferSize(window, &width, &height);
+   ratio = width / (float) height;
+   glViewport(0, 0, width, height);
+   glClearColor(0.0, 0.0, 0.0, 0.0);    
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
 
-    glClearColor(0.0, 0.0, 0.0, 0.0);    
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the screen
+   glGenVertexArrays(1, &vao);
+   glBindVertexArray(vao);
+   
+   glUseProgram(basicShader);
+   
+   vertIn = glGetAttribLocation(basicShader,"vertexPosition");
+   glEnableVertexAttribArray(vertIn);
 
+   textCIn = glGetAttribLocation(basicShader,"vTextureCoordinate");
+   glEnableVertexAttribArray(textCIn);
 
-
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    
-    glUseProgram(basicShader);
-    
-    vertIn = glGetAttribLocation(basicShader,"vertexPosition");
-    glEnableVertexAttribArray(vertIn);
-
-    textCIn = glGetAttribLocation(basicShader,"vTextureCoordinate");
-    glEnableVertexAttribArray(textCIn);
-
-    textureIn = glGetUniformLocation(basicShader,"image");
+   textureIn = glGetUniformLocation(basicShader,"image");
 
    for (uint objectIterator = 0; objectIterator != pumpkinSpiceComponentObject->pumpkinSpiceObjects.size(); objectIterator++) {
       PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceComponentObject->pumpkinSpiceObjects[objectIterator];
@@ -100,8 +103,6 @@ void display() {
       }
    }
 
-    glutSwapBuffers();
-
 }
 
 int main(int argc, char** argv) {
@@ -120,28 +121,52 @@ int main(int argc, char** argv) {
    pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
-   glutInit(&argc, argv);
+   GLFWwindow* window;
 
-   glutInitContextVersion( 3, 0 );
-   glutInitContextProfile( GLUT_CORE_PROFILE );
-   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
+   if (!glfwInit()) {
+      exit(EXIT_FAILURE);
+   }
+   glfwSetErrorCallback(error_callback);
 
-   glutInitWindowSize (400, 400); 
-   glutInitWindowPosition (100, 100);
-   glutCreateWindow("Basic Component");
+   window = glfwCreateWindow(640, 480, "Basic Component", NULL, NULL);
+   if (!window) {
+      glfwTerminate();
+      exit(EXIT_FAILURE);
+   }
+
+   glfwMakeContextCurrent(window);
+   glfwSetKeyCallback(window, keyCallback);
+   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+   glfwSetCursorPosCallback(window, cursorPositioncallback);
+   
    glewExperimental = GL_TRUE;
    glewInit();
 
    basicShader = initShader( "examples/shaders/standardVertexShader.glsl", "examples/shaders/standardFragmentShader.glsl");
 
-   // glEnable(GL_DEPTH_TEST);
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   glutDisplayFunc(display); 
-   glutKeyboardFunc (keyboard);
-   glutMouseFunc(mouse);
-   glutMainLoop();
+   while (!glfwWindowShouldClose(window)) {
+      display(window);
 
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+   }
+
+   glfwDestroyWindow(window);
+   glfwTerminate();
    return 0;
+}
+
+
+void error_callback(int error, const char* description) {
+    fputs(description, stderr);
+}
+
+void cursorPositioncallback(GLFWwindow* window, double x, double y) {
+   // float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
+   // float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
+   // Point position = Point(xPos, yPos, 0);
+   // pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
