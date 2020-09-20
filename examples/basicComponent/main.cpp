@@ -137,6 +137,7 @@ int main(int argc, char** argv) {
    glfwMakeContextCurrent(window);
    glfwSetKeyCallback(window, keyCallback);
    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+   
    glfwSetCursorPosCallback(window, cursorPositioncallback);
    
    glewExperimental = GL_TRUE;
@@ -165,8 +166,9 @@ void error_callback(int error, const char* description) {
 }
 
 void cursorPositioncallback(GLFWwindow* window, double x, double y) {
-   // float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
-   // float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
-   // Point position = Point(xPos, yPos, 0);
+   float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
+   float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
+   Point position = Point(xPos, yPos, 0);
+   std::cout << xPos << "::" << yPos << " " << pumpkinSpiceCompiler.getInput() << '\n';
    // pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
