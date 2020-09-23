@@ -108,13 +108,16 @@ void display(GLFWwindow* window) {
 int main(int argc, char** argv) {
    pumpkinSpiceCompiler = PumpkinSpiceCompiler(WIDTH, HEIGHT);
    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
-   PumpkinSpiceComponentInput basicComponentInput;
-   basicComponentInput.componentFactory = BasicComponent::BasicComponentFactory; 
-   basicComponentInput.pumkinFileName = "examples/basicComponent/basicComponent/basic.pumpkin";
-   basicComponentInput.spiceFileName = "examples/basicComponent/basicComponent/basic.spice";
-   basicComponentInput.name = "baseComponent"; 
+   
+   // FIXME, Custom components causeing seg fault. need to investigate/write a test.
+   // PumpkinSpiceComponentInput basicComponentInput;
+   // basicComponentInput.componentFactory = BasicComponent::BasicComponentFactory; 
+   // basicComponentInput.pumkinFileName = "examples/basicComponent/basicComponent/basic.pumpkin";
+   // basicComponentInput.spiceFileName = "examples/basicComponent/basicComponent/basic.spice";
+   // basicComponentInput.name = "baseComponent"; 
+
    PumpkinSpiceInput pumpkinSpiceInput;
-   pumpkinSpiceInput.components.push_back(basicComponentInput);
+   // pumpkinSpiceInput.components.push_back(basicComponentInput);
    pumpkinSpiceInput.basePumkinFileName = "examples/basicComponent/base.pumpkin";
    pumpkinSpiceInput.baseSpiceFileName = "examples/basicComponent/base.spice";
 
@@ -148,9 +151,14 @@ int main(int argc, char** argv) {
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+   // Point point;
+   // point.x = 0.5;
+   // point.y = 0.5;
+   // pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
+   // pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions(0);
+
    while (!glfwWindowShouldClose(window)) {
       display(window);
-
       glfwSwapBuffers(window);
       glfwPollEvents();
    }
@@ -169,6 +177,6 @@ void cursorPositioncallback(GLFWwindow* window, double x, double y) {
    float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
    float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
    Point position = Point(xPos, yPos, 0);
-   std::cout << xPos << "::" << yPos << " " << pumpkinSpiceCompiler.getInput() << '\n';
-   // pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
+
+   pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }

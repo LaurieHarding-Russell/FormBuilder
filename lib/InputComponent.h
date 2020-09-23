@@ -21,7 +21,7 @@ class InputComponent: AbstractComponent {
         this->value = value;
     }
 
-    void keyDown(char keyValue) {
+    void keyDown(char keyValue) override {
         AbstractComponent::keyDown(keyValue);
         if (state.selected) {
             if ((int)(keyValue) == 127 || (int)(keyValue) == 8) {

@@ -19,6 +19,7 @@ struct AbstractComponentInput {
     std::vector<AbstractComponent> subComponent;
     Point topLeft;
     Point bottomRight;
+    std::string componentName;
 };
 
 class AbstractComponent {
@@ -42,6 +43,7 @@ protected:
 private:
     Point topLeft;
     Point bottomRight;
+    std::string componentName;
 };
 
 #endif

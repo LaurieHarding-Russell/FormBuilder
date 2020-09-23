@@ -8,6 +8,7 @@ AbstractComponent::AbstractComponent(AbstractComponentInput* abstractComponentIn
     bottomRight = abstractComponentInput->bottomRight;
     state.selected = false;
     state.hover = false;
+    componentName = abstractComponentInput->componentName;
 }
 
 AbstractComponent::~AbstractComponent() {
