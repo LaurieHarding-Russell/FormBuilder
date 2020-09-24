@@ -1,4 +1,4 @@
-#include "lib/PumpkinSpiceFactory.h"
+#include "lib/PumpkinSpice.h"
 
 #include "ShaderLoader.h"
 #include <GLFW/glfw3.h>
@@ -9,7 +9,7 @@ int vertIn;
 GLuint vao;
 int textCIn;
 int textureIn;
-PumpkinSpiceCompiler pumpkinSpiceCompiler;
+PumpkinSpice pumpkinSpiceCompiler;
 
 int WIDTH = 400, HEIGHT = 400;
 int helloCounter = 0;
@@ -112,7 +112,7 @@ void display(GLFWwindow* window) {
 }
 
 int main(int argc, char** argv) {
-   pumpkinSpiceCompiler = PumpkinSpiceCompiler(WIDTH, HEIGHT);
+   pumpkinSpiceCompiler = PumpkinSpice(WIDTH, HEIGHT);
    pumpkinSpiceCompiler.addFont("external/font/Bangers-Regular.ttf", "Bangers-Regular");
 
    PumpkinSpiceInput pumpkinSpiceInput;

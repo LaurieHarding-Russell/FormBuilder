@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
-#include "lib/PumpkinSpiceFactory.h"
+#include "lib/PumpkinSpice.h"
 
 std::string BEFORE_CLICK = "Goodbye World!";
 std::string AFTER_CLICK = "Hello World!";
 
 TEST(ComponentFunctionTest, test_function_linking) {
-  PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(100, 100);
+  PumpkinSpice pumpkinSpiceCompiler = PumpkinSpice(100, 100);
   PumpkinSpiceInput pumpkinSpiceInput;
 
   pumpkinSpiceInput.basePumkinFileName = "test/ComponentFunctionTest/FunctionTest.pumpkin";
@@ -29,8 +29,6 @@ TEST(ComponentFunctionTest, test_function_linking) {
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
   pumpkinSpiceCompiler.getInput()->callbackMouseButtonDownFunctions(0);
   pumpkinSpiceCompiler.getInput()->callbackMouseButtonUpFunctions(0);
-  
-  std::cout << "3" << helloVariable << '\n';
 
   EXPECT_EQ(AFTER_CLICK, helloVariable);
   EXPECT_TRUE(pumpkinSpiceComponentObject->abstractComponents[0]->getState().selected);

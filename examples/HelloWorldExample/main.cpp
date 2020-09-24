@@ -1,10 +1,10 @@
-#include "lib/PumpkinSpiceFactory.h"
+#include "lib/PumpkinSpice.h"
 
 #include "ShaderLoader.h"
 #include <GL/freeglut.h>
 
 PumpkinSpiceObject* pumpkinSpiceObject;
-PumpkinSpiceCompiler* pumpkinSpiceCompiler;
+PumpkinSpice* pumpkinSpiceCompiler;
 
 GLuint basicShader;
 
@@ -88,7 +88,7 @@ void display() {
 }
 
 int main(int argc, char** argv) {
-    pumpkinSpiceCompiler = new PumpkinSpiceCompiler(); 
+    pumpkinSpiceCompiler = new PumpkinSpice(); 
 
     PumpkinSpiceInput basicComponentInput;
     basicComponentInput.basePumkinFileName = "examples/HelloWorldExample/test.xml";

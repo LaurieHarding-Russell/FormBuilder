@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
-#include "lib/PumpkinSpiceFactory.h"
+#include "lib/PumpkinSpice.h"
 
 
 TEST(PumpkinSpice, InputComponentCanSelect) {
-  PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(100, 100);
+  PumpkinSpice pumpkinSpiceCompiler = PumpkinSpice(100, 100);
   PumpkinSpiceInput pumpkinSpiceInput;
 
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";
@@ -22,7 +22,7 @@ TEST(PumpkinSpice, InputComponentCanSelect) {
 }
 
 TEST(PumpkinSpice, InputComponentCanUpdateValue) {
-  PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(100, 100);
+  PumpkinSpice pumpkinSpiceCompiler = PumpkinSpice(100, 100);
   PumpkinSpiceInput pumpkinSpiceInput;
 
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";
@@ -52,7 +52,7 @@ TEST(PumpkinSpice, InputComponentCanUpdateValue) {
 }
 
 TEST(PumpkinSpice, InputComponentCanBackspace) {
-  PumpkinSpiceCompiler pumpkinSpiceCompiler = PumpkinSpiceCompiler(100, 100);
+  PumpkinSpice pumpkinSpiceCompiler = PumpkinSpice(100, 100);
   PumpkinSpiceInput pumpkinSpiceInput;
 
   pumpkinSpiceInput.basePumkinFileName = "test/pumpkinSpiceTest/InputComponentTest.pumpkin";

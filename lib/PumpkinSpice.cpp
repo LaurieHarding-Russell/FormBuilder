@@ -1,10 +1,10 @@
-#include "PumpkinSpiceFactory.h"
+#include "PumpkinSpice.h"
 
-PumpkinSpiceCompiler::PumpkinSpiceCompiler() {
-    PumpkinSpiceCompiler(500,500);
+PumpkinSpice::PumpkinSpice() {
+    PumpkinSpice(500,500);
 }
 
-PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
+PumpkinSpice::PumpkinSpice(int xResolution, int yResolution) {
     initializeResolution(xResolution, yResolution);
 
     PumpkinSpiceCompiledComponent* inputCompiledObject = new PumpkinSpiceCompiledComponent();
@@ -24,7 +24,7 @@ PumpkinSpiceCompiler::PumpkinSpiceCompiler(int xResolution, int yResolution) {
     pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
 }
 
-void PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
+void PumpkinSpice::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
 
     for (uint i = 0; i != pumpkinSpiceInput.components.size(); i++) {
         // FIXME, nameing, wording fix everywhere :) sorry future self.
@@ -44,15 +44,13 @@ void PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput
     }
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
 
-    // FIXME, should we even send this back? Or should interaction be threw the factory? might need to rename the factory.
-    // Input callbacks are all threw the input object. I feel as if this PumpkinSpice dimension, container, probably should control everything. Keep the API managable
     pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
     input->setComponents(generatedComponents);
     // THINK, pumpkinSpiceComponentObject->abstractComponents = generatedComponents plus input->setComponents breaks pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() if it happens before... don't understand.
     pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
 }
 
-AbstractComponent* PumpkinSpiceCompiler::getComponpentByName(std::string name) {
+AbstractComponent* PumpkinSpice::getComponpentByName(std::string name) {
     for(AbstractComponent* component: generatedComponents) {
         if(component->name == name) {
             return component;
@@ -61,7 +59,7 @@ AbstractComponent* PumpkinSpiceCompiler::getComponpentByName(std::string name) {
     return NULL; // hm full c++17 optional type?
 }
 
-PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
+PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
     rapidxml::file<char> xmlFile = file<char>(pumkinFile.c_str());
     rapidxml::xml_document<> doc;
     doc.parse<0>(xmlFile.data());
@@ -88,7 +86,7 @@ PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkin
 }
 
 
-void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontName) {
+void PumpkinSpice::addFont(std::string fontFileName, std::string fontName) {
     unsigned char* fontBuffer;
 
     std::ifstream file(fontFileName, std::ios::binary);
@@ -105,29 +103,29 @@ void PumpkinSpiceCompiler::addFont(std::string fontFileName, std::string fontNam
     fonts.insert(FontPair(fontName, font));
 }
 
-PumpkinSpiceCompiler::~PumpkinSpiceCompiler() {
+PumpkinSpice::~PumpkinSpice() {
     for(AbstractComponent* component: generatedComponents) {
         delete component;
     }
     delete input;
 }
 
-void PumpkinSpiceCompiler::initializeResolution(int x, int y) {
+void PumpkinSpice::initializeResolution(int x, int y) {
     xResolution = x;
     yResolution = y;
 }
 
-UserInput* PumpkinSpiceCompiler::getInput() {
+UserInput* PumpkinSpice::getInput() {
     return input;
 }
 
-PumpkinSpiceComponentObject* PumpkinSpiceCompiler::getPumpkinSpiceComponentObject() {
+PumpkinSpiceComponentObject* PumpkinSpice::getPumpkinSpiceComponentObject() {
     std::cout << "args: " << pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() << '\n';
     return pumpkinSpiceComponentObject;
 }
 
 // FIXME, so many pararms!!
-void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
+void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
     // FIXME
     if (node == 0) {
         return;
@@ -204,7 +202,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     }
 }
 
-std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point bottomRight) {
+std::vector<Point> PumpkinSpice::createSquareMesh(Point topLeft, Point bottomRight) {
     std::vector<Point> verts {
         // triangle 1
         Point(topLeft.x, bottomRight.y, topLeft.z),
@@ -233,7 +231,7 @@ std::vector<Point> PumpkinSpiceCompiler::createSquareMesh(Point topLeft, Point b
     // return point;
 // }
 
-void PumpkinSpiceCompiler::drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text) {
+void PumpkinSpice::drawText(Texture* newTexture, const stbtt_fontinfo font, int fontSize, std::string text) {
     unsigned char* bitmap = newTexture->data;
 
     int height = newTexture->height;

@@ -36,12 +36,12 @@ typedef std::pair<std::string, stbtt_fontinfo> FontPair;
 typedef std::pair<std::string, PumpkinSpiceCompiledComponent*> ComponentPair;
 
 // FIXME, rename
-class PumpkinSpiceCompiler {
+class PumpkinSpice {
 
     public:
-    PumpkinSpiceCompiler();
-    PumpkinSpiceCompiler(int x, int y);
-    ~PumpkinSpiceCompiler();
+    PumpkinSpice();
+    PumpkinSpice(int x, int y);
+    ~PumpkinSpice();
     void compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
     void addFont(std::string fontFileName, std::string fontName);
     UserInput* getInput();

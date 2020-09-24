@@ -1,13 +1,13 @@
 cc_library(
   name = "PumpkinSpice",
   srcs = [
-    "PumpkinSpiceFactory.cpp",
+    "PumpkinSpice.cpp",
     "AbstractComponent.cpp",
   ],
   hdrs = [
     "PumpkinSpiceComponentObject.h",
     "PumpkinSpiceObject.h",
-    "PumpkinSpiceFactory.h",
+    "PumpkinSpice.h",
     "AbstractComponent.h",
     "Input.h",
     "ButtonComponent.h",
