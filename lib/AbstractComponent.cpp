@@ -57,3 +57,10 @@ Point AbstractComponent::getTopLeft() {
 Point AbstractComponent::getBottomRight() {
     return bottomRight;
 }
+
+std::ostream& operator<<(std::ostream& os, const AbstractComponent& abstractComponent) {
+    os << "Component { topLeft:: " << abstractComponent.topLeft
+        << " bottomRight: " << abstractComponent.bottomRight
+        << " name:" << abstractComponent.name << " }";
+    return os;
+}

@@ -88,7 +88,7 @@ PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, st
 
 
 void PumpkinSpice::addFont(std::string fontFileName, std::string fontName) {
-    unsigned char* fontBuffer;
+    unsigned char* fontBuffer; // FIX duplicate code should we use the util and make it C++17 byte type?
 
     std::ifstream file(fontFileName, std::ios::binary);
 	if (!file.is_open()) {
@@ -172,11 +172,7 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
         if (child != 0) {
             std::string tag = child->name();
             if (components.find(tag) != components.end()) {
-                std::string name;
-                xml_attribute<char> * attributeName = child->first_attribute("name");
-                if (attributeName != 0) {
-                    name = attributeName->value();
-                }
+                std::string name = getElementName(child);
 
                 PumpkinSpiceCompiledComponent* component = components.at(tag);
                 // FIXME, shadow peircing.
@@ -214,25 +210,18 @@ std::vector<Point> PumpkinSpice::createSquareMesh(Point topLeft, Point bottomRig
     return verts;
 }
 
-// FIXME, need to really think about this. Probably want to check out how browser did it.
-// Point calculatePosition(Style styleState) {
-    // Point point;
-    // switch(styleState.display) {
-
-    // }
-    
-    // switch(styleState.display) {
-    //     case StyleDisplay.INLINE:
-    //     break;
-    //     case StyleDisplay.:
-    // }
-    // return point;
-// }
-
 void PumpkinSpice::addCurrentClass(xml_node<>* node, std::vector<std::string> classes) {
     xml_attribute<char> * attributeClass = node->first_attribute("class");
     if (attributeClass != 0) {
         std::string elementClasses = attributeClass->value(); // FIXME, split on space add support for multiple
         classes.push_back(elementClasses);
     }
+}
+
+std::string PumpkinSpice::getElementName(xml_node<>* node) {
+    xml_attribute<char> * attributeName = node->first_attribute("name");
+    if (attributeName != 0) {
+        return attributeName->value();
+    }
+    return "";
 }

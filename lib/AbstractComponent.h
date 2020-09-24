@@ -38,6 +38,8 @@ public:
     Point getTopLeft();
     Point getBottomRight();
     std::string name; // got to make setters getter but I'm lazy.
+    
+    friend std::ostream& operator<<(std::ostream& os, const AbstractComponent& abstractComponent);
 protected:
     ComponentState state;
 
@@ -45,5 +47,4 @@ private:
     Point topLeft;
     Point bottomRight;
 };
-
 #endif

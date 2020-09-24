@@ -54,6 +54,7 @@ class PumpkinSpice {
     void getGeneratedCompponentByName();
     void calculatePosition();
     void addCurrentClass(xml_node<>* node, std::vector<std::string> classes);
+    std::string getElementName(xml_node<>* node);
 
     FontMap fonts;
     int xResolution;
