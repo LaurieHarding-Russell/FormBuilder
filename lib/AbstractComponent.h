@@ -3,7 +3,7 @@
 
 #include "CommonTypes.h"
 
-#include<string>
+#include <string>
 #include <queue>
 
 #include <iostream>
@@ -19,7 +19,7 @@ struct AbstractComponentInput {
     std::vector<AbstractComponent> subComponent;
     Point topLeft;
     Point bottomRight;
-    std::string componentName;
+    std::string name;
 };
 
 class AbstractComponent {
@@ -37,13 +37,13 @@ public:
 
     Point getTopLeft();
     Point getBottomRight();
+    std::string name; // got to make setters getter but I'm lazy.
 protected:
     ComponentState state;
 
 private:
     Point topLeft;
     Point bottomRight;
-    std::string componentName;
 };
 
 #endif

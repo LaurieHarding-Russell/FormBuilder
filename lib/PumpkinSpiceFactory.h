@@ -48,6 +48,7 @@ class PumpkinSpiceCompiler {
     UserInput* getInput();
 
     std::vector<AbstractComponent*> generatedComponents;
+    AbstractComponent* getComponpentByName(std::string name);
 
     PumpkinSpiceComponentObject* getPumpkinSpiceComponentObject();
 
@@ -58,6 +59,7 @@ class PumpkinSpiceCompiler {
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     std::string loadFile(std::string name);
     void drawText(Texture* newretue, const stbtt_fontinfo font, int fontSize, std::string text);
+    void getGeneratedCompponentByName();
     void calculatePosition();
 
     FontMap fonts;

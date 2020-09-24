@@ -52,6 +52,15 @@ void PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput
     pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
 }
 
+AbstractComponent* PumpkinSpiceCompiler::getComponpentByName(std::string name) {
+    for(AbstractComponent* component: generatedComponents) {
+        if(component->name == name) {
+            return component;
+        }
+    }
+    return NULL; // hm full c++17 optional type?
+}
+
 PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
     rapidxml::file<char> xmlFile = file<char>(pumkinFile.c_str());
     rapidxml::xml_document<> doc;
@@ -137,9 +146,9 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
     if (node == 0) {
         return;
     }
-    xml_attribute<char> * attribute = node->first_attribute("class");
-    if (attribute != 0) {
-        std::string elementClasses = attribute->value(); // FIXME, split on space add support for multiple
+    xml_attribute<char> * attributeClass = node->first_attribute("class");
+    if (attributeClass != 0) {
+        std::string elementClasses = attributeClass->value(); // FIXME, split on space add support for multiple
         classes.push_back(elementClasses);
     }
 
@@ -181,6 +190,12 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
         if (child != 0) {
             std::string tag = child->name();
             if (components.find(tag) != components.end()) {
+                std::string name;
+                xml_attribute<char> * attributeName = child->first_attribute("name");
+                if (attributeName != 0) {
+                    name = attributeName->value();
+                }
+
                 PumpkinSpiceCompiledComponent* component = components.at(tag);
                 // FIXME, shadow peircing.
                 Style subStyleState = Style();
@@ -191,6 +206,7 @@ void PumpkinSpiceCompiler::iterateOverNode(xml_node<>* node, PumpkinSpiceObject*
                 AbstractComponentInput* abstractComponentInput = new AbstractComponentInput();
                 abstractComponentInput->topLeft = myTopLeft;
                 abstractComponentInput->bottomRight = myBottomRight;
+                abstractComponentInput->name = name;
                 generatedComponents.push_back(component->componentFactory(abstractComponentInput));
                 delete abstractComponentInput;
                 
