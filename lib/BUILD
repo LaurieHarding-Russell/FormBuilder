@@ -14,7 +14,8 @@ cc_library(
     "InputComponent.h",
     "CommonTypes.h",
     "Style.h",
-    "SpiceFactory.h"
+    "SpiceFactory.h",
+    "CommonUtils.h"
   ],
   deps = [
     "@rapidxml//:rapidxml",

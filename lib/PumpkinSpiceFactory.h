@@ -5,9 +5,8 @@
 #define STBTT_STATIC
 #include "stb_truetype.h"
 
-#include <string>
+#include "CommonUtils.h"
 #include <vector>
-#include <fstream>
 #include <iostream>
 #include <map>
 #include <stdio.h>
@@ -57,7 +56,6 @@ class PumpkinSpiceCompiler {
     void initializeResolution(int x, int y);
     std::vector<Point> createSquareMesh(Point top, Point bottom);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
-    std::string loadFile(std::string name);
     void drawText(Texture* newretue, const stbtt_fontinfo font, int fontSize, std::string text);
     void getGeneratedCompponentByName();
     void calculatePosition();

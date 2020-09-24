@@ -32,7 +32,7 @@ void PumpkinSpiceCompiler::compileComponents(PumpkinSpiceInput pumpkinSpiceInput
         rapidxml::xml_document<> pumpkin;
         
         pumpkin.parse<0>(xmlFile.data());
-        std::string spiceString = loadFile(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
+        std::string spiceString = util::loadFile(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
 
         json spice = json::parse(spiceString);
 
@@ -66,7 +66,7 @@ PumpkinSpiceObject* PumpkinSpiceCompiler::compilePumpkinSpice(std::string pumkin
     rapidxml::xml_document<> doc;
     doc.parse<0>(xmlFile.data());
 
-    std::string jsonString = loadFile(styleFileName);
+    std::string jsonString = util::loadFile(styleFileName);
 
     json style = json::parse(jsonString);
     std::vector<std::string> classes = std::vector<std::string>();
@@ -115,20 +115,6 @@ PumpkinSpiceCompiler::~PumpkinSpiceCompiler() {
 void PumpkinSpiceCompiler::initializeResolution(int x, int y) {
     xResolution = x;
     yResolution = y;
-}
-
-std::string PumpkinSpiceCompiler::loadFile(std::string name) {
-    std::string data = "";
-    std::ifstream file (name);
-
-    if (file.is_open()) {
-        std::string line;
-        while ( getline(file, line) ) {
-            data += line + '\n';
-        }
-        file.close();
-    }
-    return data;
 }
 
 UserInput* PumpkinSpiceCompiler::getInput() {
