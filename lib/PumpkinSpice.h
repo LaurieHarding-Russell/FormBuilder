@@ -1,10 +1,6 @@
 #ifndef PUMPKIN_SPICE_H
 #define PUMPKIN_SPICE_H
 
-#define STB_TRUETYPE_IMPLEMENTATION
-#define STBTT_STATIC
-#include "stb_truetype.h"
-
 #include "CommonUtils.h"
 #include <vector>
 #include <iostream>
@@ -17,6 +13,7 @@
 
 #include "Input.h"
 #include "CommonTypes.h"
+#include "Texture.h"
 #include "PumpkinSpiceComponentObject.h"
 #include "PumpkinSpiceObject.h"
 #include <limits>
@@ -46,9 +43,7 @@ class PumpkinSpice {
     void addFont(std::string fontFileName, std::string fontName);
     UserInput* getInput();
 
-    std::vector<AbstractComponent*> generatedComponents;
     AbstractComponent* getComponpentByName(std::string name);
-
     PumpkinSpiceComponentObject* getPumpkinSpiceComponentObject();
 
     private:
@@ -56,13 +51,14 @@ class PumpkinSpice {
     void initializeResolution(int x, int y);
     std::vector<Point> createSquareMesh(Point top, Point bottom);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
-    void drawText(Texture* newretue, const stbtt_fontinfo font, int fontSize, std::string text);
     void getGeneratedCompponentByName();
     void calculatePosition();
+    void addCurrentClass(xml_node<>* node, std::vector<std::string> classes);
 
     FontMap fonts;
     int xResolution;
     int yResolution;
+    std::vector<AbstractComponent*> generatedComponents;
 
     PumpkinSpiceComponentObject* pumpkinSpiceComponentObject;
 

@@ -1,7 +1,9 @@
 #include "gtest/gtest.h"
 #include "lib/CommonTypes.h"
+#include "lib/Texture.h"
 
 
+// Move to a Texture test
 TEST(Common, flipImage) {
     unsigned char picture [] = {
         (unsigned char)255, (unsigned char)0, (unsigned char)0,(unsigned char)255,          (unsigned char)0, (unsigned char)255, (unsigned char)0,(unsigned char)255,

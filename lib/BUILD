@@ -1,21 +1,22 @@
 cc_library(
   name = "PumpkinSpice",
   srcs = [
-    "PumpkinSpice.cpp",
     "AbstractComponent.cpp",
+    "PumpkinSpice.cpp",
   ],
   hdrs = [
+    "AbstractComponent.h",
+    "ButtonComponent.h",
+    "CommonTypes.h",
+    "CommonUtils.h",
+    "InputComponent.h",
+    "Input.h",
     "PumpkinSpiceComponentObject.h",
     "PumpkinSpiceObject.h",
     "PumpkinSpice.h",
-    "AbstractComponent.h",
-    "Input.h",
-    "ButtonComponent.h",
-    "InputComponent.h",
-    "CommonTypes.h",
     "Style.h",
     "SpiceFactory.h",
-    "CommonUtils.h"
+    "Texture.h",
   ],
   deps = [
     "@rapidxml//:rapidxml",

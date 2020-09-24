@@ -105,56 +105,5 @@ struct Colour {
     }
 };
 
-struct Texture {
-    unsigned char* data;
-    int width;
-    int height;
-
-    static void flipYAxis(Texture* texture) {
-
-        unsigned char* newData = new unsigned char[texture->width * texture->height * BYTES_PER_PIXEL];
-        for (int y = 0; y != texture->height; y++) {
-            for (int x = 0; x != texture->width; x++) {
-                int numberOfCharacterInWidth = texture->width * BYTES_PER_PIXEL;
-                int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
-                
-                int oppositelPosition = (texture->height - y-1) * numberOfCharacterInWidth  + x * BYTES_PER_PIXEL;
-
-                newData[pixelPosition + 0] = texture->data[oppositelPosition + 0];
-                newData[pixelPosition + 1] = texture->data[oppositelPosition + 1];
-                newData[pixelPosition + 2] = texture->data[oppositelPosition + 2];
-                newData[pixelPosition + 3] = texture->data[oppositelPosition + 3];
-
-            }
-        }
-        texture->data = newData;
-    }
-
-    static Texture* createSquareTexture(int width, int height, Colour colour) {
-        Texture* texture = new Texture();
-        unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
-        for (int y = 0; y != height; y++) {
-            for (int x = 0; x != width; x++) {
-                int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
-                int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
-                bitmap[pixelPosition + 0] = colour.getRedChar();
-                bitmap[pixelPosition + 1] = colour.getGreenChar();
-                bitmap[pixelPosition + 2] = colour.getBlueChar();
-                bitmap[pixelPosition + 3] = colour.getAlphaChar();
-            }
-        }
-        texture->data = bitmap;
-        texture->width = width;
-        texture->height = height;
-        return texture;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Texture& texture) {
-        os << "Texture COLOUR{r: " << (int)texture.data[0] << ", g:" << (int)texture.data[1] << ", b:" << (int)texture.data[2] << "alpha:" << (int)texture.data[3] << "}";
-        return os;
-    }
-};
-
-
 
 #endif
