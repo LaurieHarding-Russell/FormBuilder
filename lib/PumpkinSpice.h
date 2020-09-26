@@ -20,6 +20,7 @@
 #include "AbstractComponent.h"
 #include "InputComponent.h"
 #include "ButtonComponent.h"
+#include "PumpkinFactory.h"
 #include "SpiceFactory.h"
 
 struct PumpkinSpiceCompiledComponent {
@@ -49,7 +50,6 @@ class PumpkinSpice {
     private:
     PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
     void initializeResolution(int x, int y);
-    std::vector<Point> createSquareMesh(Point top, Point bottom);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     void getGeneratedCompponentByName();
     void calculatePosition();

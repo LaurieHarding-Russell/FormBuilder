@@ -11,6 +11,7 @@ cc_library(
     "CommonUtils.h",
     "InputComponent.h",
     "Input.h",
+    "PumpkinFactory.h",
     "PumpkinSpiceComponentObject.h",
     "PumpkinSpiceObject.h",
     "PumpkinSpice.h",
