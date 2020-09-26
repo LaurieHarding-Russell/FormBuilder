@@ -88,17 +88,7 @@ PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, st
 
 
 void PumpkinSpice::addFont(std::string fontFileName, std::string fontName) {
-    unsigned char* fontBuffer; // FIX duplicate code should we use the util and make it C++17 byte type?
-
-    std::ifstream file(fontFileName, std::ios::binary);
-	if (!file.is_open()) {
-        exit(1);
-    }
-    file.seekg(0, std::ios::end);
-    unsigned long int fontBufferSize = (unsigned long int)file.tellg();
-    file.close();
-    fontBuffer = new unsigned char[fontBufferSize];
-    fread(fontBuffer, 1, 1<<25, fopen(fontFileName.c_str(), "rb"));
+    unsigned char* fontBuffer = util::loadFileToUnsignedChar(fontFileName);
     stbtt_fontinfo font;
     stbtt_InitFont(&font, fontBuffer, 0);
     fonts.insert(FontPair(fontName, font));
