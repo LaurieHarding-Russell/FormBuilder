@@ -12,3 +12,18 @@ cc_test(
         "empty.spice"
     ]
 )
+
+cc_test(
+    name = "pumpkinSpiceMeshTest",
+    srcs = [
+        "pumpkinSpiceMeshTest.cpp"
+    ],
+    deps = [
+        "@gtest//:gtest",
+        "//lib:PumpkinSpice",
+    ],
+    data = [
+        "pumpkinSpiceMeshTest.pumpkin",
+        "empty.spice"
+    ]
+)

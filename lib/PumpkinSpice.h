@@ -23,6 +23,20 @@
 #include "PumpkinFactory.h"
 #include "SpiceFactory.h"
 
+struct PumpkinSpiceComponentInput {
+    std::string name;
+    std::string pumkinFileName;
+    std::string spiceFileName;
+    std::function<AbstractComponent*(AbstractComponentInput*)> componentFactory;
+};
+
+struct PumpkinSpiceInput {
+    std::vector<PumpkinSpiceComponentInput> components;
+    PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
+    std::string basePumkinFileName;
+    std::string baseSpiceFileName;
+};
+
 struct PumpkinSpiceCompiledComponent {
     xml_node<>* componentPumpkin;
     json componentSpice;

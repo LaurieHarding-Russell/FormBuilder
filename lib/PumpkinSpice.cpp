@@ -44,7 +44,7 @@ void PumpkinSpice::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
     }
     PumpkinSpiceObject* pumpkinSpiceObject = compilePumpkinSpice(pumpkinSpiceInput.basePumkinFileName, pumpkinSpiceInput.baseSpiceFileName);
 
-    pumpkinSpiceComponentObject->pumpkinSpiceObjects.push_back(pumpkinSpiceObject);
+    pumpkinSpiceComponentObject->basePumpkinSpiceObjects = pumpkinSpiceObject;
     input->setComponents(generatedComponents);
     // THINK, pumpkinSpiceComponentObject->abstractComponents = generatedComponents plus input->setComponents breaks pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() if it happens before... don't understand.
     pumpkinSpiceComponentObject->abstractComponents = generatedComponents;
@@ -111,7 +111,6 @@ UserInput* PumpkinSpice::getInput() {
 }
 
 PumpkinSpiceComponentObject* PumpkinSpice::getPumpkinSpiceComponentObject() {
-    std::cout << "args: " << pumpkinSpiceComponentObject->pumpkinSpiceObjects[0]->meshes.size() << '\n';
     return pumpkinSpiceComponentObject;
 }
 

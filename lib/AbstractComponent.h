@@ -7,6 +7,7 @@
 #include <queue>
 
 #include <iostream>
+#include "PumpkinSpiceObject.h"
 
 struct ComponentState {
     bool hover;
@@ -39,6 +40,8 @@ public:
     Point getBottomRight();
     std::string name; // got to make setters getter but I'm lazy.
     
+    PumpkinSpiceObject* pumpkinSpiceObject;
+
     friend std::ostream& operator<<(std::ostream& os, const AbstractComponent& abstractComponent);
 protected:
     ComponentState state;

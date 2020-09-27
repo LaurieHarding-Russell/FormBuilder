@@ -2,7 +2,7 @@
 #define PUMPKIN_SPICE_OBJECT_H
 
 #include<functional>
-#include "AbstractComponent.h"
+#include "Texture.h"
 
 class PumpkinSpiceObject {
     public:
@@ -21,19 +21,4 @@ class PumpkinSpiceObject {
 
     std::vector<Texture*> textures; 
 };
-
-struct PumpkinSpiceComponentInput {
-    std::string name;
-    std::string pumkinFileName;
-    std::string spiceFileName;
-    std::function<AbstractComponent*(AbstractComponentInput*)> componentFactory;
-};
-
-struct PumpkinSpiceInput {
-    std::vector<PumpkinSpiceComponentInput> components;
-    PumpkinSpiceComponentInput pumpkinSpiceComponentInput;
-    std::string basePumkinFileName;
-    std::string baseSpiceFileName;
-};
-
 #endif

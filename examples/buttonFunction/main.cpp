@@ -61,8 +61,9 @@ void display(GLFWwindow* window) {
 
    textureIn = glGetUniformLocation(basicShader,"image");
 
-   for (uint objectIterator = 0; objectIterator != pumpkinSpiceComponentObject->pumpkinSpiceObjects.size(); objectIterator++) {
-      PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceComponentObject->pumpkinSpiceObjects[objectIterator];
+   std::vector<PumpkinSpiceObject*> pumpkinSpiceRenderObjects = pumpkinSpiceComponentObject->getPumpkinSpiceRenderObjects();
+   for (uint objectIterator = 0; objectIterator != pumpkinSpiceRenderObjects.size(); objectIterator++) {
+      PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceRenderObjects.at(objectIterator);
       GLuint* buffer = new GLuint[pumpkinSpiceObject->meshes.size()];
       GLuint* textureObj = new GLuint[pumpkinSpiceObject->meshes.size()];
 

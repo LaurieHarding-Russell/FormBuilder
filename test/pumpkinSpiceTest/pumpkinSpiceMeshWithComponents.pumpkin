@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <pumpkin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="lib/pumpkin.xsd">
-    <button name="buttonName"></button>
-    <button name="buttonName1"></button>
-    <button name="buttonName2"></button>
+    <button>
+        <div>
+        </div>
+    </button>
+    <div>
+    </div>
 </pumpkin>

@@ -7,8 +7,14 @@
 
 class PumpkinSpiceComponentObject {
     public: 
+    std::vector<PumpkinSpiceObject*> getPumpkinSpiceRenderObjects() {
+        std::vector<PumpkinSpiceObject*> pumpkinSpiceObject;
+        pumpkinSpiceObject.push_back(basePumpkinSpiceObjects);
+        return pumpkinSpiceObject;
+    }
+    
     std::vector<AbstractComponent*> abstractComponents;
-    std::vector<PumpkinSpiceObject*> pumpkinSpiceObjects;
+    PumpkinSpiceObject* basePumpkinSpiceObjects;
 
 };
 
