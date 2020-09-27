@@ -7,7 +7,7 @@
 #     deps = [
 #         "//lib:PumpkinSpice",
 #         "@glew//:glew",
-#         "@glut//freeglut/freeglut:glut",
+#         "@glfw//:glfw",
 #     ],
 #     data = [
 #         "style.spice",
@@ -15,9 +15,20 @@
 #         "@font//:Bangers",
 #         "//examples/shaders:shaders",
 #     ],
-#     linkopts = [
-#         "-lGL",
-#     ],
+#     linkopts = select({
+#         "@bazel_tools//src/conditions:linux_x86_64": [
+#             "-lX11",
+#             "-ldl",
+#             "-lpthread",
+#             "-lGL"
+#         ],
+#         "@bazel_tools//src/conditions:darwin_x86_64": [
+#             "-lX11",
+#             "-ldl",
+#             "-lpthread",
+#             "-lGL"
+#         ]
+#     }),
 #     defines = [ 
 #         "DEBUG",
 #         "GL_GLEXT_PROTOTYPES"
@@ -26,14 +37,4 @@
 #         "-Wno-unused",
 #         "-Wno-unused-function",
 #     ],
-# )
-
-
-# cc_library(
-#     name = "stb_image",
-#     hdrs = ["@stb_image//file"],
-#     visibility = ["//visibility:public"],
-#     strip_include_prefix = "/external/stb_image/file",
-#     include_prefix = "",
-#     linkstatic=True
 # )

@@ -55,8 +55,9 @@ void display(GLFWwindow* window) {
 
    textureIn = glGetUniformLocation(basicShader,"image");
 
-   for (uint objectIterator = 0; objectIterator != pumpkinSpiceComponentObject->getPumpkinSpiceRenderObjects().size(); objectIterator++) {
-      PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceComponentObject->getPumpkinSpiceRenderObjects()[objectIterator];
+   std::vector<PumpkinSpiceObject*> pumpkinSpiceRenderObjects = pumpkinSpiceComponentObject->getPumpkinSpiceRenderObjects();
+   for (uint objectIterator = 0; objectIterator != pumpkinSpiceRenderObjects.size(); objectIterator++) {
+      PumpkinSpiceObject* pumpkinSpiceObject = pumpkinSpiceRenderObjects.at(objectIterator);
       GLuint* buffer = new GLuint[pumpkinSpiceObject->meshes.size()];
       GLuint* textureObj = new GLuint[pumpkinSpiceObject->meshes.size()];
 
@@ -71,6 +72,7 @@ void display(GLFWwindow* window) {
          float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
          
          int bufferVertSize = size * sizeof(float);
+         
          int uvMapSize = pumpkinSpiceObject->textureMap.size() * 3 * sizeof(float);
 
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
@@ -80,7 +82,7 @@ void display(GLFWwindow* window) {
          glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
          
          glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
-         glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)bufferVertSize);
+         glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0, &bufferVertSize);
 
          Texture* texture = pumpkinSpiceObject->textures.at(i);
 
@@ -93,16 +95,14 @@ void display(GLFWwindow* window) {
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
          std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
-         int size = mesh.size() * 3;
 
          // Textures
          glBindTexture(GL_TEXTURE_2D, textureObj[i]);
          // think about buffering
 
-         glDrawArrays(GL_TRIANGLES, 0 , size);
+         glDrawArrays(GL_TRIANGLES, 0 , mesh.size());
       }
    }
-
 }
 
 int main(int argc, char** argv) {
