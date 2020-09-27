@@ -25,7 +25,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
             exit(0);
             break;
          case 257:
-            std::cout << helloCounter << '\n';
+            std::cout << "helloCounter" << helloCounter << '\n';
             break;
          default:
             std::cout << "KEY: " << key << "\n";
@@ -36,7 +36,10 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
    pumpkinSpiceCompiler.getInput()->callbackKeyDown(key);
 }
 
-void mouse(int button, int state, int x, int y) {
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+   if(action == GLFW_RELEASE) {
+      pumpkinSpiceCompiler.getInput()->callbackMouseButtonUpFunctions(button);
+   }
 }
 
 void display(GLFWwindow* window) {
@@ -126,7 +129,11 @@ int main(int argc, char** argv) {
 
    ButtonComponent* button = (ButtonComponent*)pumpkinSpiceCompiler.getComponpentByName("buttonName");
 
-   button->clickCallbackFunction = { [&]() { helloCounter++; } };
+   button->clickCallbackFunction = { [&]() { 
+         std::cout << "helloCounter" << helloCounter << '\n';
+         helloCounter++; 
+      } 
+   };
    GLFWwindow* window;
 
    if (!glfwInit()) {
@@ -144,6 +151,7 @@ int main(int argc, char** argv) {
    glfwSetKeyCallback(window, keyCallback);
    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
    
+   glfwSetMouseButtonCallback(window, mouseButtonCallback);
    glfwSetCursorPosCallback(window, cursorPositioncallback);
    
    glewExperimental = GL_TRUE;
@@ -182,6 +190,7 @@ void cursorPositioncallback(GLFWwindow* window, double x, double y) {
    float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
    float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
    Point position = Point(xPos, yPos, 0);
+   std::cout << "mp:" << position << "\n";
 
    pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
