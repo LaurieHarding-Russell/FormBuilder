@@ -2,7 +2,7 @@
 #include "lib/PumpkinSpice.h"
 
 
-TEST(DISABLED_PumpkinSpice, InputComponentCanSelect) {
+TEST(PumpkinSpice, InputComponentCanSelect) {
   PumpkinSpice pumpkinSpiceCompiler = PumpkinSpice(100, 100);
   PumpkinSpiceInput pumpkinSpiceInput;
 
@@ -11,10 +11,16 @@ TEST(DISABLED_PumpkinSpice, InputComponentCanSelect) {
 
   pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
   PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
+
+  // for(std::vector<Point> mesh: pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes) {
+  //   for (Point point : mesh) {
+  //     std::cout << point << "\n";
+  //   }
+  // }
   
   EXPECT_EQ(pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size(), 4);  
   EXPECT_EQ(pumpkinSpiceComponentObject->basePumpkinSpiceObjects->textures.size(), 4);  
-  EXPECT_EQ(pumpkinSpiceComponentObject->basePumpkinSpiceObjects->textureMap.size(), 1);  
+  EXPECT_EQ(pumpkinSpiceComponentObject->basePumpkinSpiceObjects->textureMap.size(), 6);  
 }
 
 
