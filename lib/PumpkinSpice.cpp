@@ -57,7 +57,7 @@ AbstractComponent* PumpkinSpice::getComponpentByName(std::string name) {
             return component;
         }
     }
-    return NULL; // hm full c++17 optional type?
+    throw std::invalid_argument("Can't find component of name " + name + "\n");
 }
 
 PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {

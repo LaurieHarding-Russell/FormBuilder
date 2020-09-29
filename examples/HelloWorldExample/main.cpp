@@ -15,7 +15,6 @@ int WIDTH = 400, HEIGHT = 400;
 int helloCounter = 0;
 
 void error_callback(int error, const char* description);
-void cursorPositioncallback(GLFWwindow* window, double x, double y);
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
    if (action == GLFW_PRESS) {
@@ -25,12 +24,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
             break;
       }
    }
-
-   pumpkinSpiceCompiler.getInput()->callbackKeyDown(key);
 }
 
-void mouse(int button, int state, int x, int y) {
-}
 
 void display(GLFWwindow* window) {
    float ratio;
@@ -116,10 +111,7 @@ int main(int argc, char** argv) {
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
-
-   ButtonComponent* button = (ButtonComponent*)pumpkinSpiceCompiler.getComponpentByName("buttonName");
-
-   button->clickCallbackFunction = { [&]() { helloCounter++; } };
+   
    GLFWwindow* window;
 
    if (!glfwInit()) {
@@ -136,9 +128,7 @@ int main(int argc, char** argv) {
    glfwMakeContextCurrent(window);
    glfwSetKeyCallback(window, keyCallback);
    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-   
-   glfwSetCursorPosCallback(window, cursorPositioncallback);
-   
+    
    glewExperimental = GL_TRUE;
    glewInit();
 
@@ -163,12 +153,4 @@ int main(int argc, char** argv) {
 
 void error_callback(int error, const char* description) {
     fputs(description, stderr);
-}
-
-void cursorPositioncallback(GLFWwindow* window, double x, double y) {
-   float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
-   float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
-   Point position = Point(xPos, yPos, 0);
-
-   pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
