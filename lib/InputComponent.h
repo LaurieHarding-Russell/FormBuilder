@@ -9,7 +9,7 @@ class InputComponent: AbstractComponent {
     std::string value;
     
     public:
-    InputComponent(AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
+    InputComponent(const AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
 
     }
 
@@ -17,11 +17,11 @@ class InputComponent: AbstractComponent {
         return value;
     }
 
-    void setValue(std::string value) {
+    void setValue(const std::string value) {
         this->value = value;
     }
 
-    void keyDown(char keyValue) override {
+    void keyDown(const char keyValue) override {
         AbstractComponent::keyDown(keyValue);
         if (state.selected) {
             if ((int)(keyValue) == 127 || (int)(keyValue) == 8) {
@@ -33,7 +33,7 @@ class InputComponent: AbstractComponent {
         }
     }
 
-    static AbstractComponent* InputComponentFactory(AbstractComponentInput* abstractComponentInput) {
+    static AbstractComponent* InputComponentFactory(const AbstractComponentInput* abstractComponentInput) {
         return new InputComponent(abstractComponentInput);
     };
 

@@ -111,6 +111,10 @@ int main(int argc, char** argv) {
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
+   std::cout << "test " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size() << "\n";
+   for (uint i = 0; i != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size(); i++) {
+      std::cout << "KEY: " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).at(0) << "\n";
+   }
    
    GLFWwindow* window;
 

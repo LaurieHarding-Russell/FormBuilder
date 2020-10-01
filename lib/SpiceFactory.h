@@ -7,7 +7,7 @@
 #include <iostream>
 
 // FIXME, enum
-static float calculateMeasurment(float measurment, std::string measurmentStyle) {
+static float calculateMeasurment(const float measurment,const std::string measurmentStyle) {
     std::string unit = measurmentStyle.substr(measurmentStyle.length() - 1, measurmentStyle.length() - 1);
     float value = stof(measurmentStyle.substr(0, measurmentStyle.length() - 1));
 
@@ -21,7 +21,7 @@ static float calculateMeasurment(float measurment, std::string measurmentStyle) 
     return newMeasurment;
 }
 
-static json getStyleState(json style, std::vector<std::string> originalClasses, Style& styleState) {
+static json getStyleState(const json style, std::vector<std::string> originalClasses, Style& styleState) {
     json untouchedStyle = style;
     std::vector<std::string> classes;
     copy(originalClasses.begin(), originalClasses.end(), back_inserter(classes));

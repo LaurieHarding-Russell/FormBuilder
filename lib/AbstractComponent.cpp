@@ -3,7 +3,7 @@
 
 // public 
 // FIXME, should everything inherit from abstract component even divs etc?
-AbstractComponent::AbstractComponent(AbstractComponentInput* abstractComponentInput) {
+AbstractComponent::AbstractComponent(const AbstractComponentInput* abstractComponentInput) {
     topLeft = abstractComponentInput->topLeft;
     bottomRight = abstractComponentInput->bottomRight;
     state.selected = false;
@@ -19,7 +19,7 @@ ComponentState AbstractComponent::getState() {
     return state;
 }
 
-void AbstractComponent::mousePositionChange(Point point) {
+void AbstractComponent::mousePositionChange(const Point point) {
     if(point.x > topLeft.x && point.x < bottomRight.x 
         && point.y > bottomRight.y && point.y  < topLeft.y) 
     {
@@ -29,7 +29,7 @@ void AbstractComponent::mousePositionChange(Point point) {
     }
 }
 
-void AbstractComponent::mouseClickDown(int button) {
+void AbstractComponent::mouseClickDown(const int button) {
     if (state.hover) {
         state.selected = true;
     }else {
@@ -37,15 +37,15 @@ void AbstractComponent::mouseClickDown(int button) {
     }
 }
 
-void AbstractComponent::mouseClickUp(int button) {
+void AbstractComponent::mouseClickUp(const int button) {
 
 }
 
-void AbstractComponent::keyUp(char value) {
+void AbstractComponent::keyUp(const char value) {
 
 }
 
-void AbstractComponent::keyDown(char value) {
+void AbstractComponent::keyDown(const char value) {
 
 }
 

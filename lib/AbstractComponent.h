@@ -25,16 +25,16 @@ struct AbstractComponentInput {
 
 class AbstractComponent {
 public:
-    AbstractComponent(AbstractComponentInput* input);
-    ~AbstractComponent();
+    AbstractComponent(const AbstractComponentInput* input);
+    virtual ~AbstractComponent();
 
     ComponentState getState();
 
     virtual void mousePositionChange(Point point);
-    virtual void mouseClickDown(int button);
-    virtual void mouseClickUp(int button);
-    virtual void keyUp(char value);
-    virtual void keyDown(char value);
+    virtual void mouseClickDown(const int button);
+    virtual void mouseClickUp(const int button);
+    virtual void keyUp(const char value);
+    virtual void keyDown(const char value);
 
     Point getTopLeft();
     Point getBottomRight();
@@ -49,5 +49,8 @@ protected:
 private:
     Point topLeft;
     Point bottomRight;
+
+    AbstractComponent(AbstractComponent&); // Don't copy initialized Abstractomponents
+    AbstractComponent& operator=(const AbstractComponent&);
 };
 #endif

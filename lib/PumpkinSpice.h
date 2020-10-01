@@ -52,18 +52,18 @@ class PumpkinSpice {
 
     public:
     PumpkinSpice();
-    PumpkinSpice(int x, int y);
+    PumpkinSpice(const int x,const  int y);
     ~PumpkinSpice();
-    void compileComponents(PumpkinSpiceInput pumpkinSpiceInput);
-    void addFont(std::string fontFileName, std::string fontName);
+    void compileComponents(const PumpkinSpiceInput pumpkinSpiceInput);
+    void addFont(const std::string fontFileName, const std::string fontName);
     UserInput* getInput();
 
-    AbstractComponent* getComponpentByName(std::string name);
+    AbstractComponent* getComponpentByName(const std::string name);
     PumpkinSpiceComponentObject* getPumpkinSpiceComponentObject();
 
     private:
-    PumpkinSpiceObject* compilePumpkinSpice(std::string pumkinFile, std::string styleFileName);
-    void initializeResolution(int x, int y);
+    PumpkinSpiceObject* compilePumpkinSpice(const std::string pumkinFile, const std::string styleFileName);
+    void initializeResolution(const int x, const int y);
     void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
     void getGeneratedCompponentByName();
     void calculatePosition();

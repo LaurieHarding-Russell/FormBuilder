@@ -4,7 +4,7 @@ PumpkinSpice::PumpkinSpice() {
     PumpkinSpice(500,500);
 }
 
-PumpkinSpice::PumpkinSpice(int xResolution, int yResolution) {
+PumpkinSpice::PumpkinSpice(const int xResolution, const int yResolution) {
     initializeResolution(xResolution, yResolution);
 
     PumpkinSpiceCompiledComponent* inputCompiledObject = new PumpkinSpiceCompiledComponent();
@@ -24,7 +24,7 @@ PumpkinSpice::PumpkinSpice(int xResolution, int yResolution) {
     pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
 }
 
-void PumpkinSpice::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
+void PumpkinSpice::compileComponents(const PumpkinSpiceInput pumpkinSpiceInput) {
 
     for (uint i = 0; i != pumpkinSpiceInput.components.size(); i++) {
         // FIXME, nameing, wording fix everywhere :) sorry future self.
@@ -32,7 +32,7 @@ void PumpkinSpice::compileComponents(PumpkinSpiceInput pumpkinSpiceInput) {
         rapidxml::xml_document<> pumpkin;
         
         pumpkin.parse<0>(xmlFile.data());
-        std::string spiceString = util::loadFile(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
+        std::string spiceString = util::loadFileToString(pumpkinSpiceInput.components.at(i).spiceFileName.c_str());
 
         json spice = json::parse(spiceString);
 
@@ -60,12 +60,12 @@ AbstractComponent* PumpkinSpice::getComponpentByName(std::string name) {
     throw std::invalid_argument("Can't find component of name " + name + "\n");
 }
 
-PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, std::string styleFileName) {
+PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(const std::string pumkinFile, const std::string styleFileName) {
     rapidxml::file<char> xmlFile = file<char>(pumkinFile.c_str());
     rapidxml::xml_document<> doc;
     doc.parse<0>(xmlFile.data());
 
-    std::string jsonString = util::loadFile(styleFileName);
+    std::string jsonString = util::loadFileToString(styleFileName);
 
     json style = json::parse(jsonString);
     std::vector<std::string> classes = std::vector<std::string>();
@@ -87,7 +87,7 @@ PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(std::string pumkinFile, st
 }
 
 
-void PumpkinSpice::addFont(std::string fontFileName, std::string fontName) {
+void PumpkinSpice::addFont(const std::string fontFileName, const std::string fontName) {
     unsigned char* fontBuffer = util::loadFileToUnsignedChar(fontFileName);
     stbtt_fontinfo font;
     stbtt_InitFont(&font, fontBuffer, 0);
@@ -101,7 +101,7 @@ PumpkinSpice::~PumpkinSpice() {
     delete input;
 }
 
-void PumpkinSpice::initializeResolution(int x, int y) {
+void PumpkinSpice::initializeResolution(const int x, const int y) {
     xResolution = x;
     yResolution = y;
 }

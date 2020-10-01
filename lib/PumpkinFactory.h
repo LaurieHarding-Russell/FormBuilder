@@ -4,7 +4,7 @@
 #include <vector>
 #include "CommonTypes.h"
 
-static std::vector<Point> createSquareMesh(Point topLeft, Point bottomRight) {
+static std::vector<Point> createSquareMesh(const Point topLeft, const Point bottomRight) {
     std::vector<Point> verts {
         // triangle 1
         Point(topLeft.x, bottomRight.y, topLeft.z),

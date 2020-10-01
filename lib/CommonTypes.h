@@ -45,7 +45,7 @@ class Point {
     }
 };
 
-static float* pointsToFloats(std::vector<Point> points) {
+static float* pointsToFloats(const std::vector<Point> points) {
     float* verts = new float[points.size() * 3];
     for(uint i = 0; i != points.size(); i++) {
         verts[0 + i*3] = points[i].x;
@@ -86,16 +86,16 @@ struct Colour {
         this->alpha = values[3];
     }
 
-    unsigned char getRedChar() {
+    unsigned char getRedChar() const {
         return 255 * this->red;
     }
-    unsigned char getGreenChar() {
+    unsigned char getGreenChar() const {
         return 255 * this->green;
     }
-    unsigned char getBlueChar() {
+    unsigned char getBlueChar() const {
         return 255 * this->blue;
     }
-    unsigned char getAlphaChar() {
+    unsigned char getAlphaChar() const {
         return 255 * this->alpha;
     }
 

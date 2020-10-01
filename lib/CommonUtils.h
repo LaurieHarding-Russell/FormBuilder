@@ -2,9 +2,10 @@
 #define COMMON_UTIL_H
 #include <string>
 #include <fstream>
+#include <cstddef>
 
 namespace util {
-    static std::string loadFile(std::string name) {
+    static std::string loadFileToString(const std::string name) {
         std::string data = "";
         std::ifstream file (name);
 
@@ -18,7 +19,7 @@ namespace util {
         return data;
     }
 
-    static unsigned char* loadFileToUnsignedChar(std::string name) { // FIXME, C++17 byte type?
+    static unsigned char* loadFileToUnsignedChar(const std::string name) {
         std::ifstream file(name, std::ios::binary);
         if (!file.is_open()) {
             exit(1);
@@ -30,5 +31,6 @@ namespace util {
         fread(fontBuffer, 1, 1<<25, fopen(name.c_str(), "rb"));
         return fontBuffer;
     }
+    
 }
 #endif

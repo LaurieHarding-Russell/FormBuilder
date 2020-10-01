@@ -13,31 +13,31 @@ class UserInput {
 
     public:
 
-    void callbackMousePosition(Point value) {
+    void callbackMousePosition(const Point value) {
         for(AbstractComponent* component: components) {
             component->mousePositionChange(value);
         }
     }
 
-    void callbackMouseButtonDownFunctions(int button) {
+    void callbackMouseButtonDownFunctions(const int button) {
         for(AbstractComponent* component: components) {
             component->mouseClickDown(button);
         }
     }
 
-    void callbackMouseButtonUpFunctions(int button) {
+    void callbackMouseButtonUpFunctions(const int button) {
         for(AbstractComponent* component: components) {
             component->mouseClickUp(button);
         }
     }
 
-    void callbackKeyDown(char value) {
+    void callbackKeyDown(const char value) {
         for(AbstractComponent* component: components) {
             component->keyDown(value);
         }
     }
 
-    void callbackKeyUp(char value) {
+    void callbackKeyUp(const char value) {
         for(AbstractComponent* component: components) {
             component->keyUp(value);
         }

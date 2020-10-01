@@ -32,7 +32,7 @@ class Texture {
         texture->data = newData;
     }
 
-    static Texture* createSquareTexture(int width, int height, Colour colour) {
+    static Texture* createSquareTexture(const int width, const int height, const Colour colour) {
         Texture* texture = new Texture();
         unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
         for (int y = 0; y != height; y++) {

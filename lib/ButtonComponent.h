@@ -7,19 +7,19 @@
 class ButtonComponent: AbstractComponent {
 
     public:
-    ButtonComponent(AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
+    ButtonComponent(const AbstractComponentInput* abstractComponentInput) : AbstractComponent(abstractComponentInput) {
 
     }
 
     std::function<void()> clickCallbackFunction;
 
 
-    static AbstractComponent* ButtonComponentFactory(AbstractComponentInput* abstractComponentInput) {
+    static AbstractComponent* ButtonComponentFactory(const AbstractComponentInput* abstractComponentInput) {
         return new ButtonComponent(abstractComponentInput);
     };
 
     private:
-    void mouseClickUp(int button) override {
+    void mouseClickUp(const int button) override {
         if (clickCallbackFunction) {
             clickCallbackFunction();
         }
