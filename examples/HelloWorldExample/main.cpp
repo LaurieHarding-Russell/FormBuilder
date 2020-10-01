@@ -111,10 +111,13 @@ int main(int argc, char** argv) {
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
-   std::cout << "test " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size() << "\n";
-   for (uint i = 0; i != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size(); i++) {
-      std::cout << "KEY: " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).at(0) << "\n";
-   }
+   // std::cout << "test " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size() << "\n";
+   // for (uint i = 0; i != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size(); i++) {
+   //       std::cout << "-----------------------------------------------------\n";
+   //    for (uint j = 0; j != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).size(); j++) {
+   //       std::cout << "KEY: " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).at(j) << "\n";
+   //    }
+   // }
    
    GLFWwindow* window;
 
@@ -139,6 +142,7 @@ int main(int argc, char** argv) {
    basicShader = initShader( "examples/shaders/standardVertexShader.glsl", "examples/shaders/standardFragmentShader.glsl");
 
    glEnable(GL_BLEND);
+   glEnable(GL_DEPTH);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
    glEnable(GL_PROGRAM_POINT_SIZE);

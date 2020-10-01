@@ -54,6 +54,23 @@ struct Style {
         this->formCursor = TOP_LEFT;
     }
 
+    Style(const Style& style) {
+        this->display = style.display;
+        this->topOffset = style.topOffset;
+        this->leftOffset = style.leftOffset;
+        this->bottomOffset = style.bottomOffset;
+        this->rightOffset = style.rightOffset;
+        this->font = style.font;
+        this->fontSize = style.fontSize;
+        this->backgroundColour = style.backgroundColour;
+        this->fontColour = style.fontColour;
+        this->xResolution = style.xResolution;
+        this->yResolution = style.yResolution;
+        this->width = style.width;
+        this->height = style.height;
+        this->formCursor = style.formCursor;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Style& style) {
         os << "Style{ \n" 
             << "display " << style.display << "\n"

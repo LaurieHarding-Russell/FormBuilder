@@ -1,5 +1,5 @@
 {
-    "background" : [1, 0, 0.0, 1.0],
+    "background" : [1.0, 0, 0.0, 1.0],
     "helloWorld" : {
         "background" : [0, 0.0, 1.0, 1.0],
         "colour" : [0, 0, 0, 1.0],

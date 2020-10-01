@@ -38,6 +38,11 @@ class Point {
         this->z = z;
     }
     
+    Point(const Point& point) {
+        this->x = point.x;
+        this->y = point.y;
+        this->z = point.z;
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const Point& point) {
         os << "POINT{X: " << point.x << ", Y:" << point.y << ", Z:" << point.z <<"}";

@@ -64,7 +64,7 @@ class PumpkinSpice {
     private:
     PumpkinSpiceObject* compilePumpkinSpice(const std::string pumkinFile, const std::string styleFileName);
     void initializeResolution(const int x, const int y);
-    void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState);
+    void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, const Style styleState);
     void getGeneratedCompponentByName();
     void calculatePosition();
     void addCurrentClass(xml_node<>* node, std::vector<std::string> classes);

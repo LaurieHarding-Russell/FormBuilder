@@ -115,7 +115,8 @@ PumpkinSpiceComponentObject* PumpkinSpice::getPumpkinSpiceComponentObject() {
 }
 
 // FIXME, so many pararms!!
-void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, Style styleState) {
+void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, const Style parentStyleState) {
+    Style styleState = Style(parentStyleState);
     // FIXME
     if (node == 0) {
         return;
@@ -138,19 +139,10 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
         newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
 
-    // fixme, check if fits?
-    // overflow style?
-    // TODO: padding/margin
-    // function of style?
-    if (styleState.formCursor.x + styleState.width > BOTTOM_RIGHT.x) {
-        styleState.formCursor.x = TOP_LEFT.x;
-        styleState.formCursor.y = styleState.formCursor.y - styleState.height;
-    }
-
-    Point myTopLeft(styleState.formCursor.x, styleState.formCursor.y, styleState.formCursor.z);
+    Point myTopLeft(styleState.formCursor);
     Point myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
 
-    styleState.formCursor.x = styleState.formCursor.x + styleState.width;
+    // styleState.formCursor.x = styleState.formCursor.x + styleState.width;
 
     // std::cout << myTopLeft << '\n';
     // std::cout << myBottomRight << "\n\n";
@@ -182,6 +174,14 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
                 iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
             }
         }
+        // fixme, check if fits?
+        // overflow style?
+        // TODO: padding/margin
+        // function of style?
+        // if (styleState.formCursor.x + styleState.width > BOTTOM_RIGHT.x) {
+            // styleState.formCursor.x = TOP_LEFT.x;
+            styleState.formCursor.y = styleState.formCursor.y - styleState.height;
+        // }
     }
 }
 
