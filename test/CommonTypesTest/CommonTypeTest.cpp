@@ -10,10 +10,8 @@ TEST(Common, flipImage) {
         (unsigned char)0, (unsigned char)0, (unsigned char)255,(unsigned char)255,          (unsigned char)0, (unsigned char)0, (unsigned char)0,(unsigned char)255
     };
 
-    Texture* texture = new Texture();
+    Texture* texture = new Texture(2, 2);
     texture->data = picture;
-    texture->width = 2;
-    texture->height = 2;
     
     EXPECT_EQ(texture->data[0], (unsigned char)255);
     EXPECT_EQ(texture->data[1], (unsigned char)0);
