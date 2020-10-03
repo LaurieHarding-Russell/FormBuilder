@@ -9,6 +9,9 @@
 
 class Texture {
     private:
+    int width;
+    int height;
+
     const int fileHeaderSize = 14;
     const int infoHeaderSize = 40;
 
@@ -65,8 +68,24 @@ class Texture {
 
     public:
     unsigned char* data;
-    int width;
-    int height;
+
+    Texture(int width, int height) {
+        this->width = width;
+        this->height = height;
+        data = new unsigned char[width * height * BYTES_PER_PIXEL];
+    }
+    
+    ~Texture() {
+        delete data;
+    }
+
+    int getWidth() {
+        return width;
+    }
+
+    int getHeight() {
+        return height;
+    }
 
     static void flipYAxis(Texture* texture) {
         unsigned char* newData = new unsigned char[texture->width * texture->height * BYTES_PER_PIXEL];
@@ -88,21 +107,17 @@ class Texture {
     }
 
     static Texture* createSquareTexture(const int width, const int height, const Colour colour) {
-        Texture* texture = new Texture();
-        unsigned char* bitmap = new unsigned char[width * height * BYTES_PER_PIXEL];
+        Texture* texture = new Texture(width, height);
         for (int y = 0; y != height; y++) {
             for (int x = 0; x != width; x++) {
                 int numberOfCharacterInWidth = width * BYTES_PER_PIXEL;
                 int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
-                bitmap[pixelPosition + 0] = colour.getRedChar();
-                bitmap[pixelPosition + 1] = colour.getGreenChar();
-                bitmap[pixelPosition + 2] = colour.getBlueChar();
-                bitmap[pixelPosition + 3] = colour.getAlphaChar();
+                texture->data[pixelPosition + 0] = colour.getRedChar();
+                texture->data[pixelPosition + 1] = colour.getGreenChar();
+                texture->data[pixelPosition + 2] = colour.getBlueChar();
+                texture->data[pixelPosition + 3] = colour.getAlphaChar();
             }
         }
-        texture->data = bitmap;
-        texture->width = width;
-        texture->height = height;
         return texture;
     }
 
@@ -153,6 +168,26 @@ class Texture {
         Texture::flipYAxis(newTexture);
     }
 
+    void setColourToColour(const Colour from, const Colour to) {
+        for (int y = 0; y != this->height; y++) {
+            for (int x = 0; x != this->width; x++) {
+                int numberOfCharacterInWidth = this->width * BYTES_PER_PIXEL;
+                int pixelPosition = y * numberOfCharacterInWidth + x * BYTES_PER_PIXEL;
+                
+                if (from.red == this->data[pixelPosition + 0] && 
+                    from.green == this->data[pixelPosition + 1] && 
+                    from.blue == this->data[pixelPosition + 2] && 
+                    from.alpha == this->data[pixelPosition + 3]) 
+                {
+                    this->data[pixelPosition + 0] = to.red;
+                    this->data[pixelPosition + 1] = to.green;
+                    this->data[pixelPosition + 2] = to.blue;
+                    this->data[pixelPosition + 3] = to.alpha;
+                }
+            }
+        }
+    }
+
     void saveAsBitmapImage(const char* imageFileName) {
         unsigned char padding[3] = { 0, 0, 0 };
         int pitch = width * BYTES_PER_PIXEL;
@@ -160,7 +195,7 @@ class Texture {
 
         unsigned char* fileHeader = createBitmapFileHeader(height, width, pitch, paddingSize);
         unsigned char* infoHeader = createBitmapInfoHeader(height, width);
-
+         std::cout << "test\n";
 
         FILE* imageFile = fopen(imageFileName, "wb");
 

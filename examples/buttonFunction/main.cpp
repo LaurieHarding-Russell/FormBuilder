@@ -22,7 +22,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
       switch (key) {
          case 256:
          case 81:
-            exit(0);
+            glfwSetWindowShouldClose(window, true);
             break;
          case 257:
             std::cout << "helloCounter" << helloCounter << '\n';

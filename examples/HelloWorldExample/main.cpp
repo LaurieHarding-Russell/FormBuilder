@@ -19,6 +19,10 @@ void error_callback(int error, const char* description);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
    if (action == GLFW_PRESS) {
       switch (key) {
+         case 256:
+         case 81:
+            glfwSetWindowShouldClose(window, true);
+            break;
          default:
             std::cout << "KEY: " << key << "\n";
             break;
@@ -80,13 +84,13 @@ void display(GLFWwindow* window) {
 
          Texture* texture = pumpkinSpiceObject->textures.at(i);
 
+         // texture->saveAsBitmapImage("/home/laurie/test.bmp"); // add full path.
+
          glBindTexture(GL_TEXTURE_2D, textureObj[i]);
-         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
+         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->getWidth(), texture->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
          glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
          glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       }
-
-      // pumpkinSpiceObject->textures.at(2)->saveAsBitmapImage("test3.bmp"); // add full path. ~ breaks
 
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
