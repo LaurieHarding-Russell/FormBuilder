@@ -86,6 +86,8 @@ void display(GLFWwindow* window) {
          glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       }
 
+      // pumpkinSpiceObject->textures.at(2)->saveAsBitmapImage("test3.bmp"); // add full path. ~ breaks
+
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
          std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
@@ -111,13 +113,6 @@ int main(int argc, char** argv) {
    pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
    PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
-   // std::cout << "test " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size() << "\n";
-   // for (uint i = 0; i != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.size(); i++) {
-   //       std::cout << "-----------------------------------------------------\n";
-   //    for (uint j = 0; j != pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).size(); j++) {
-   //       std::cout << "KEY: " << pumpkinSpiceComponentObject->basePumpkinSpiceObjects->meshes.at(i).at(j) << "\n";
-   //    }
-   // }
    
    GLFWwindow* window;
 

@@ -66,11 +66,26 @@ struct Colour {
     float blue;
     float alpha; 
 
+    void validColourInput(float r, float g, float b, float a) {
+        if (r > 1.0 || r < 0.0 ||
+            g > 1.0 || g < 0.0 ||
+            b > 1.0 || b < 0.0 ||
+            a > 1.0 || a < 0.0
+        ) {
+            throw std::logic_error("Invalid colour value inputed");
+        }
+    }
+
     Colour() {
         Colour(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
     Colour(std::vector<float> values) {
+        validColourInput(values[0],
+                values[1], 
+                values[2], 
+                values[3]);
+                
         Colour(values[0],
                 values[1], 
                 values[2], 
@@ -78,6 +93,7 @@ struct Colour {
     }
 
     Colour(float r, float g, float b, float a) {
+        validColourInput(r, g, b, a);
         red = r;
         green = g;
         blue = b;

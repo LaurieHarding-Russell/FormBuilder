@@ -24,6 +24,13 @@ PumpkinSpice::PumpkinSpice(const int xResolution, const int yResolution) {
     pumpkinSpiceComponentObject = new PumpkinSpiceComponentObject();
 }
 
+PumpkinSpice::~PumpkinSpice() {
+    for(AbstractComponent* component: generatedComponents) {
+        delete component;
+    }
+    // delete input;
+}
+
 void PumpkinSpice::compileComponents(const PumpkinSpiceInput pumpkinSpiceInput) {
 
     for (uint i = 0; i != pumpkinSpiceInput.components.size(); i++) {
@@ -78,7 +85,7 @@ PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(const std::string pumkinFi
     xml_node<>* pumpkinXML = doc.first_node("pumpkin");
 
     if (pumpkinXML == 0) {
-        std::cout << "invald xml\n";
+        throw std::logic_error("invald xml\n");
     }
     Style styleState = Style();
 
@@ -92,13 +99,6 @@ void PumpkinSpice::addFont(const std::string fontFileName, const std::string fon
     stbtt_fontinfo font;
     stbtt_InitFont(&font, fontBuffer, 0);
     fonts.insert(FontPair(fontName, font));
-}
-
-PumpkinSpice::~PumpkinSpice() {
-    for(AbstractComponent* component: generatedComponents) {
-        delete component;
-    }
-    delete input;
 }
 
 void PumpkinSpice::initializeResolution(const int x, const int y) {
@@ -127,13 +127,13 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
     styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
     style = getStyleState(style, classes, styleState);
     // THINK, maybe it should always just be alpha unless class applying background has the colour.
-    Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0,0,0));
+    Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,1.0,0,0.0));
 
     if (strcmp(node->name(),"") == 0) {
         if (styleState.font != "") {        // think about this. default font?
             const stbtt_fontinfo font = fonts[styleState.font];
-            // FIXME, width height
             Texture::drawText(newTexture, font, styleState.fontSize, node->value());
+            
         }
     } else {
         newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
@@ -144,8 +144,6 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
 
     // styleState.formCursor.x = styleState.formCursor.x + styleState.width;
 
-    // std::cout << myTopLeft << '\n';
-    // std::cout << myBottomRight << "\n\n";
     pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
     pumpkinSpiceObject->textures.push_back(newTexture);
 
@@ -157,11 +155,7 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
 
                 PumpkinSpiceCompiledComponent* component = components.at(tag);
                 // FIXME, shadow peircing.
-                Style subStyleState = Style();
-                subStyleState.width = styleState.width;
-                subStyleState.height = styleState.height;
-                subStyleState.formCursor = styleState.formCursor;
-                iterateOverNode(component->componentPumpkin, pumpkinSpiceObject, component->componentSpice, std::vector<std::string>(), subStyleState);
+                iterateOverNode(component->componentPumpkin, pumpkinSpiceObject, component->componentSpice, std::vector<std::string>(), styleState);
                 AbstractComponentInput* abstractComponentInput = new AbstractComponentInput();
                 abstractComponentInput->topLeft = myTopLeft;
                 abstractComponentInput->bottomRight = myBottomRight;

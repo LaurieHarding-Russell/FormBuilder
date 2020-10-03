@@ -12,6 +12,13 @@ class UserInput {
     std::vector<AbstractComponent*> components;
 
     public:
+    UserInput() {
+
+    }
+    
+    ~UserInput() {
+
+    }
 
     void callbackMousePosition(const Point value) {
         for(AbstractComponent* component: components) {
