@@ -133,7 +133,7 @@ void PumpkinSpice::iterateOverNode(IterateNodeState iterateNodeState) {
     styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
     iterateNodeState.style = getStyleState(iterateNodeState.style, iterateNodeState.classes, styleState);
     // THINK, maybe it should always just be alpha unless class applying background has the colour.
-    Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,1.0,0,0.0));
+    Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,0.0,0,0.0));
 
     if (strcmp(iterateNodeState.node->name(),"") == 0) {
         if (styleState.font != "") {        // think about this. default font?

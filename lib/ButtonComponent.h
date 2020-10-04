@@ -20,8 +20,10 @@ class ButtonComponent: AbstractComponent {
 
     private:
     void mouseClickUp(const int button) override {
-        if (clickCallbackFunction) {
-            clickCallbackFunction();
+        if (state.hover) {
+            if (clickCallbackFunction) {
+                clickCallbackFunction();
+            }
         }
     }
 };
