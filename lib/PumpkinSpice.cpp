@@ -89,7 +89,13 @@ PumpkinSpiceObject* PumpkinSpice::compilePumpkinSpice(const std::string pumkinFi
     }
     Style styleState = Style();
 
-    iterateOverNode(pumpkinXML, pumpkinSpiceObject, style, std::vector<std::string>(), styleState);
+    IterateNodeState iterateNodeState;
+    iterateNodeState.node = pumpkinXML;
+    iterateNodeState.pumpkinSpiceObject = pumpkinSpiceObject; 
+    iterateNodeState.style = style;
+    iterateNodeState.classes = std::vector<std::string>();
+    iterateNodeState.parentStyleState = styleState;
+    iterateOverNode(iterateNodeState);
     return pumpkinSpiceObject;
 }
 
@@ -115,24 +121,24 @@ PumpkinSpiceComponentObject* PumpkinSpice::getPumpkinSpiceComponentObject() {
 }
 
 // FIXME, so many pararms!!
-void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, const Style parentStyleState) {
-    Style styleState = Style(parentStyleState);
+void PumpkinSpice::iterateOverNode(IterateNodeState iterateNodeState) {
+    Style styleState = Style(iterateNodeState.parentStyleState);
     // FIXME
-    if (node == 0) {
+    if (iterateNodeState.node == 0) {
         return;
     }
 
-    addCurrentClass(node, classes);
+    addCurrentClass(iterateNodeState.node, iterateNodeState.classes);
 
     styleState.formCursor.z = styleState.formCursor.z + std::numeric_limits<float>::min();
-    style = getStyleState(style, classes, styleState);
+    iterateNodeState.style = getStyleState(iterateNodeState.style, iterateNodeState.classes, styleState);
     // THINK, maybe it should always just be alpha unless class applying background has the colour.
     Texture* newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, Colour(0,1.0,0,0.0));
 
-    if (strcmp(node->name(),"") == 0) {
+    if (strcmp(iterateNodeState.node->name(),"") == 0) {
         if (styleState.font != "") {        // think about this. default font?
             const stbtt_fontinfo font = fonts[styleState.font];
-            Texture::drawText(newTexture, font, styleState.fontSize, node->value());
+            Texture::drawText(newTexture, font, styleState.fontSize, iterateNodeState.node->value());
             
         }
     } else {
@@ -144,10 +150,10 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
 
     // styleState.formCursor.x = styleState.formCursor.x + styleState.width;
 
-    pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
-    pumpkinSpiceObject->textures.push_back(newTexture);
+    iterateNodeState.pumpkinSpiceObject->meshes.push_back(createSquareMesh(myTopLeft, myBottomRight));
+    iterateNodeState.pumpkinSpiceObject->textures.push_back(newTexture);
 
-    for (xml_node<> *child = node->first_node(); child; child = child->next_sibling()) {
+    for (xml_node<> *child = iterateNodeState.node->first_node(); child; child = child->next_sibling()) {
         if (child != 0) {
             std::string tag = child->name();
             if (components.find(tag) != components.end()) {
@@ -155,7 +161,12 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
 
                 PumpkinSpiceCompiledComponent* component = components.at(tag);
                 // FIXME, shadow peircing.
-                iterateOverNode(component->componentPumpkin, pumpkinSpiceObject, component->componentSpice, std::vector<std::string>(), styleState);
+                IterateNodeState newIterateNodeState(iterateNodeState);
+                newIterateNodeState.node = component->componentPumpkin;
+                newIterateNodeState.style = component->componentSpice;
+                newIterateNodeState.classes = std::vector<std::string>();
+                newIterateNodeState.parentStyleState = styleState;
+                iterateOverNode(newIterateNodeState);
                 AbstractComponentInput* abstractComponentInput = new AbstractComponentInput();
                 abstractComponentInput->topLeft = myTopLeft;
                 abstractComponentInput->bottomRight = myBottomRight;
@@ -163,9 +174,12 @@ void PumpkinSpice::iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkin
                 generatedComponents.push_back(component->componentFactory(abstractComponentInput));
                 delete abstractComponentInput;
                 
-                style[tag] = components.at(tag)->componentSpice;
+                iterateNodeState.style[tag] = components.at(tag)->componentSpice;
             } else{
-                iterateOverNode(child, pumpkinSpiceObject, style, classes, styleState);
+                IterateNodeState newIterateNodeState(iterateNodeState);
+                newIterateNodeState.node = child;
+                newIterateNodeState.parentStyleState = styleState;
+                iterateOverNode(newIterateNodeState);
             }
         }
         // fixme, check if fits?

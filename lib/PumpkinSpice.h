@@ -43,6 +43,24 @@ struct PumpkinSpiceCompiledComponent {
     std::function<AbstractComponent*(AbstractComponentInput*)> componentFactory;
 };
 
+struct IterateNodeState {
+    xml_node<>* node;
+    PumpkinSpiceObject* pumpkinSpiceObject;
+    json style;
+    std::vector<std::string> classes;
+    Style parentStyleState;
+
+    IterateNodeState() {}
+
+    IterateNodeState(const IterateNodeState& iterateNodeState) {
+        this->node = iterateNodeState.node;
+        this->pumpkinSpiceObject = iterateNodeState.pumpkinSpiceObject;
+        this->style = iterateNodeState.style;
+        this->classes = iterateNodeState.classes;
+        this->parentStyleState = iterateNodeState.parentStyleState;
+    }
+};
+
 typedef std::map<std::string, stbtt_fontinfo> FontMap;
 typedef std::pair<std::string, stbtt_fontinfo> FontPair;
 typedef std::pair<std::string, PumpkinSpiceCompiledComponent*> ComponentPair;
@@ -64,7 +82,7 @@ class PumpkinSpice {
     private:
     PumpkinSpiceObject* compilePumpkinSpice(const std::string pumkinFile, const std::string styleFileName);
     void initializeResolution(const int x, const int y);
-    void iterateOverNode(xml_node<>* node, PumpkinSpiceObject* pumpkinSpiceObject, json style, std::vector<std::string> classes, const Style styleState);
+    void iterateOverNode(const IterateNodeState iterateNodeState);
     void getGeneratedCompponentByName();
     void calculatePosition();
     void addCurrentClass(xml_node<>* node, std::vector<std::string> classes);
