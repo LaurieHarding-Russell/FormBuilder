@@ -31,16 +31,32 @@ cc_library(
       sha256 = "d5119019bbf376ee8c9c4093f80fa087dd3ef052b824d0b0e3136d8d4f912f37",
     )
 
-    http_file(
-        name = "stb_truetype",
-        downloaded_file_path = "stb_truetype.h",
-        urls = ["https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h"],
-        sha256 = "5e28e92519846ef1a6118a454cdec146f6375655fb7e53b6102bfb224d16c17a"
-    )
+    http_archive(
+        name = "nothings",
+        urls = ["https://github.com/nothings/stb/archive/b42009b3b9d4ca35bc703f5310eedc74f584be58.tar.gz"],
+        strip_prefix = "stb-b42009b3b9d4ca35bc703f5310eedc74f584be58",
+        build_file_content = """
+cc_library(
+    name = "stb_truetype",
+    hdrs = ["stb_truetype.h"],
+    visibility = ["//visibility:public"],
+    include_prefix = "",
+    copts = [
+        "-Wno-unused",
+        "-Wno-unused-function",
+    ],
+)
 
-    http_file(
-        name = "stb_image",
-        downloaded_file_path = "stb_image.h",
-        urls = ["https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"],
-        sha256 = "8e5b0d717dfc8a834c97ef202d20e78d083d009586e1731c985817d0155d568c"
+cc_library(
+    name = "stb_image",
+    hdrs = ["stb_image.h"],
+    visibility = ["//visibility:public"],
+    include_prefix = "",
+    copts = [
+        "-Wno-unused",
+        "-Wno-unused-function",
+    ],
+)
+""",
+    sha256 = "13a99ad430e930907f5611325ec384168a958bf7610e63e60e2fd8e7b7379610",
     )
