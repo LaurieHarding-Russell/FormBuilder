@@ -80,13 +80,6 @@ void display(GLFWwindow* window) {
          float* meshFloat = pointsToFloats(mesh);
          float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
          
-         for (uint asdf = 0; asdf != mesh.size(); asdf++) {
-            std::cout << mesh.at(asdf).x << "\n";
-            std::cout << mesh.at(asdf).y << "\n";
-            std::cout << mesh.at(asdf).z << "\n";
-         }
-
-         std::cout << "\n\n";
          int bufferVertSize = size * sizeof(float);
          
          int uvMapSize = pumpkinSpiceObject->textureMap.size() * 3 * sizeof(float);
