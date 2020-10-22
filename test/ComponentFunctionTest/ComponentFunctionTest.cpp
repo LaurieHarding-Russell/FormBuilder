@@ -23,7 +23,7 @@ TEST(ComponentFunctionTest, test_function_linking) {
 
   EXPECT_EQ(BEFORE_CLICK, helloVariable);
 
-  Point point;
+  glm::vec2 point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);

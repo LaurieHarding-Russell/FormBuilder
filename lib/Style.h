@@ -4,8 +4,8 @@
 #include "CommonTypes.h"
 
 // FIXME, inherted from openGL. Think about this as a default coordinate system. Also naming
-const Point TOP_LEFT(-1.0f, 1.0f, 0.0f);
-const Point BOTTOM_RIGHT(1.0f, -1.0f, 0.0f);
+const glm::vec3 TOP_LEFT(-1.0f, 1.0f, 0.0f);
+const glm::vec3 BOTTOM_RIGHT(1.0f, -1.0f, 0.0f);
 
 enum StyleDisplay {
     INLINE,
@@ -35,7 +35,7 @@ struct Style {
     float height;
     int xResolution;
     int yResolution;
-    Point formCursor;
+    glm::vec3 formCursor;
 
     Style() {
         this->display = BLOCK;

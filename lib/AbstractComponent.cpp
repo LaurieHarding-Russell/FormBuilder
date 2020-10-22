@@ -19,7 +19,7 @@ ComponentState AbstractComponent::getState() {
     return state;
 }
 
-void AbstractComponent::mousePositionChange(const Point point) {
+void AbstractComponent::mousePositionChange(const glm::vec2 point) {
     if(point.x > topLeft.x && point.x < bottomRight.x 
         && point.y > bottomRight.y && point.y  < topLeft.y) 
     {
@@ -50,17 +50,16 @@ void AbstractComponent::keyDown(const char value) {
 }
 
 
-Point AbstractComponent::getTopLeft() {
+glm::vec3 AbstractComponent::getTopLeft() {
     return topLeft;
 }
 
-Point AbstractComponent::getBottomRight() {
+glm::vec3 AbstractComponent::getBottomRight() {
     return bottomRight;
 }
 
 std::ostream& operator<<(std::ostream& os, const AbstractComponent& abstractComponent) {
-    os << "Component { topLeft:: " << abstractComponent.topLeft
-        << " bottomRight: " << abstractComponent.bottomRight
+    os << "Component { "
         << " name:" << abstractComponent.name << " }";
     return os;
 }

@@ -4,16 +4,16 @@
 #include <vector>
 #include "CommonTypes.h"
 
-static std::vector<Point> createSquareMesh(const Point topLeft, const Point bottomRight) {
-    std::vector<Point> verts {
+static std::vector<glm::vec3> createSquareMesh(const glm::vec3 topLeft, const glm::vec3 bottomRight) {
+    std::vector<glm::vec3> verts {
         // triangle 1
-        Point(topLeft.x, bottomRight.y, topLeft.z),
-        Point(topLeft.x, topLeft.y, topLeft.z),
-        Point(bottomRight.x, topLeft.y, topLeft.z),
+        glm::vec3(topLeft.x, bottomRight.y, topLeft.z),
+        glm::vec3(topLeft.x, topLeft.y, topLeft.z),
+        glm::vec3(bottomRight.x, topLeft.y, topLeft.z),
         /// triangle 2
-        Point(topLeft.x, bottomRight.y, topLeft.z),
-        Point(bottomRight.x, topLeft.y, topLeft.z),
-        Point(bottomRight.x, bottomRight.y, topLeft.z)
+        glm::vec3(topLeft.x, bottomRight.y, topLeft.z),
+        glm::vec3(bottomRight.x, topLeft.y, topLeft.z),
+        glm::vec3(bottomRight.x, bottomRight.y, topLeft.z)
     };
     return verts;
 }

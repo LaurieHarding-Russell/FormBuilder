@@ -3,20 +3,21 @@
 
 #include<functional>
 #include "Texture.h"
+#include <glm/glm.hpp>
 
 class PumpkinSpiceObject {
     public:
-    std::vector<std::vector<Point>> meshes;
+    std::vector<std::vector<glm::vec3>> meshes;
     // forground background textures?
-    std::vector<Point> textureMap {
+    std::vector<glm::vec2> textureMap {
         // triangle 1
-        Point(0.0f,0.0f),						// bottom left
-        Point(0.0f,1.0f),						// Top left
-        Point(1.0f,1.0f),						// top right
+        glm::vec2(0.0f,0.0f),						// bottom left
+        glm::vec2(0.0f,1.0f),						// Top left
+        glm::vec2(1.0f,1.0f),						// top right
         // triangle 2
-        Point(0.0f,0.0f),						// bottom left
-        Point(1.0f,1.0f),						// top right
-        Point(1.0f,0.0f)						// bottom right
+        glm::vec2(0.0f,0.0f),						// bottom left
+        glm::vec2(1.0f,1.0f),						// top right
+        glm::vec2(1.0f,0.0f)						// bottom right
     };
 
     std::vector<Texture*> textures; 

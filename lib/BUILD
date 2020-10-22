@@ -23,7 +23,8 @@ cc_library(
     "@rapidxml//:rapidxml",
     "@json//:json",
     "@nothings//:stb_truetype",
-    "@nothings//:stb_image"
+    "@nothings//:stb_image",
+    "@glm//:glm",
   ],
   data = [
     "pumpkin.xsd",

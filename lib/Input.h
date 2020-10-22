@@ -20,7 +20,7 @@ class UserInput {
 
     }
 
-    void callbackMousePosition(const Point value) {
+    void callbackMousePosition(const glm::vec2 value) {
         for(AbstractComponent* component: components) {
             component->mousePositionChange(value);
         }

@@ -12,7 +12,7 @@ TEST(PumpkinSpice, InputComponentCanSelect) {
   pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
   PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
-  Point point;
+  glm::vec2 point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
@@ -31,7 +31,7 @@ TEST(PumpkinSpice, InputComponentCanUpdateValue) {
   pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
   PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
-  Point point;
+  glm::vec2 point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);
@@ -61,7 +61,7 @@ TEST(PumpkinSpice, InputComponentCanBackspace) {
   pumpkinSpiceCompiler.compileComponents(pumpkinSpiceInput);
   PumpkinSpiceComponentObject* pumpkinSpiceComponentObject = pumpkinSpiceCompiler.getPumpkinSpiceComponentObject();
 
-  Point point;
+  glm::vec2 point;
   point.x = 0.5;
   point.y = 0.5;
   pumpkinSpiceCompiler.getInput()->callbackMousePosition(point);

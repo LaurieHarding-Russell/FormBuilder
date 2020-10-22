@@ -63,7 +63,7 @@ void display(GLFWwindow* window) {
       glGenTextures(pumpkinSpiceObject->meshes.size(), textureObj);
       // Load it.
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
-         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+         std::vector<glm::vec3> mesh = pumpkinSpiceObject->meshes.at(i);
          int size = mesh.size() * 3;
 
          float* meshFloat = pointsToFloats(mesh);
@@ -94,7 +94,7 @@ void display(GLFWwindow* window) {
 
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
-         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+         std::vector<glm::vec3> mesh = pumpkinSpiceObject->meshes.at(i);
 
          // Textures
          glBindTexture(GL_TEXTURE_2D, textureObj[i]);

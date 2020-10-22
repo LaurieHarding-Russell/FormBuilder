@@ -145,8 +145,8 @@ void PumpkinSpice::iterateOverNode(IterateNodeState iterateNodeState) {
         newTexture = Texture::createSquareTexture(styleState.xResolution, styleState.yResolution, styleState.backgroundColour);
     }
 
-    Point myTopLeft(styleState.formCursor);
-    Point myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
+    glm::vec3 myTopLeft(styleState.formCursor);
+    glm::vec3 myBottomRight(styleState.formCursor.x + styleState.width, styleState.formCursor.y - styleState.height, styleState.formCursor.z);
 
     // styleState.formCursor.x = styleState.formCursor.x + styleState.width;
 

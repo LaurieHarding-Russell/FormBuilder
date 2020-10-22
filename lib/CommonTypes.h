@@ -7,50 +7,24 @@
 #include "rapidxml.hpp"
 #include "single_include/nlohmann/json.hpp"
 
+#include <glm/glm.hpp>
+#include<iostream>
+
 using json = nlohmann::json;
 using namespace rapidxml;
 
-#include<iostream>
-
 const int BYTES_PER_PIXEL = 4; // r,g,b,a
 
-class Point {
-    public:
-    float x;
-    float y;
-    float z;
-
-    Point(){
-        this->x = 0.0f;
-        this->y = 0.0f;
-        this->z = 0.0f;
+static float* pointsToFloats(const std::vector<glm::vec2> points) {
+    float* verts = new float[points.size() * 2];
+    for(uint i = 0; i != points.size(); i++) {
+        verts[0 + i*2] = points[i].x;
+        verts[1 + i*2] = points[i].y;
     }
+    return verts;
+}
 
-    Point(float x, float y) {
-        this->x = x;
-        this->y = y;
-        this->z = 0.0f;
-    }
-
-    Point(float x, float y, float z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-    
-    Point(const Point& point) {
-        this->x = point.x;
-        this->y = point.y;
-        this->z = point.z;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Point& point) {
-        os << "POINT{X: " << point.x << ", Y:" << point.y << ", Z:" << point.z <<"}";
-        return os;
-    }
-};
-
-static float* pointsToFloats(const std::vector<Point> points) {
+static float* pointsToFloats(const std::vector<glm::vec3> points) {
     float* verts = new float[points.size() * 3];
     for(uint i = 0; i != points.size(); i++) {
         verts[0 + i*3] = points[i].x;

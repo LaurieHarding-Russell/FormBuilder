@@ -60,3 +60,25 @@ cc_library(
 """,
     sha256 = "13a99ad430e930907f5611325ec384168a958bf7610e63e60e2fd8e7b7379610",
     )
+    
+    http_archive(
+        name = "glm",
+        strip_prefix = "glm-b3f87720261d623986f164b2a7f6a0a938430271",
+        urls = [
+            "https://github.com/g-truc/glm/archive/b3f87720261d623986f164b2a7f6a0a938430271.tar.gz",
+        ],
+        build_file_content = """
+cc_library(
+    name = "glm",
+    includes = ["."],
+    srcs = glob(["glm/**/*.hpp"]) + glob(["glm/**/*.h"]),
+    hdrs = glob(["glm/**/*.inl"]),
+    visibility = ["//visibility:public"],
+    defines = [
+        "GLM_FORCE_RADIANS",
+        "GLM_FORCE_LEFT_HANDED",
+        "GLM_FORCE_DEPTH_ZERO_TO_ONE",
+    ],
+)""",
+        sha256 = "db66eca1a396bbb7c5e286b9fa84b7d82d9ba317968bbb316805f80f45ca0cd8",
+    )

@@ -74,9 +74,9 @@ void display(GLFWwindow* window) {
       glGenTextures(pumpkinSpiceObject->meshes.size(), textureObj);
       // Load it.
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
-         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+         std::vector<glm::vec3> mesh = pumpkinSpiceObject->meshes.at(i);
          int size = mesh.size() * 3;
-
+         
          float* meshFloat = pointsToFloats(mesh);
          float* uvVerts = pointsToFloats(pumpkinSpiceObject->textureMap);
          
@@ -88,10 +88,10 @@ void display(GLFWwindow* window) {
          glBufferData(GL_ARRAY_BUFFER, bufferVertSize + uvMapSize, NULL, GL_STATIC_DRAW);
 
          glBufferSubData(GL_ARRAY_BUFFER, 0, bufferVertSize, meshFloat);
-         glVertexAttribPointer(vertIn,3,GL_FLOAT,GL_FALSE,0,0);
+         glVertexAttribPointer(vertIn, 3, GL_FLOAT,GL_FALSE, 0, 0);
          
          glBufferSubData(GL_ARRAY_BUFFER, bufferVertSize, uvMapSize, uvVerts);
-         glVertexAttribPointer(textCIn,3,GL_FLOAT,GL_FALSE,0, &bufferVertSize);
+         glVertexAttribPointer(textCIn, 2, GL_FLOAT,GL_FALSE, 0, &bufferVertSize);
 
          Texture* texture = pumpkinSpiceObject->textures.at(i);
 
@@ -103,7 +103,7 @@ void display(GLFWwindow* window) {
 
       for (uint i = 0; i != pumpkinSpiceObject->meshes.size(); i++) {
          glBindBuffer(GL_ARRAY_BUFFER, buffer[i]);
-         std::vector<Point> mesh = pumpkinSpiceObject->meshes.at(i);
+         std::vector<glm::vec3> mesh = pumpkinSpiceObject->meshes.at(i);
 
          // Textures
          glBindTexture(GL_TEXTURE_2D, textureObj[i]);
@@ -189,8 +189,7 @@ void error_callback(int error, const char* description) {
 void cursorPositioncallback(GLFWwindow* window, double x, double y) {
    float xPos = ((float)x)/WIDTH * 2.0 - 1.0;
    float yPos = ((float)y)/-HEIGHT * 2.0 + 1.0;
-   Point position = Point(xPos, yPos, 0);
-   std::cout << "mp:" << position << "\n";
+   glm::vec2 position = glm::vec2(xPos, yPos);
 
    pumpkinSpiceCompiler.getInput()->callbackMousePosition(position);
 }
